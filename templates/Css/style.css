@@ -27,7 +27,7 @@ body {
 
 .site-header{
   position: relative;
-  padding: 1.25rem var(--gap);
+  padding: 0.8rem var(--gap) 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -72,7 +72,7 @@ body {
 .icon-btn img{ width: 22px; height: 22px; color: inherit; }
 
 main.balance{
-  padding: 1.25rem var(--gap) 4rem;
+  padding: 0.25rem var(--gap) 3rem;
   max-width: 95%;
   margin: 0 auto;
   background-color: rgba(32, 30, 42, 1);
@@ -119,35 +119,27 @@ main.balance{
 
 .stand{
   position: relative;
-  width: 220px;
-  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 10px auto 0;
 }
 
-.stand .beam{
-  position: absolute;
-  left: 50%;
-  top: 24px;
-  transform: translateX(-50%);
-  width: 160px;
-  height: 8px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.06));
-  border-radius: 6px;
+.stand-img{
+  z-index: 1; 
 }
-.stand .pivot{
-  position: absolute;
-  left: 50%;
-  top: 12px;
-  transform: translateX(-50%);
-  width: 18px;
-  height: 18px;
-  background: var(--accent-1);
-  border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+
+.beam-img{
+  position: relative;
+  z-index: 2; 
+  bottom: 15px;
 }
 
 .pans{
   display: flex;
-  gap: 2.25rem;
+  gap: 27rem;
   align-items: flex-start;
 }
 
