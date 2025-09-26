@@ -139,6 +139,39 @@ main.balance{
   width: 55%;
 }
 
+.pan-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.pan-btn:hover {
+  transform: translateY(-5px);
+}
+
+.pan-btn:active {
+  transform: translateY(-2px);
+}
+
+.left-pan-btn .pan-img {
+  border: solid 1.5px var(--accent-3);
+  box-shadow: -3px 2px 20px var(--accent-3);
+  animation: glow-left 2s ease-in-out infinite alternate;
+}
+
+.right-pan-btn .pan-img {
+  border: solid 1.5px var(--accent-2);
+  box-shadow: 3px 2px 20px var(--accent-2);
+  animation: glow-right 2s ease-in-out infinite alternate;
+}
+
+.right-pan-btn .pan-img, .left-pan-btn .pan-img {
+  border-radius: 50%;
+  padding: 20px 20px 10px 10px;
+}
+
 .pans{
   display: flex;
   gap: 28rem;
@@ -225,7 +258,6 @@ main.balance{
   text-align: center;
 }
 
-/* Строки */
 .row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -238,7 +270,6 @@ main.balance{
   grid-template-columns: 1fr;
 }
 
-/* Общие стили для всех карточек-кнопок */
 .category-card {
   background: rgba(32, 30, 42, 1);
   border: 1px solid rgba(125, 60, 115, 0.5);
@@ -256,7 +287,6 @@ main.balance{
   box-shadow: 0 4px 15px rgba(178, 152, 220, 0.2);
 }
 
-/* Заголовки категорий */
 .category-header {
   display: flex;
   justify-content: space-between;
@@ -314,7 +344,6 @@ main.balance{
   margin-top: 0.2rem;
 }
 
-/* Метрики */
 .metrics-list {
   display: flex;
   flex-direction: column;
@@ -344,7 +373,6 @@ main.balance{
   color: #e6eef6;
 }
 
-/* Особый стиль для карточки разработчиков */
 .developers-card, .developers-card h3 {
   text-align: center;
   color: #e6eef6;

@@ -36,111 +36,108 @@
           <img src="./Img/beam.svg" alt="Балка весов" class="beam-img">
         </div>
         <div class="pans">
-          <img src="./Img/left-pan.svg" alt="Левая чаша" class="pan-img left-pan">
-          <img src="./Img/right-pan.svg" alt="Правая чаша" class="pan-img right-pan">
+          <button class="pan-btn left-pan-btn">
+            <img src="./Img/left-pan.svg" alt="Левая чаша" class="pan-img">
+          </button>
+          <button class="pan-btn right-pan-btn">
+            <img src="./Img/right-pan.svg" alt="Правая чаша" class="pan-img">
+          </button>
         </div>
       </section>
     </main>
   </div>
-  <!-- Новый блок -->
-<section class="analytics-section">
-  <!-- Первая строка - заголовок как кнопка -->
-  <div class="row full-row">
-    <button class="category-card interactive analytics-header-card">
-      <h2 class="analytics-title">Аналитика</h2>
-      <p class="analytics-subtitle">Инсайты и рекомендации</p>
-    </button>
-  </div>
 
-  <!-- Вторая строка - 3 кнопки-блока -->
-  <div class="row first-row">
-    <button class="category-card interactive">
-      <div class="category-header">
-        <h3>Быстрая оценка</h3>
-        <span class="percentage">10–20 сек</span>
-      </div>
-    </button>
-    
-    <button class="category-card interactive">
-      <div class="category-header">
-        <h3>Добавить цель</h3>
-        <span class="percentage">Переогранка</span>
-      </div>
-    </button>
-    
-    <button class="category-card interactive">
-      <div class="category-header">
-        <h3>История</h3>
-        <span class="percentage">Динамика</span>
-      </div>
-    </button>
-  </div>
+  <section class="analytics-section">
+    <div class="row full-row">
+      <button class="category-card interactive analytics-header-card">
+        <h2 class="analytics-title">Аналитика</h2>
+        <p class="analytics-subtitle">Инсайты и рекомендации</p>
+      </button>
+    </div>
 
-  <!-- Третья строка - 3 кнопки-блока -->
-  <div class="row second-row">
-    <!-- Семья -->
-    <button class="category-card interactive dv1">
-      <div class="category-header">
-        <h3>Время с семьёй</h3>
-        <span class="percentage">45%</span>
-      </div>
-      <div class="metrics-list">
-        <div class="metric-item negative">
-          <span class="metric-name">Совместные ужины</span>
-          <span class="metric-value">-2</span>
+    <div class="row first-row">
+      <button class="category-card interactive">
+        <div class="category-header">
+          <h3>Быстрая оценка</h3>
+          <span class="percentage">10–20 сек</span>
         </div>
-        <div class="metric-item positive">
-          <span class="metric-name">Выходные вместе</span>
-          <span class="metric-value qwe">+1</span>
+      </button>
+      
+      <button class="category-card interactive">
+        <div class="category-header">
+          <h3>Добавить цель</h3>
+          <span class="percentage">Переогранка</span>
         </div>
-      </div>
-    </button>
+      </button>
+      
+      <button class="category-card interactive">
+        <div class="category-header">
+          <h3>История</h3>
+          <span class="percentage">Динамика</span>
+        </div>
+      </button>
+    </div>
 
-    <!-- Работа -->
-    <button class="category-card interactive dv2">
-      <div class="category-header">
-        <h3>Рабочие проекты</h3>
-        <span class="percentage">85%</span>
-      </div>
-      <div class="metrics-list">
-        <div class="metric-item positive">
-          <span class="metric-name">Основной проект</span>
-          <span class="metric-value">+4</span>
+    <div class="row second-row">
+      <button class="category-card interactive dv1">
+        <div class="category-header">
+          <h3>Время с семьёй</h3>
+          <span class="percentage">45%</span>
         </div>
-        <div class="metric-item positive">
-          <span class="metric-name">Командная работа</span>
-          <span class="metric-value">+1</span>
+        <div class="metrics-list">
+          <div class="metric-item negative">
+            <span class="metric-name">Совместные ужины</span>
+            <span class="metric-value">-2</span>
+          </div>
+          <div class="metric-item positive">
+            <span class="metric-name">Выходные вместе</span>
+            <span class="metric-value qwe">+1</span>
+          </div>
         </div>
-      </div>
-    </button>
+      </button>
 
-    <!-- Здоровье -->
-    <button class="category-card interactive dv1">
-      <div class="category-header">
-        <h3>Здоровье</h3>
-        <span class="percentage">25%</span>
-      </div>
-      <div class="metrics-list">
-        <div class="metric-item negative">
-          <span class="metric-name">Физическая активность</span>
-          <span class="metric-value">-4</span>
+      <button class="category-card interactive dv2">
+        <div class="category-header">
+          <h3>Рабочие проекты</h3>
+          <span class="percentage">85%</span>
         </div>
-        <div class="metric-item negative">
-          <span class="metric-name">Питание</span>
-          <span class="metric-value">-6</span>
+        <div class="metrics-list">
+          <div class="metric-item positive">
+            <span class="metric-name">Основной проект</span>
+            <span class="metric-value">+4</span>
+          </div>
+          <div class="metric-item positive">
+            <span class="metric-name">Командная работа</span>
+            <span class="metric-value">+1</span>
+          </div>
         </div>
-      </div>
-    </button>
-  </div>
+      </button>
 
-  <!-- разработчики -->
-  <div class="row full-row">
-    <button class="category-card interactive developers-card">
-      <div class="category-header">
-        <h3>Разработчики</h3>
-      </div>
-    </button>
-  </div>
-</section>
+      <button class="category-card interactive dv1">
+        <div class="category-header">
+          <h3>Здоровье</h3>
+          <span class="percentage">25%</span>
+        </div>
+        <div class="metrics-list">
+          <div class="metric-item negative">
+            <span class="metric-name">Физическая активность</span>
+            <span class="metric-value">-4</span>
+          </div>
+          <div class="metric-item negative">
+            <span class="metric-name">Питание</span>
+            <span class="metric-value">-6</span>
+          </div>
+        </div>
+      </button>
+    </div>
+
+    <div class="row full-row">
+      <button class="category-card interactive developers-card">
+        <div class="category-header">
+          <h3>Разработчики</h3>
+        </div>
+      </button>
+    </div>
+  </section>
 </body>
 </html>
