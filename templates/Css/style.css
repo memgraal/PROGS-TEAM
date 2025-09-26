@@ -146,11 +146,31 @@ main.balance{
 .left-pan{
   border: solid 1px var(--accent-3);
   box-shadow: -3px 2px 20px var(--accent-3);
+  animation: glow-left 2s ease-in-out infinite alternate;
 }
 
 .right-pan{
   border: solid 1px var(--accent-2);
   box-shadow: 3px 2px 20px var(--accent-2);
+  animation: glow-right 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow-left {
+  from {
+    box-shadow: -3px 2px 20px var(--accent-3);
+  }
+  to {
+    box-shadow: -8px 5px 35px var(--accent-3);
+  }
+}
+
+@keyframes glow-right {
+  from {
+    box-shadow: 3px 2px 20px var(--accent-2);
+  }
+  to {
+    box-shadow: 8px 5px 35px var(--accent-2);
+  }
 }
 
 .right-pan, .left-pan{
