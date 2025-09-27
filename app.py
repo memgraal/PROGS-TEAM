@@ -7,7 +7,7 @@ from blueprints.main import main_bp
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="templates", static_folder="templates/Css")
     app.config["SECRET_KEY"] = "supersecret"
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

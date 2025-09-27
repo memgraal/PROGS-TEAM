@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
-profile_bp = Blueprint("profile", __name__, url_prefix="/profile")
+profile_bp = Blueprint("profile", __name__, url_prefix="/profile", template_folder="templates", static_folder="templates/Css")
 
 
 @profile_bp.route("/")

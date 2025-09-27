@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user
 from models import User, LoginHistory
 from extensions import db
 
-auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
+auth_bp = Blueprint("auth", __name__, url_prefix="/auth", template_folder="/templates", static_folder="templates/Css")
 
 
 @auth_bp.route("/register", methods=["GET", "POST"])
