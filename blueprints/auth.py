@@ -2,8 +2,10 @@ from flask import Blueprint, request, redirect, url_for, render_template, flash
 from flask_login import login_user, logout_user
 from models import User, LoginHistory
 from extensions import db
+import os
 
-auth_bp = Blueprint("auth", __name__, url_prefix="/auth", template_folder="/templates", static_folder="templates/Css")
+auth_bp = Blueprint("auth", __name__, url_prefix="/auth", template_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "templates"),
+                    static_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "templates", "Css"))
 
 
 @auth_bp.route("/register", methods=["GET", "POST"])
