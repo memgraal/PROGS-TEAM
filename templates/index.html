@@ -1,4 +1,5 @@
 <!doctype html>
+<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
@@ -7,7 +8,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/style.css') }}">
 </head>
 <body>
-  <div class="first-screen">
+  <!-- Главный экран - Уровень 0 -->
+  <div class="first-screen nav-level active" data-level="0">
     <header class="site-header">
       <h1 class="site-title">Кристаллы Фемиды</h1>
       <nav class="control-panel" aria-label="Панель управления">
@@ -36,26 +38,300 @@
           <img src="{{ url_for('static', filename='Img/beam.svg') }}" alt="Балка весов" class="beam-img">
         </div>
         <div class="pans">
-          <button class="pan-btn left-pan-btn">
+          <!-- нав к чашам -->
+          <button class="pan-btn left-pan-btn" onclick="navigateTo(1)">
             <img src="{{ url_for('static', filename='Img/left-pan.svg') }}" alt="Левая чаша" class="pan-img">
           </button>
-          <button class="pan-btn right-pan-btn">
-<<<<<<< HEAD
+          <button class="pan-btn right-pan-btn" onclick="navigateTo(2)">
             <img src="{{ url_for('static', filename='Img/right-pan.svg') }}" alt="Правая чаша" class="pan-img">
-=======
-            <img src="/Img/right-pan.svg" alt="Правая чаша" class="pan-img">
->>>>>>> 9011f9ed5d7299a162bf6a22fed1c0e1e90ea8be
           </button>
         </div>
       </section>
     </main>
   </div>
 
+  <!-- Уровень 2 - Чаша Семья 3 крис -->
+  <div class="nav-level" data-level="1">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">×</button>
+      
+      <div class="mini-bowl family-bowl">
+        <img src="{{ url_for('static', filename='Img/left-pan.svg') }}" alt="Чаша Семья">
+      </div>
+      
+      <h2>Семья</h2>
+      
+      <div class="crystals-container">
+        <!-- Кристаллы с навигацией на следующий уровень -->
+        <div class="crystal-card" onclick="navigateTo(3)">
+          <div class="crystal-icon"></div>
+          <h3>Дети</h3>
+        </div>
+        
+        <div class="crystal-card" onclick="navigateTo(4)">
+          <div class="crystal-icon"></div>
+          <h3>Партнер</h3>
+        </div>
+        
+        <div class="crystal-card" onclick="navigateTo(5)">
+          <div class="crystal-icon"></div>
+          <h3>Быт</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Уровень 2 - Чаша Карьера 3 крис -->
+  <div class="nav-level" data-level="2">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">×</button>
+      
+      <div class="mini-bowl career-bowl">
+        <img src="{{ url_for('static', filename='Img/right-pan.svg') }}" alt="Чаша Карьера">
+      </div>
+      
+      <h2>Карьера</h2>
+      
+      <div class="crystals-container">
+        <div class="crystal-card" onclick="navigateTo(6)">
+          <div class="crystal-icon"></div>
+          <h3>Основная работа</h3>
+        </div>
+        
+        <div class="crystal-card" onclick="navigateTo(7)">
+          <div class="crystal-icon"></div>
+          <h3>Развитие навыков</h3>
+        </div>
+        
+        <div class="crystal-card" onclick="navigateTo(8)">
+          <div class="crystal-icon"></div>
+          <h3>Командная работа</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Уровень 3.1 - Грани - Крис Дети - Чаша Семья -->
+  <div class="nav-level" data-level="3">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">×</button>
+      <button class="back-to-bowl" onclick="navigateTo(1)">←</button>
+      
+      <div class="crystal-header">
+        <div class="crystal-icon large"></div>
+        <h2>Дети</h2>
+      </div>
+      
+      <div class="facets-container">
+        <div class="facet-card">
+          <h4>Времяпровождение</h4>
+          <div class="facet-value">3/5</div>
+        </div>
+        
+        <div class="facet-card">
+          <h4>Помощь с уроками</h4>
+          <div class="facet-value">4/5</div>
+        </div>
+        
+        <div class="facet-card">
+          <h4>Эмоциональная связь</h4>
+          <div class="facet-value">2/5</div>
+        </div>
+
+        <div class="facet-card">
+          <h4>Качественное время</h4>
+          <div class="facet-value">4/5</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Уровень 3.1 - Грани - Крис партнер - Чаша Семья -->
+  <div class="nav-level" data-level="4">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">×</button>
+      <button class="back-to-bowl" onclick="navigateTo(1)">←</button>
+      
+      <div class="crystal-header">
+        <div class="crystal-icon large"></div>
+        <h2>Партнер</h2>
+      </div>
+      
+      <div class="facets-container">
+        <div class="facet-card">
+          <h4>Романтические вечера</h4>
+          <div class="facet-value">2/5</div>
+        </div>
+        
+        <div class="facet-card">
+          <h4>Поддержка в сложные моменты</h4>
+          <div class="facet-value">4/5</div>
+        </div>
+        
+        <div class="facet-card">
+          <h4>Совместные решения</h4>
+          <div class="facet-value">3/5</div>
+        </div>
+
+        <div class="facet-card">
+          <h4>Личное время вдвоем</h4>
+          <div class="facet-value">3/5</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Уровень 3.1 - Грани - Крис быт - Чаша Семья -->
+  <div class="nav-level" data-level="5">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">×</button>
+      <button class="back-to-bowl" onclick="navigateTo(1)">←</button>
+      
+      <div class="crystal-header">
+        <div class="crystal-icon large"></div>
+        <h2>Быт</h2>
+      </div>
+      
+      <div class="facets-container">
+        <div class="facet-card">
+          <h4>Распределение обязанностей</h4>
+          <div class="facet-value">3/5</div>
+        </div>
+        
+        <div class="facet-card">
+          <h4>Совместные приемы пищи</h4>
+          <div class="facet-value">4/5</div>
+        </div>
+        
+        <div class="facet-card">
+          <h4>Организация пространства</h4>
+          <div class="facet-value">3/5</div>
+        </div>
+
+        <div class="facet-card">
+          <h4>Семейные традиции</h4>
+          <div class="facet-value">3/5</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Уровень 3.2 - Грани - Крис Основная работа - Чаша Карьера -->
+  <div class="nav-level" data-level="6">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">×</button>
+      <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
+      
+      <div class="crystal-header">
+        <div class="crystal-icon large"></div>
+        <h2>Основная работа</h2>
+      </div>
+      
+      <div class="facets-container">
+        <div class="facet-card">
+          <h4>Профессиональный рост</h4>
+          <div class="facet-value">4/5</div>
+        </div>
+        
+        <div class="facet-card">
+          <h4>Доход и финансы</h4>
+          <div class="facet-value">3/5</div>
+        </div>
+        
+        <div class="facet-card">
+          <h4>Проекты и задачи</h4>
+          <div class="facet-value">4/5</div>
+        </div>
+
+        <div class="facet-card">
+          <h4>Признание и статус</h4>
+          <div class="facet-value">4/5</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Уровень 3.2 - Грани - Крис Развитие навыков - Чаша Карьера -->
+  <div class="nav-level" data-level="7">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">×</button>
+      <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
+      
+      <div class="crystal-header">
+        <div class="crystal-icon large"></div>
+        <h2>Развитие навыков</h2>
+      </div>
+      
+      <div class="facets-container">
+        <div class="facet-card">
+          <h4>Обучение и курсы</h4>
+          <div class="facet-value">3/5</div>
+        </div>
+        
+        <div class="facet-card">
+          <h4>Новые технологии</h4>
+          <div class="facet-value">4/5</div>
+        </div>
+        
+        <div class="facet-card">
+          <h4>Навыки</h4>
+          <div class="facet-value">3/5</div>
+        </div>
+
+        <div class="facet-card">
+          <h4>Сертификации</h4>
+          <div class="facet-value">3/5</div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Уровень 3.2 - Грани - Крис Командная работа - Чаша Карьера -->
+  <div class="nav-level" data-level="8">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">×</button>
+      <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
+      
+      <div class="crystal-header">
+        <div class="crystal-icon large"></div>
+        <h2>Командная работа</h2>
+      </div>
+      
+      <div class="facets-container">
+        <div class="facet-card">
+          <h4>Взаимодействие с коллегами</h4>
+          <div class="facet-value">4/5</div>
+        </div>
+        
+        <div class="facet-card">
+          <h4>Менторство</h4>
+          <div class="facet-value">3/5</div>
+        </div>
+        
+        <div class="facet-card">
+          <h4>Сетевые связи</h4>
+          <div class="facet-value">2/5</div>
+        </div>
+
+        <div class="facet-card">
+          <h4>Корпоративная культура</h4>
+          <div class="facet-value">2/5</div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!-- Тут статичтика -->
   <section class="analytics-section">
     <div class="row full-row">
       <button class="category-card interactive analytics-header-card">
         <h2 class="analytics-title">Аналитика</h2>
-        <p class="analytics-subtitle">Инсайты и рекомендации</p>
       </button>
     </div>
 
@@ -143,5 +419,6 @@
       </button>
     </div>
   </section>
+  <script src="{{ url_for('static', filename='Js/script.js') }}"></script>
 </body>
 </html>

@@ -401,3 +401,77 @@ main.balance{
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-2);
 }
+
+/* === СТЕК НАВИГАЦИИ === */
+.nav-level {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(22, 22, 30, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.nav-level.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.nav-level[data-level="0"] {
+    position: relative;
+    background: var(--background);
+    backdrop-filter: none;
+}
+
+.nav-level[data-level="0"].active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Анимации для модальных уровней */
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.nav-level[data-level]:not([data-level="0"]).active .modal-content {
+    animation: slideInFromRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Адаптивность для тел */
+@media (max-width: 768px) {
+    .nav-level[data-level]:not([data-level="0"]) .modal-content {
+        margin: 10px;
+        padding: 20px;
+        border-radius: 16px;
+    }
+    
+    .back-to-bowl {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+}
+
+/* переходы для аналитики */
+.analytics-section {
+    transition: opacity 0.3s ease;
+}
+
+.nav-level[data-level]:not([data-level="0"]).active ~ .analytics-section {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.close-modal, .back-to-bowl{
+  color: #e6eef6;
+}
