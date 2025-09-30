@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Кристаллы Фемиды</title>
-  <link rel="stylesheet" href="./Css/style.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='Css/style.css') }}">
 </head>
 <body>
   <div class="first-screen">
@@ -12,13 +12,13 @@
       <h1 class="site-title">Кристаллы Фемиды</h1>
       <nav class="control-panel" aria-label="Панель управления">
         <button class="icon-btn" aria-label="О разработчиках">
-          <img src="./Img/logo.svg" alt="PR логотип" />
+          <img src="{{ url_for('static', filename='Img/logo.svg') }}" alt="PR логотип" />
         </button>
         <button class="icon-btn" aria-label="Уведомления">
-          <img src="./Img/bell.svg" alt="Уведомления" />
+          <img src="{{ url_for('static', filename='Img/bell.svg') }}" alt="Уведомления" />
         </button>
         <button class="icon-btn" aria-label="Настройки">
-          <img src="./Img/gear.svg" alt="Настройки" />
+          <img src="{{ url_for('static', filename='Img/gear.svg') }}" alt="Настройки" />
         </button>
       </nav>
     </header>
@@ -32,15 +32,15 @@
 
       <section class="scale" aria-label="Визуализация весов">
         <div class="stand">
-          <img src="./Img/stand.svg" alt="Стойка весов" class="stand-img">
-          <img src="./Img/beam.svg" alt="Балка весов" class="beam-img">
+          <img src="{{ url_for('static', filename='Img/stand.svg') }}" alt="Стойка весов" class="stand-img">
+          <img src="{{ url_for('static', filename='Img/beam.svg') }}" alt="Балка весов" class="beam-img">
         </div>
         <div class="pans">
           <button class="pan-btn left-pan-btn">
-            <img src="./Img/left-pan.svg" alt="Левая чаша" class="pan-img">
+            <img src="{{ url_for('static', filename='Img/left-pan.svg') }}" alt="Левая чаша" class="pan-img">
           </button>
           <button class="pan-btn right-pan-btn">
-            <img src="./Img/right-pan.svg" alt="Правая чаша" class="pan-img">
+            <img src="{{ url_for('static', filename='Img/right-pan.svg') }}" alt="Правая чаша" class="pan-img">
           </button>
         </div>
       </section>
