@@ -291,12 +291,9 @@
       <button class="close-modal" onclick="closeModal()">×</button>
       <button class="back-to-bowl" onclick="navigateTo(1)">←</button>
       
-      <div class="crystal-details-container">
-        <div class="crystal-preview">
-          <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Партнер" class="large-crystal">
-        </div>
-        
-        <div class="facets-inputs">
+      <div class="crystal-details-layout">
+        <!-- Левая колонка с 2 гранями -->
+        <div class="facets-column left-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
               <span class="facet-label">Романтические вечера</span>
@@ -372,7 +369,17 @@
               <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
             </div>
           </div>
-          
+        </div>
+        
+        <!-- Центральный увеличенный алмаз -->
+        <div class="crystal-center">
+          <div class="crystal-preview-large">
+            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Партнер" class="extra-large-crystal">
+          </div>
+        </div>
+        
+        <!-- Правая колонка с 2 гранями -->
+        <div class="facets-column right-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
               <span class="facet-label">Совместные решения</span>
@@ -459,12 +466,9 @@
       <button class="close-modal" onclick="closeModal()">×</button>
       <button class="back-to-bowl" onclick="navigateTo(1)">←</button>
       
-      <div class="crystal-details-container">
-        <div class="crystal-preview">
-          <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Быт" class="large-crystal">
-        </div>
-        
-        <div class="facets-inputs">
+      <div class="crystal-details-layout">
+        <!-- Левая колонка с 2 гранями -->
+        <div class="facets-column left-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
               <span class="facet-label">Распределение обязанностей</span>
@@ -540,7 +544,17 @@
               <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
             </div>
           </div>
-          
+        </div>
+        
+        <!-- Центральный увеличенный алмаз -->
+        <div class="crystal-center">
+          <div class="crystal-preview-large">
+            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Быт" class="extra-large-crystal">
+          </div>
+        </div>
+        
+        <!-- Правая колонка с 2 гранями -->
+        <div class="facets-column right-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
               <span class="facet-label">Организация пространства</span>
@@ -627,12 +641,9 @@
       <button class="close-modal" onclick="closeModal()">×</button>
       <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
       
-      <div class="crystal-details-container">
-        <div class="crystal-preview">
-          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Основная работа" class="large-crystal">
-        </div>
-        
-        <div class="facets-inputs">
+      <div class="crystal-details-layout">
+        <!-- Левая колонка с 2 гранями -->
+        <div class="facets-column left-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
               <span class="facet-label">Профессиональный рост</span>
@@ -708,7 +719,17 @@
               <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
             </div>
           </div>
-          
+        </div>
+        
+        <!-- Центральный увеличенный алмаз -->
+        <div class="crystal-center">
+          <div class="crystal-preview-large">
+            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Основная работа" class="extra-large-crystal">
+          </div>
+        </div>
+        
+        <!-- Правая колонка с 2 гранями -->
+        <div class="facets-column right-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
               <span class="facet-label">Проекты и задачи</span>
@@ -795,12 +816,9 @@
       <button class="close-modal" onclick="closeModal()">×</button>
       <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
       
-      <div class="crystal-details-container">
-        <div class="crystal-preview">
-          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Развитие навыков" class="large-crystal">
-        </div>
-        
-        <div class="facets-inputs">
+      <div class="crystal-details-layout">
+        <!-- Левая колонка с 2 гранями -->
+        <div class="facets-column left-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
               <span class="facet-label">Обучение и курсы</span>
@@ -876,7 +894,17 @@
               <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
             </div>
           </div>
-          
+        </div>
+        
+        <!-- Центральный увеличенный алмаз -->
+        <div class="crystal-center">
+          <div class="crystal-preview-large">
+            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Развитие навыков" class="extra-large-crystal">
+          </div>
+        </div>
+        
+        <!-- Правая колонка с 2 гранями -->
+        <div class="facets-column right-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
               <span class="facet-label">Навыки</span>
@@ -963,12 +991,9 @@
       <button class="close-modal" onclick="closeModal()">×</button>
       <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
       
-      <div class="crystal-details-container">
-        <div class="crystal-preview">
-          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Командная работа" class="large-crystal">
-        </div>
-        
-        <div class="facets-inputs">
+      <div class="crystal-details-layout">
+        <!-- Левая колонка с 2 гранями -->
+        <div class="facets-column left-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
               <span class="facet-label">Взаимодействие с коллегами</span>
@@ -1044,7 +1069,17 @@
               <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
             </div>
           </div>
-          
+        </div>
+        
+        <!-- Центральный увеличенный алмаз -->
+        <div class="crystal-center">
+          <div class="crystal-preview-large">
+            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Командная работа" class="extra-large-crystal">
+          </div>
+        </div>
+        
+        <!-- Правая колонка с 2 гранями -->
+        <div class="facets-column right-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
               <span class="facet-label">Сетевые связи</span>

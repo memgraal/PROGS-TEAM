@@ -1292,7 +1292,7 @@ main.balance{
   max-width: 280px;
 }
 
-/* Выравнивание для левой колонки */
+/* Исправляем выравнивание для левой колонки - текст слева, счетчик справа */
 .left-column .facet-input-group {
   text-align: left;
 }
@@ -1305,13 +1305,47 @@ main.balance{
   text-align: left;
 }
 
-.right-column .facet-header-compact {
-    flex-direction: row;
+/* Для правой колонки оставляем как есть */
+.right-column .facet-input-group {
+  text-align: left;
 }
 
+.right-column .facet-header-compact {
+  flex-direction: row;
+}
 
 .right-column .facet-label {
-    text-align: left;
+  text-align: left;
+}
+
+/* Фиолетовые стили для кристаллов карьеры */
+[data-level="6"] .extra-large-crystal,
+[data-level="7"] .extra-large-crystal,
+[data-level="8"] .extra-large-crystal {
+  filter: drop-shadow(0 12px 35px rgba(192,126,224,0.6));
+  animation: crystalGlowPurple 3s ease-in-out infinite alternate;
+}
+
+@keyframes crystalGlowPurple {
+  from {
+    filter: drop-shadow(0 8px 25px rgba(192,126,224,0.4));
+  }
+  to {
+    filter: drop-shadow(0 15px 45px rgba(192,126,224,0.8));
+  }
+}
+
+/* Фиолетовые границы для карьеры */
+[data-level="6"] .facets-column .facet-input-group,
+[data-level="7"] .facets-column .facet-input-group,
+[data-level="8"] .facets-column .facet-input-group {
+  border: 1px solid rgba(192,126,224,0.3);
+}
+
+[data-level="6"] .facet-header-compact .facet-label,
+[data-level="7"] .facet-header-compact .facet-label,
+[data-level="8"] .facet-header-compact .facet-label {
+  color: var(--accent-3);
 }
 
 /* Адаптивность для нового layout */
@@ -1335,7 +1369,7 @@ main.balance{
   
   .left-column .facet-input-group,
   .right-column .facet-input-group {
-    text-align: left;
+    text-align: center;
   }
   
   .left-column .facet-header-compact {
