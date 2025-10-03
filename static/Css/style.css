@@ -73,11 +73,12 @@ body {
 .icon-btn img{ width: 22px; height: 22px; color: inherit; }
 
 main.balance{
-  padding: 0.25rem 18rem 5rem;
+  padding: 0.25rem 15rem 5rem;
   max-width: 95%;
   margin: 0 auto 2.5%;
   background-color: rgba(32, 30, 42, 1);
   border: solid 1px rgba(125, 60, 115, 0.5);
+  overflow: hidden !important;
 }
 
 .categories{
@@ -136,7 +137,15 @@ main.balance{
   position: relative;
   z-index: 2; 
   bottom: 15px;
-  width: 55%;
+  width: 75%;
+}
+
+.pans {
+  display: flex;
+  gap: 26rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .pan-btn {
@@ -145,6 +154,11 @@ main.balance{
   cursor: pointer;
   padding: 0;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 210px;
+  height: 210px;
 }
 
 .pan-btn:hover {
@@ -155,39 +169,26 @@ main.balance{
   transform: translateY(-2px);
 }
 
+.pan-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
 .left-pan-btn .pan-img {
-  border: solid 1.5px var(--accent-3);
+  border: solid 2px var(--accent-3);
   box-shadow: -3px 2px 20px var(--accent-3);
   animation: glow-left 2s ease-in-out infinite alternate;
+  padding: 10px;
 }
 
 .right-pan-btn .pan-img {
-  border: solid 1.5px var(--accent-2);
+  border: solid 2px var(--accent-2);
   box-shadow: 3px 2px 20px var(--accent-2);
   animation: glow-right 2s ease-in-out infinite alternate;
-}
-
-.right-pan-btn .pan-img, .left-pan-btn .pan-img {
-  border-radius: 50%;
-  padding: 20px 20px 10px 10px;
-}
-
-.pans{
-  display: flex;
-  gap: 28rem;
-  align-items: flex-start;
-}
-
-.left-pan{
-  border: solid 1.5px var(--accent-3);
-  box-shadow: -3px 2px 20px var(--accent-3);
-  animation: glow-left 2s ease-in-out infinite alternate;
-}
-
-.right-pan{
-  border: solid 1.5px var(--accent-2);
-  box-shadow: 3px 2px 20px var(--accent-2);
-  animation: glow-right 2s ease-in-out infinite alternate;
+  padding: 20px 20px 10px 5px;
 }
 
 @keyframes glow-left {
@@ -208,32 +209,511 @@ main.balance{
   }
 }
 
-.right-pan, .left-pan{
-  border-radius: 50%;
-  padding: 20px 20px 10px 10px;
+@media (max-width: 768px) {
+  .pans {
+    gap: 15rem;
+  }
+  
+  .pan-btn {
+    width: 120px;
+    height: 120px;
+  }
 }
-
-.pan{
-  width: 140px;
-  height: 72px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border: 1px solid rgba(255,255,255,0.03);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pan.left .pan-content{ width: 90%; height: 60%; background: rgba(124,199,224,0.12); border-radius: 8px; }
-.pan.right .pan-content{ width: 90%; height: 60%; background: rgba(192,126,224,0.12); border-radius: 8px; }
 
 @media (max-width: 640px){
   .control-panel{ top: 12px; right: 12px; padding: 0.35rem; }
   .site-title{ font-size: 1rem; }
-  .pans{ flex-direction: column; gap: 1rem; }
+  .pans{ 
+    gap: 8rem;
+    flex-direction: row;
+  }
   .stand{ width: 160px; height: 90px; }
+  .pan-btn {
+    width: 100px;
+    height: 100px;
+  }
 }
 
+/* === ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ МОДАЛЬНЫХ ОКОН === */
+
+/* Стек навигации */
+.nav-level {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(22, 22, 30, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.nav-level.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.nav-level[data-level="0"] {
+    position: relative;
+    background: var(--background);
+    backdrop-filter: none;
+}
+
+.nav-level[data-level="0"].active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Анимации для модальных уровней */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Центрирование модального контента - 95% ширины и высоты */
+.nav-level[data-level]:not([data-level="0"]).active .modal-content {
+    animation: slideInFromRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    overflow-y: auto;
+    width: 95%;
+    height: 95%;
+    padding: 28px 28px 20px;
+    background: rgba(18,18,26,0.95);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.modal-content .close-modal {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 1.6rem;
+  background: transparent;
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: #e6eef6;
+  z-index: 100;
+}
+
+.modal-content .close-modal:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.back-to-bowl {
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  background: rgba(255,255,255,0.03);
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: #e6eef6;
+  z-index: 100;
+}
+
+.back-to-bowl:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* Контейнер для чаши */
+.bowl-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 60px auto 30px;
+  min-height: 400px;
+  width: 100%;
+}
+
+/* Группа кристаллов с круглой рамкой */
+.crystals-group {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  border: 3px solid var(--accent-2);
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgba(124,199,224,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(32, 30, 42, 0.7);
+  backdrop-filter: blur(5px);
+  overflow: hidden;
+}
+
+[data-level="2"] .crystals-group {
+  border-color: var(--accent-3);
+  box-shadow: 0 0 40px rgba(192,126,224,0.4);
+  background: rgba(32, 30, 42, 0.7);
+}
+
+/* Стили для кристаллов внутри группы */
+.crystal-in-bowl {
+  position: absolute;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+  width: 250px;
+  height: 250px;
+}
+
+.crystal-in-bowl:hover {
+  filter: drop-shadow(0 8px 25px rgba(178,152,220,0.6));
+  z-index: 3;
+}
+
+.crystal-in-bowl:active {
+  transform: scale(0.95);
+}
+
+.crystal-in-bowl img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+/* Текст внутри кристаллов - УВЕЛИЧЕННЫЙ */
+.crystal-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.4rem;
+  color: rgba(230, 238, 246, 0.5);
+  font-weight: 600;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 4;
+  width: 90%;
+}
+
+.crystal-in-bowl:hover .crystal-text {
+  color: rgba(230, 238, 246, 0.95);
+  text-shadow: 0 2px 8px rgba(178,152,220,0.8);
+}
+
+/* Позиционирование кристаллов - ДАЛЬШЕ друг от друга */
+.crystal-1 {
+  top: 45%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+}
+
+.crystal-2 {
+  top: 35%;
+  right: 25%;
+  transform: translate(50%, -50%);
+}
+
+.crystal-3 {
+  bottom: 5%;
+  left: 55%;
+  transform: translateX(-50%);
+}
+
+.crystal-1 img {
+  transform: rotate(30deg);
+}
+
+.crystal-2 img {
+  transform: rotate(-60deg);
+}
+
+.crystal-3 img {
+  transform: rotate(-120deg);
+}
+
+.crystal-1:hover img {
+  transform: rotate(30deg) scale(1.15);
+}
+
+.crystal-2:hover img {
+  transform: rotate(-60deg) scale(1.15);
+}
+
+.crystal-3:hover img {
+  transform: rotate(-120deg) scale(1.15);
+}
+
+/* Рамка с заголовком */
+.bowl-title-frame {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(32, 30, 42, 0.9);
+  border: 2px solid var(--accent-2);
+  border-radius: 12px;
+  padding: 15px 25px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+.bowl-title-frame h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: var(--accent-2);
+  text-align: center;
+}
+
+/* Специфичные стили для карьеры */
+[data-level="2"] .bowl-title-frame {
+  border-color: var(--accent-3);
+}
+
+[data-level="2"] .bowl-title-frame h2 {
+  color: var(--accent-3);
+}
+
+/* Стили для уровня 3+ (детали кристаллов с полями ввода) */
+.crystal-details-container {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.crystal-preview {
+  flex: 0 0 auto;
+}
+
+.large-crystal {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 25px rgba(178,152,220,0.4));
+}
+
+.facets-inputs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.facet-input-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(32, 30, 42, 0.8);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+}
+
+.facet-label {
+  color: #e6eef6;
+  font-size: 1.1rem;
+  font-weight: 500;
+  flex: 1;
+  text-align: left;
+}
+
+.facet-input {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  color: #e6eef6;
+  font-size: 1.1rem;
+  padding: 0.5rem 0.75rem;
+  width: 80px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.facet-input:focus {
+  outline: none;
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 2px rgba(124,199,224,0.2);
+}
+
+[data-level="6"] .facet-input:focus,
+[data-level="7"] .facet-input:focus,
+[data-level="8"] .facet-input:focus {
+  border-color: var(--accent-3);
+  box-shadow: 0 0 0 2px rgba(192,126,224,0.2);
+}
+
+/* Адаптивность для модальных окон */
+@media (max-width: 768px) {
+  .nav-level[data-level]:not([data-level="0"]).active .modal-content {
+    width: 95%;
+    height: 95%;
+    padding: 20px;
+  }
+  
+  .bowl-container {
+    margin: 40px auto 20px;
+    min-height: 300px;
+  }
+  
+  .crystals-group {
+    width: 400px;
+    height: 400px;
+  }
+  
+  .crystal-in-bowl {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .crystal-text {
+    font-size: 1rem;
+  }
+  
+  .crystal-in-bowl:hover .crystal-text {
+    font-size: 1.1rem;
+  }
+  
+  .crystal-1 {
+    top: 12%;
+    left: 18%;
+  }
+  
+  .crystal-2 {
+    top: 12%;
+    right: 18%;
+  }
+  
+  .crystal-3 {
+    bottom: 12%;
+  }
+  
+  .bowl-title-frame {
+    top: 15px;
+    left: 15px;
+    padding: 12px 20px;
+  }
+  
+  .bowl-title-frame h2 {
+    font-size: 1.5rem;
+  }
+  
+  .crystal-details-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .large-crystal {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .facets-inputs {
+    width: 100%;
+  }
+  
+  .facet-input-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  
+  .facet-input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .crystals-group {
+    width: 320px;
+    height: 320px;
+  }
+  
+  .crystal-in-bowl {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .crystal-text {
+    font-size: 0.9rem;
+  }
+  
+  .crystal-in-bowl:hover .crystal-text {
+    font-size: 1rem;
+  }
+  
+  .crystal-1 {
+    top: 15%;
+    left: 20%;
+  }
+  
+  .crystal-2 {
+    top: 15%;
+    right: 20%;
+  }
+  
+  .crystal-3 {
+    bottom: 15%;
+  }
+  
+  .bowl-title-frame {
+    top: 10px;
+    left: 10px;
+    padding: 10px 15px;
+  }
+  
+  .bowl-title-frame h2 {
+    font-size: 1.3rem;
+  }
+  
+  .large-crystal {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+/* Переходы для аналитики */
+.analytics-section {
+    transition: opacity 0.3s ease;
+}
+
+.nav-level[data-level]:not([data-level="0"]).active ~ .analytics-section {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* Аналитика секция */
 .analytics-section {
   padding: 1.5rem 0 1rem;
 }
@@ -401,201 +881,3 @@ main.balance{
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-2);
 }
-
-/* === СТЕК НАВИГАЦИИ === */
-.nav-level {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(22, 22, 30, 0.95);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    overflow-y: auto;
-}
-
-.nav-level.active {
-    display: block;
-    animation: fadeIn 0.3s ease;
-}
-
-.nav-level[data-level="0"] {
-    position: relative;
-    background: var(--background);
-    backdrop-filter: none;
-}
-
-.nav-level[data-level="0"].active {
-    display: flex;
-    flex-direction: column;
-}
-
-/* Анимации для модальных уровней */
-@keyframes slideInFromRight {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.nav-level[data-level]:not([data-level="0"]).active .modal-content {
-    animation: slideInFromRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
-    overflow-y: auto;
-}
-
-/* Адаптивность для тел */
-@media (max-width: 768px) {
-    .nav-level[data-level]:not([data-level="0"]) .modal-content {
-        margin: 10px;
-        padding: 20px;
-        border-radius: 16px;
-    }
-    
-    .back-to-bowl {
-        font-size: 0.9rem;
-        padding: 8px 16px;
-    }
-}
-
-/* переходы для аналитики */
-.analytics-section {
-    transition: opacity 0.3s ease;
-}
-
-.nav-level[data-level]:not([data-level="0"]).active ~ .analytics-section {
-    opacity: 0.3;
-    pointer-events: none;
-}
-
-.close-modal, .back-to-bowl{
-  color: #e6eef6;
-}
-
-    .nav-level[data-level]:not([data-level="0"]).active .modal-content {
-      /* Сохраняем позиционирование, но задаём конкретный контейнерный фон и выравнивание */
-      animation: slideInFromRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      margin: 0;
-      overflow-y: auto;
-      max-width: 860px;
-      width: calc(100% - 48px);
-      padding: 28px 28px 20px;
-      background: rgba(18,18,26,0.95);
-      border-radius: 16px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-      text-align: center; /* центрирование текста по умолчанию */
-    }
-
-    .modal-content .close-modal {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      font-size: 1.6rem;
-      background: transparent;
-      border-radius: 8px;
-      padding: 6px 10px;
-    }
-
-    .modal-content h2 {
-      margin: 12px 0 18px;
-      font-size: 1.8rem;
-      color: var(--accent-1);
-    }
-
-    /* Мини-чаша (иконка) */
-    .mini-bowl {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 6px auto 8px;
-    }
-    .mini-bowl img {
-      width: 120px;
-      max-width: 28%;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-      filter: drop-shadow(0 6px 18px rgba(0,0,0,0.6));
-    }
-
-    /* Контейнер для трёх кристаллов */
-    .crystals-container {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      align-items: flex-start;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-
-    .crystal-card {
-      width: 150px;
-      min-width: 120px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border: 1px solid rgba(255,255,255,0.04);
-      border-radius: 12px;
-      padding: 14px 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      text-align: center;
-      cursor: pointer;
-      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
-    }
-    .crystal-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-      border-color: rgba(178,152,220,0.18);
-    }
-
-    .crystal-card img {
-      width: 72px;
-      height: 72px;
-      object-fit: contain;
-      display: block;
-    }
-
-    .crystal-card h3 {
-      margin: 0;
-      font-size: 1rem;
-      color: #e6eef6;
-      font-weight: 600;
-    }
-
-    /* Вертикальное расположение в узких экранах */
-    @media (max-width: 640px) {
-      .nav-level[data-level]:not([data-level="0"]).active .modal-content {
-        width: calc(100% - 24px);
-        padding: 18px;
-      }
-      .mini-bowl img { width: 92px; }
-      .crystals-container { gap: 0.75rem; }
-      .crystal-card { width: 30%; min-width: 96px; padding: 10px; }
-    }
-
-    /* Доп. мелкие правки для кнопки "назад" и заголовка кристалла */
-    .back-to-bowl {
-      position: absolute;
-      left: 14px;
-      top: 12px;
-      background: rgba(255,255,255,0.03);
-      padding: 8px 12px;
-      border-radius: 10px;
-    }
-
-    

@@ -30,7 +30,6 @@
         <div class="divider" aria-hidden="true">&amp;</div>
         <div class="card career"><h2>Карьера</h2></div>
       </section>
-
       <section class="scale" aria-label="Визуализация весов">
         <div class="stand">
           <img src="{{ url_for('static', filename='Img/stand.svg') }}" alt="Стойка весов" class="stand-img">
@@ -54,33 +53,27 @@
     <div class="modal-content">
       <button class="close-modal" onclick="closeModal()">×</button>
       
-      <div class="mini-bowl family-bowl">
-        <img src="{{ url_for('static', filename='Img/left-pan.svg') }}" alt="Чаша Семья">
+      <div class="bowl-title-frame">
+        <h2>Семья</h2>
       </div>
       
-      <h2>Семья</h2>
-      
-      <div class="crystals-container">
-        <!-- Кристаллы с навигацией на следующий уровень -->
-        <div class="crystal-card">
-          <button class="crystal-btn" onclick="navigateTo(3)">
-            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Дети" class="crystal-img">
+      <div class="bowl-container">
+        <div class="crystals-group">
+          <!-- Кристаллы внутри группы -->
+          <button class="crystal-in-bowl crystal-1" onclick="navigateTo(3)">
+            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Дети">
+            <span class="crystal-text">Дети</span>
           </button>
-          <h3>Дети</h3>
-        </div>
-        
-        <div class="crystal-card">
-          <button class="crystal-btn" onclick="navigateTo(4)">
-            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Партнер" class="crystal-img">
+          
+          <button class="crystal-in-bowl crystal-2" onclick="navigateTo(4)">
+            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Партнер">
+            <span class="crystal-text">Партнер</span>
           </button>
-          <h3>Партнер</h3>
-        </div>
-        
-        <div class="crystal-card">
-          <button class="crystal-btn" onclick="navigateTo(5)">
-            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Быт" class="crystal-img">
+          
+          <button class="crystal-in-bowl crystal-3" onclick="navigateTo(5)">
+            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Быт">
+            <span class="crystal-text">Быт</span>
           </button>
-          <h3>Быт</h3>
         </div>
       </div>
     </div>
@@ -91,32 +84,27 @@
     <div class="modal-content">
       <button class="close-modal" onclick="closeModal()">×</button>
       
-      <div class="mini-bowl career-bowl">
-        <img src="{{ url_for('static', filename='Img/right-pan.svg') }}" alt="Чаша Карьера">
+      <div class="bowl-title-frame">
+        <h2>Карьера</h2>
       </div>
       
-      <h2>Карьера</h2>
-      
-      <div class="crystals-container">
-        <div class="crystal-card">
-          <button class="crystal-btn" onclick="navigateTo(6)">
-            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Основная работа" class="crystal-img">
+      <div class="bowl-container">
+        <div class="crystals-group">
+          <!-- Кристаллы внутри группы -->
+          <button class="crystal-in-bowl crystal-1" onclick="navigateTo(6)">
+            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Основная работа">
+            <span class="crystal-text">Основная работа</span>
           </button>
-          <h3>Основная работа</h3>
-        </div>
-        
-        <div class="crystal-card">
-          <button class="crystal-btn" onclick="navigateTo(7)">
-            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Развитие навыков" class="crystal-img">
+          
+          <button class="crystal-in-bowl crystal-2" onclick="navigateTo(7)">
+            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Развитие навыков">
+            <span class="crystal-text">Развитие навыков</span>
           </button>
-          <h3>Развитие навыков</h3>
-        </div>
-        
-        <div class="crystal-card">
-          <button class="crystal-btn" onclick="navigateTo(8)">
-            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Командная работа" class="crystal-img">
+          
+          <button class="crystal-in-bowl crystal-3" onclick="navigateTo(8)">
+            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Командная работа">
+            <span class="crystal-text">Командная работа</span>
           </button>
-          <h3>Командная работа</h3>
         </div>
       </div>
     </div>
@@ -128,32 +116,32 @@
       <button class="close-modal" onclick="closeModal()">×</button>
       <button class="back-to-bowl" onclick="navigateTo(1)">←</button>
       
-      <div class="crystal-header">
-        <div class="crystal-icon large"></div>
-        <h2>Дети</h2>
-      </div>
-      
-      <div class="facets-container">
-        <div class="facet-card">
-          <h4>Времяпровождение</h4>
-          <div class="facet-value">3/5</div>
+      <div class="crystal-details-container">
+        <div class="crystal-preview">
+          <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Дети" class="large-crystal">
         </div>
         
-        <div class="facet-card">
-          <h4>Помощь с уроками</h4>
-          <div class="facet-value">4/5</div>
-        </div>
-        
-        <div class="facet-card">
-          <h4>Эмоциональная связь</h4>
-          <div class="facet-value">2/5</div>
-        </div>
+        <div class="facets-inputs">
+          <div class="facet-input-group">
+            <label class="facet-label">Времяпровождение</label>
+            <input type="number" class="facet-input" value="3" min="0" max="5">
+          </div>
+          
+          <div class="facet-input-group">
+            <label class="facet-label">Помощь с уроками</label>
+            <input type="number" class="facet-input" value="4" min="0" max="5">
+          </div>
+          
+          <div class="facet-input-group">
+            <label class="facet-label">Эмоциональная связь</label>
+            <input type="number" class="facet-input" value="2" min="0" max="5">
+          </div>
 
-        <div class="facet-card">
-          <h4>Качественное время</h4>
-          <div class="facet-value">4/5</div>
+          <div class="facet-input-group">
+            <label class="facet-label">Качественное время</label>
+            <input type="number" class="facet-input" value="4" min="0" max="5">
+          </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -164,32 +152,32 @@
       <button class="close-modal" onclick="closeModal()">×</button>
       <button class="back-to-bowl" onclick="navigateTo(1)">←</button>
       
-      <div class="crystal-header">
-        <div class="crystal-icon large"></div>
-        <h2>Партнер</h2>
-      </div>
-      
-      <div class="facets-container">
-        <div class="facet-card">
-          <h4>Романтические вечера</h4>
-          <div class="facet-value">2/5</div>
+      <div class="crystal-details-container">
+        <div class="crystal-preview">
+          <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Партнер" class="large-crystal">
         </div>
         
-        <div class="facet-card">
-          <h4>Поддержка в сложные моменты</h4>
-          <div class="facet-value">4/5</div>
-        </div>
-        
-        <div class="facet-card">
-          <h4>Совместные решения</h4>
-          <div class="facet-value">3/5</div>
-        </div>
+        <div class="facets-inputs">
+          <div class="facet-input-group">
+            <label class="facet-label">Романтические вечера</label>
+            <input type="number" class="facet-input" value="2" min="0" max="5">
+          </div>
+          
+          <div class="facet-input-group">
+            <label class="facet-label">Поддержка в сложные моменты</label>
+            <input type="number" class="facet-input" value="4" min="0" max="5">
+          </div>
+          
+          <div class="facet-input-group">
+            <label class="facet-label">Совместные решения</label>
+            <input type="number" class="facet-input" value="3" min="0" max="5">
+          </div>
 
-        <div class="facet-card">
-          <h4>Личное время вдвоем</h4>
-          <div class="facet-value">3/5</div>
+          <div class="facet-input-group">
+            <label class="facet-label">Личное время вдвоем</label>
+            <input type="number" class="facet-input" value="3" min="0" max="5">
+          </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -200,32 +188,32 @@
       <button class="close-modal" onclick="closeModal()">×</button>
       <button class="back-to-bowl" onclick="navigateTo(1)">←</button>
       
-      <div class="crystal-header">
-        <div class="crystal-icon large"></div>
-        <h2>Быт</h2>
-      </div>
-      
-      <div class="facets-container">
-        <div class="facet-card">
-          <h4>Распределение обязанностей</h4>
-          <div class="facet-value">3/5</div>
+      <div class="crystal-details-container">
+        <div class="crystal-preview">
+          <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Быт" class="large-crystal">
         </div>
         
-        <div class="facet-card">
-          <h4>Совместные приемы пищи</h4>
-          <div class="facet-value">4/5</div>
-        </div>
-        
-        <div class="facet-card">
-          <h4>Организация пространства</h4>
-          <div class="facet-value">3/5</div>
-        </div>
+        <div class="facets-inputs">
+          <div class="facet-input-group">
+            <label class="facet-label">Распределение обязанностей</label>
+            <input type="number" class="facet-input" value="3" min="0" max="5">
+          </div>
+          
+          <div class="facet-input-group">
+            <label class="facet-label">Совместные приемы пищи</label>
+            <input type="number" class="facet-input" value="4" min="0" max="5">
+          </div>
+          
+          <div class="facet-input-group">
+            <label class="facet-label">Организация пространства</label>
+            <input type="number" class="facet-input" value="3" min="0" max="5">
+          </div>
 
-        <div class="facet-card">
-          <h4>Семейные традиции</h4>
-          <div class="facet-value">3/5</div>
+          <div class="facet-input-group">
+            <label class="facet-label">Семейные традиции</label>
+            <input type="number" class="facet-input" value="3" min="0" max="5">
+          </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -236,32 +224,32 @@
       <button class="close-modal" onclick="closeModal()">×</button>
       <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
       
-      <div class="crystal-header">
-        <div class="crystal-icon large"></div>
-        <h2>Основная работа</h2>
-      </div>
-      
-      <div class="facets-container">
-        <div class="facet-card">
-          <h4>Профессиональный рост</h4>
-          <div class="facet-value">4/5</div>
+      <div class="crystal-details-container">
+        <div class="crystal-preview">
+          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Основная работа" class="large-crystal">
         </div>
         
-        <div class="facet-card">
-          <h4>Доход и финансы</h4>
-          <div class="facet-value">3/5</div>
-        </div>
-        
-        <div class="facet-card">
-          <h4>Проекты и задачи</h4>
-          <div class="facet-value">4/5</div>
-        </div>
+        <div class="facets-inputs">
+          <div class="facet-input-group">
+            <label class="facet-label">Профессиональный рост</label>
+            <input type="number" class="facet-input" value="4" min="0" max="5">
+          </div>
+          
+          <div class="facet-input-group">
+            <label class="facet-label">Доход и финансы</label>
+            <input type="number" class="facet-input" value="3" min="0" max="5">
+          </div>
+          
+          <div class="facet-input-group">
+            <label class="facet-label">Проекты и задачи</label>
+            <input type="number" class="facet-input" value="4" min="0" max="5">
+          </div>
 
-        <div class="facet-card">
-          <h4>Признание и статус</h4>
-          <div class="facet-value">4/5</div>
+          <div class="facet-input-group">
+            <label class="facet-label">Признание и статус</label>
+            <input type="number" class="facet-input" value="4" min="0" max="5">
+          </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -272,33 +260,32 @@
       <button class="close-modal" onclick="closeModal()">×</button>
       <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
       
-      <div class="crystal-header">
-        <div class="crystal-icon large"></div>
-        <h2>Развитие навыков</h2>
-      </div>
-      
-      <div class="facets-container">
-        <div class="facet-card">
-          <h4>Обучение и курсы</h4>
-          <div class="facet-value">3/5</div>
+      <div class="crystal-details-container">
+        <div class="crystal-preview">
+          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Развитие навыков" class="large-crystal">
         </div>
         
-        <div class="facet-card">
-          <h4>Новые технологии</h4>
-          <div class="facet-value">4/5</div>
-        </div>
-        
-        <div class="facet-card">
-          <h4>Навыки</h4>
-          <div class="facet-value">3/5</div>
-        </div>
+        <div class="facets-inputs">
+          <div class="facet-input-group">
+            <label class="facet-label">Обучение и курсы</label>
+            <input type="number" class="facet-input" value="3" min="0" max="5">
+          </div>
+          
+          <div class="facet-input-group">
+            <label class="facet-label">Новые технологии</label>
+            <input type="number" class="facet-input" value="4" min="0" max="5">
+          </div>
+          
+          <div class="facet-input-group">
+            <label class="facet-label">Навыки</label>
+            <input type="number" class="facet-input" value="3" min="0" max="5">
+          </div>
 
-        <div class="facet-card">
-          <h4>Сертификации</h4>
-          <div class="facet-value">3/5</div>
+          <div class="facet-input-group">
+            <label class="facet-label">Сертификации</label>
+            <input type="number" class="facet-input" value="3" min="0" max="5">
+          </div>
         </div>
-
-
       </div>
     </div>
   </div>
@@ -309,36 +296,37 @@
       <button class="close-modal" onclick="closeModal()">×</button>
       <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
       
-      <div class="crystal-header">
-        <div class="crystal-icon large"></div>
-        <h2>Командная работа</h2>
-      </div>
-      
-      <div class="facets-container">
-        <div class="facet-card">
-          <h4>Взаимодействие с коллегами</h4>
-          <div class="facet-value">4/5</div>
+      <div class="crystal-details-container">
+        <div class="crystal-preview">
+          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Командная работа" class="large-crystal">
         </div>
         
-        <div class="facet-card">
-          <h4>Менторство</h4>
-          <div class="facet-value">3/5</div>
-        </div>
-        
-        <div class="facet-card">
-          <h4>Сетевые связи</h4>
-          <div class="facet-value">2/5</div>
-        </div>
+        <div class="facets-inputs">
+          <div class="facet-input-group">
+            <label class="facet-label">Взаимодействие с коллегами</label>
+            <input type="number" class="facet-input" value="4" min="0" max="5">
+          </div>
+          
+          <div class="facet-input-group">
+            <label class="facet-label">Менторство</label>
+            <input type="number" class="facet-input" value="3" min="0" max="5">
+          </div>
+          
+          <div class="facet-input-group">
+            <label class="facet-label">Сетевые связи</label>
+            <input type="number" class="facet-input" value="2" min="0" max="5">
+          </div>
 
-        <div class="facet-card">
-          <h4>Корпоративная культура</h4>
-          <div class="facet-value">2/5</div>
+          <div class="facet-input-group">
+            <label class="facet-label">Корпоративная культура</label>
+            <input type="number" class="facet-input" value="2" min="0" max="5">
+          </div>
         </div>
-        
       </div>
     </div>
   </div>
-<!-- Тут статичтика -->
+
+  <!-- Тут статичтика -->
   <section class="analytics-section">
     <div class="row full-row">
       <button class="category-card interactive analytics-header-card">
