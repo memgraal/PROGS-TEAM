@@ -12,16 +12,20 @@
     <header class="site-header">
       <h1 class="site-title">Кристаллы Фемиды</h1>
       <nav class="control-panel" aria-label="Панель управления">
-        <button class="icon-btn" aria-label="О разработчиках">
-          <img src="{{ url_for('static', filename='Img/logo.svg') }}" alt="PR логотип" />
-        </button>
-        <button class="icon-btn" aria-label="Уведомления">
-          <img src="{{ url_for('static', filename='Img/bell.svg') }}" alt="Уведомления" />
-        </button>
-        <button class="icon-btn" aria-label="Настройки">
-          <img src="{{ url_for('static', filename='Img/gear.svg') }}" alt="Настройки" />
-        </button>
-      </nav>
+  <button class="icon-btn" aria-label="О разработчиках">
+    <img src="{{ url_for('static', filename='Img/logo.svg') }}" alt="PR логотип" />
+  </button>
+  <button class="icon-btn" aria-label="Уведомления">
+    <img src="{{ url_for('static', filename='Img/bell.svg') }}" alt="Уведомления" />
+  </button>
+  <button class="icon-btn" aria-label="Настройки">
+    <img src="{{ url_for('static', filename='Img/gear.svg') }}" alt="Настройки" />
+  </button>
+  <!-- ДОБАВЬТЕ ЭТУ КНОПКУ -->
+  <button class="icon-btn" aria-label="Восстановить кристаллы" onclick="restoreAllCrystals()" title="Восстановить все кристаллы">
+    <img src="{{ url_for('static', filename='Img/refresh.svg') }}" alt="Восстановить" />
+  </button>
+</nav>
     </header>
 
     <main class="balance">
@@ -636,529 +640,529 @@
   </div>
 
   <!-- Уровень 3.2 - Грани - Крис Основная работа - Чаша Карьера -->
-  <div class="nav-level" data-level="6">
-    <div class="modal-content">
-      <button class="close-modal" onclick="closeModal()">×</button>
-      <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
+<div class="nav-level" data-level="6">
+  <div class="modal-content">
+    <button class="close-modal" onclick="closeModal()">×</button>
+    <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
+    
+    <div class="crystal-details-layout">
+      <!-- Левая колонка с 2 гранями -->
+      <div class="facets-column left-column">
+        <div class="facet-input-group">
+          <div class="facet-header-compact">
+            <span class="facet-label">Профессиональный рост</span>
+            <span class="current-value-display">0</span>
+          </div>
+          <div class="advanced-slider-container">
+            <div class="slider-track">
+              <div class="slider-fill" style="width: 50%;"></div>
+              <div class="slider-positions">
+                <div class="position-dot" style="left: 0%;"></div>
+                <div class="position-dot" style="left: 16.66%;"></div>
+                <div class="position-dot" style="left: 33.33%;"></div>
+                <div class="position-dot center-dot" style="left: 50%;"></div>
+                <div class="position-dot" style="left: 66.66%;"></div>
+                <div class="position-dot" style="left: 83.33%;"></div>
+                <div class="position-dot" style="left: 100%;"></div>
+              </div>
+              <div class="slider-thumb" style="left: 50%;">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-scale">
+              <span class="scale-number">-30</span>
+              <span class="scale-number">-20</span>
+              <span class="scale-number">-10</span>
+              <span class="scale-number">0</span>
+              <span class="scale-number">10</span>
+              <span class="scale-number">20</span>
+              <span class="scale-number">30</span>
+            </div>
+            <div class="slider-controls">
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+            </div>
+            <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
+          </div>
+        </div>
+        
+        <div class="facet-input-group">
+          <div class="facet-header-compact">
+            <span class="facet-label">Доход и финансы</span>
+            <span class="current-value-display">0</span>
+          </div>
+          <div class="advanced-slider-container">
+            <div class="slider-track">
+              <div class="slider-fill" style="width: 50%;"></div>
+              <div class="slider-positions">
+                <div class="position-dot" style="left: 0%;"></div>
+                <div class="position-dot" style="left: 16.66%;"></div>
+                <div class="position-dot" style="left: 33.33%;"></div>
+                <div class="position-dot center-dot" style="left: 50%;"></div>
+                <div class="position-dot" style="left: 66.66%;"></div>
+                <div class="position-dot" style="left: 83.33%;"></div>
+                <div class="position-dot" style="left: 100%;"></div>
+              </div>
+              <div class="slider-thumb" style="left: 50%;">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-scale">
+              <span class="scale-number">-30</span>
+              <span class="scale-number">-20</span>
+              <span class="scale-number">-10</span>
+              <span class="scale-number">0</span>
+              <span class="scale-number">10</span>
+              <span class="scale-number">20</span>
+              <span class="scale-number">30</span>
+            </div>
+            <div class="slider-controls">
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+            </div>
+            <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
+          </div>
+        </div>
+      </div>
       
-      <div class="crystal-details-layout">
-        <!-- Левая колонка с 2 гранями -->
-        <div class="facets-column left-column">
-          <div class="facet-input-group">
-            <div class="facet-header-compact">
-              <span class="facet-label">Профессиональный рост</span>
-              <span class="current-value-display">0</span>
-            </div>
-            <div class="advanced-slider-container">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 50%;"></div>
-                <div class="slider-positions">
-                  <div class="position-dot" style="left: 0%;"></div>
-                  <div class="position-dot" style="left: 16.66%;"></div>
-                  <div class="position-dot" style="left: 33.33%;"></div>
-                  <div class="position-dot center-dot" style="left: 50%;"></div>
-                  <div class="position-dot" style="left: 66.66%;"></div>
-                  <div class="position-dot" style="left: 83.33%;"></div>
-                  <div class="position-dot" style="left: 100%;"></div>
-                </div>
-                <div class="slider-thumb" style="left: 50%;">
-                  <span class="slider-value">0</span>
-                </div>
-              </div>
-              <div class="slider-scale">
-                <span class="scale-number">-30</span>
-                <span class="scale-number">-20</span>
-                <span class="scale-number">-10</span>
-                <span class="scale-number">0</span>
-                <span class="scale-number">10</span>
-                <span class="scale-number">20</span>
-                <span class="scale-number">30</span>
-              </div>
-              <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
-              </div>
-              <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
-            </div>
+      <!-- Центральный увеличенный алмаз -->
+      <div class="crystal-center">
+        <div class="crystal-preview-large">
+          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Основная работа" class="extra-large-crystal career-crystal">
+        </div>
+      </div>
+      
+      <!-- Правая колонка с 2 гранями -->
+      <div class="facets-column right-column">
+        <div class="facet-input-group">
+          <div class="facet-header-compact">
+            <span class="facet-label">Проекты и задачи</span>
+            <span class="current-value-display">0</span>
           </div>
-          
-          <div class="facet-input-group">
-            <div class="facet-header-compact">
-              <span class="facet-label">Доход и финансы</span>
-              <span class="current-value-display">0</span>
+          <div class="advanced-slider-container">
+            <div class="slider-track">
+              <div class="slider-fill" style="width: 50%;"></div>
+              <div class="slider-positions">
+                <div class="position-dot" style="left: 0%;"></div>
+                <div class="position-dot" style="left: 16.66%;"></div>
+                <div class="position-dot" style="left: 33.33%;"></div>
+                <div class="position-dot center-dot" style="left: 50%;"></div>
+                <div class="position-dot" style="left: 66.66%;"></div>
+                <div class="position-dot" style="left: 83.33%;"></div>
+                <div class="position-dot" style="left: 100%;"></div>
+              </div>
+              <div class="slider-thumb" style="left: 50%;">
+                <span class="slider-value">0</span>
+              </div>
             </div>
-            <div class="advanced-slider-container">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 50%;"></div>
-                <div class="slider-positions">
-                  <div class="position-dot" style="left: 0%;"></div>
-                  <div class="position-dot" style="left: 16.66%;"></div>
-                  <div class="position-dot" style="left: 33.33%;"></div>
-                  <div class="position-dot center-dot" style="left: 50%;"></div>
-                  <div class="position-dot" style="left: 66.66%;"></div>
-                  <div class="position-dot" style="left: 83.33%;"></div>
-                  <div class="position-dot" style="left: 100%;"></div>
-                </div>
-                <div class="slider-thumb" style="left: 50%;">
-                  <span class="slider-value">0</span>
-                </div>
-              </div>
-              <div class="slider-scale">
-                <span class="scale-number">-30</span>
-                <span class="scale-number">-20</span>
-                <span class="scale-number">-10</span>
-                <span class="scale-number">0</span>
-                <span class="scale-number">10</span>
-                <span class="scale-number">20</span>
-                <span class="scale-number">30</span>
-              </div>
-              <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
-              </div>
-              <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
+            <div class="slider-scale">
+              <span class="scale-number">-30</span>
+              <span class="scale-number">-20</span>
+              <span class="scale-number">-10</span>
+              <span class="scale-number">0</span>
+              <span class="scale-number">10</span>
+              <span class="scale-number">20</span>
+              <span class="scale-number">30</span>
             </div>
+            <div class="slider-controls">
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+            </div>
+            <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
         </div>
-        
-        <!-- Центральный увеличенный алмаз -->
-        <div class="crystal-center">
-          <div class="crystal-preview-large">
-            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Основная работа" class="extra-large-crystal">
-          </div>
-        </div>
-        
-        <!-- Правая колонка с 2 гранями -->
-        <div class="facets-column right-column">
-          <div class="facet-input-group">
-            <div class="facet-header-compact">
-              <span class="facet-label">Проекты и задачи</span>
-              <span class="current-value-display">0</span>
-            </div>
-            <div class="advanced-slider-container">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 50%;"></div>
-                <div class="slider-positions">
-                  <div class="position-dot" style="left: 0%;"></div>
-                  <div class="position-dot" style="left: 16.66%;"></div>
-                  <div class="position-dot" style="left: 33.33%;"></div>
-                  <div class="position-dot center-dot" style="left: 50%;"></div>
-                  <div class="position-dot" style="left: 66.66%;"></div>
-                  <div class="position-dot" style="left: 83.33%;"></div>
-                  <div class="position-dot" style="left: 100%;"></div>
-                </div>
-                <div class="slider-thumb" style="left: 50%;">
-                  <span class="slider-value">0</span>
-                </div>
-              </div>
-              <div class="slider-scale">
-                <span class="scale-number">-30</span>
-                <span class="scale-number">-20</span>
-                <span class="scale-number">-10</span>
-                <span class="scale-number">0</span>
-                <span class="scale-number">10</span>
-                <span class="scale-number">20</span>
-                <span class="scale-number">30</span>
-              </div>
-              <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
-              </div>
-              <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
-            </div>
-          </div>
 
-          <div class="facet-input-group">
-            <div class="facet-header-compact">
-              <span class="facet-label">Признание и статус</span>
-              <span class="current-value-display">0</span>
+        <div class="facet-input-group">
+          <div class="facet-header-compact">
+            <span class="facet-label">Признание и статус</span>
+            <span class="current-value-display">0</span>
+          </div>
+          <div class="advanced-slider-container">
+            <div class="slider-track">
+              <div class="slider-fill" style="width: 50%;"></div>
+              <div class="slider-positions">
+                <div class="position-dot" style="left: 0%;"></div>
+                <div class="position-dot" style="left: 16.66%;"></div>
+                <div class="position-dot" style="left: 33.33%;"></div>
+                <div class="position-dot center-dot" style="left: 50%;"></div>
+                <div class="position-dot" style="left: 66.66%;"></div>
+                <div class="position-dot" style="left: 83.33%;"></div>
+                <div class="position-dot" style="left: 100%;"></div>
+              </div>
+              <div class="slider-thumb" style="left: 50%;">
+                <span class="slider-value">0</span>
+              </div>
             </div>
-            <div class="advanced-slider-container">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 50%;"></div>
-                <div class="slider-positions">
-                  <div class="position-dot" style="left: 0%;"></div>
-                  <div class="position-dot" style="left: 16.66%;"></div>
-                  <div class="position-dot" style="left: 33.33%;"></div>
-                  <div class="position-dot center-dot" style="left: 50%;"></div>
-                  <div class="position-dot" style="left: 66.66%;"></div>
-                  <div class="position-dot" style="left: 83.33%;"></div>
-                  <div class="position-dot" style="left: 100%;"></div>
-                </div>
-                <div class="slider-thumb" style="left: 50%;">
-                  <span class="slider-value">0</span>
-                </div>
-              </div>
-              <div class="slider-scale">
-                <span class="scale-number">-30</span>
-                <span class="scale-number">-20</span>
-                <span class="scale-number">-10</span>
-                <span class="scale-number">0</span>
-                <span class="scale-number">10</span>
-                <span class="scale-number">20</span>
-                <span class="scale-number">30</span>
-              </div>
-              <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
-              </div>
-              <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
+            <div class="slider-scale">
+              <span class="scale-number">-30</span>
+              <span class="scale-number">-20</span>
+              <span class="scale-number">-10</span>
+              <span class="scale-number">0</span>
+              <span class="scale-number">10</span>
+              <span class="scale-number">20</span>
+              <span class="scale-number">30</span>
             </div>
+            <div class="slider-controls">
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+            </div>
+            <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Уровень 3.2 - Грани - Крис Развитие навыков - Чаша Карьера -->
-  <div class="nav-level" data-level="7">
-    <div class="modal-content">
-      <button class="close-modal" onclick="closeModal()">×</button>
-      <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
+<!-- Уровень 3.2 - Грани - Крис Развитие навыков - Чаша Карьера -->
+<div class="nav-level" data-level="7">
+  <div class="modal-content">
+    <button class="close-modal" onclick="closeModal()">×</button>
+    <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
+    
+    <div class="crystal-details-layout">
+      <!-- Левая колонка с 2 гранями -->
+      <div class="facets-column left-column">
+        <div class="facet-input-group">
+          <div class="facet-header-compact">
+            <span class="facet-label">Обучение и курсы</span>
+            <span class="current-value-display">0</span>
+          </div>
+          <div class="advanced-slider-container">
+            <div class="slider-track">
+              <div class="slider-fill" style="width: 50%;"></div>
+              <div class="slider-positions">
+                <div class="position-dot" style="left: 0%;"></div>
+                <div class="position-dot" style="left: 16.66%;"></div>
+                <div class="position-dot" style="left: 33.33%;"></div>
+                <div class="position-dot center-dot" style="left: 50%;"></div>
+                <div class="position-dot" style="left: 66.66%;"></div>
+                <div class="position-dot" style="left: 83.33%;"></div>
+                <div class="position-dot" style="left: 100%;"></div>
+              </div>
+              <div class="slider-thumb" style="left: 50%;">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-scale">
+              <span class="scale-number">-30</span>
+              <span class="scale-number">-20</span>
+              <span class="scale-number">-10</span>
+              <span class="scale-number">0</span>
+              <span class="scale-number">10</span>
+              <span class="scale-number">20</span>
+              <span class="scale-number">30</span>
+            </div>
+            <div class="slider-controls">
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+            </div>
+            <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
+          </div>
+        </div>
+        
+        <div class="facet-input-group">
+          <div class="facet-header-compact">
+            <span class="facet-label">Новые технологии</span>
+            <span class="current-value-display">0</span>
+          </div>
+          <div class="advanced-slider-container">
+            <div class="slider-track">
+              <div class="slider-fill" style="width: 50%;"></div>
+              <div class="slider-positions">
+                <div class="position-dot" style="left: 0%;"></div>
+                <div class="position-dot" style="left: 16.66%;"></div>
+                <div class="position-dot" style="left: 33.33%;"></div>
+                <div class="position-dot center-dot" style="left: 50%;"></div>
+                <div class="position-dot" style="left: 66.66%;"></div>
+                <div class="position-dot" style="left: 83.33%;"></div>
+                <div class="position-dot" style="left: 100%;"></div>
+              </div>
+              <div class="slider-thumb" style="left: 50%;">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-scale">
+              <span class="scale-number">-30</span>
+              <span class="scale-number">-20</span>
+              <span class="scale-number">-10</span>
+              <span class="scale-number">0</span>
+              <span class="scale-number">10</span>
+              <span class="scale-number">20</span>
+              <span class="scale-number">30</span>
+            </div>
+            <div class="slider-controls">
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+            </div>
+            <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
+          </div>
+        </div>
+      </div>
       
-      <div class="crystal-details-layout">
-        <!-- Левая колонка с 2 гранями -->
-        <div class="facets-column left-column">
-          <div class="facet-input-group">
-            <div class="facet-header-compact">
-              <span class="facet-label">Обучение и курсы</span>
-              <span class="current-value-display">0</span>
-            </div>
-            <div class="advanced-slider-container">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 50%;"></div>
-                <div class="slider-positions">
-                  <div class="position-dot" style="left: 0%;"></div>
-                  <div class="position-dot" style="left: 16.66%;"></div>
-                  <div class="position-dot" style="left: 33.33%;"></div>
-                  <div class="position-dot center-dot" style="left: 50%;"></div>
-                  <div class="position-dot" style="left: 66.66%;"></div>
-                  <div class="position-dot" style="left: 83.33%;"></div>
-                  <div class="position-dot" style="left: 100%;"></div>
-                </div>
-                <div class="slider-thumb" style="left: 50%;">
-                  <span class="slider-value">0</span>
-                </div>
-              </div>
-              <div class="slider-scale">
-                <span class="scale-number">-30</span>
-                <span class="scale-number">-20</span>
-                <span class="scale-number">-10</span>
-                <span class="scale-number">0</span>
-                <span class="scale-number">10</span>
-                <span class="scale-number">20</span>
-                <span class="scale-number">30</span>
-              </div>
-              <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
-              </div>
-              <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
-            </div>
+      <!-- Центральный увеличенный алмаз -->
+      <div class="crystal-center">
+        <div class="crystal-preview-large">
+          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Развитие навыков" class="extra-large-crystal career-crystal">
+        </div>
+      </div>
+      
+      <!-- Правая колонка с 2 гранями -->
+      <div class="facets-column right-column">
+        <div class="facet-input-group">
+          <div class="facet-header-compact">
+            <span class="facet-label">Навыки</span>
+            <span class="current-value-display">0</span>
           </div>
-          
-          <div class="facet-input-group">
-            <div class="facet-header-compact">
-              <span class="facet-label">Новые технологии</span>
-              <span class="current-value-display">0</span>
+          <div class="advanced-slider-container">
+            <div class="slider-track">
+              <div class="slider-fill" style="width: 50%;"></div>
+              <div class="slider-positions">
+                <div class="position-dot" style="left: 0%;"></div>
+                <div class="position-dot" style="left: 16.66%;"></div>
+                <div class="position-dot" style="left: 33.33%;"></div>
+                <div class="position-dot center-dot" style="left: 50%;"></div>
+                <div class="position-dot" style="left: 66.66%;"></div>
+                <div class="position-dot" style="left: 83.33%;"></div>
+                <div class="position-dot" style="left: 100%;"></div>
+              </div>
+              <div class="slider-thumb" style="left: 50%;">
+                <span class="slider-value">0</span>
+              </div>
             </div>
-            <div class="advanced-slider-container">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 50%;"></div>
-                <div class="slider-positions">
-                  <div class="position-dot" style="left: 0%;"></div>
-                  <div class="position-dot" style="left: 16.66%;"></div>
-                  <div class="position-dot" style="left: 33.33%;"></div>
-                  <div class="position-dot center-dot" style="left: 50%;"></div>
-                  <div class="position-dot" style="left: 66.66%;"></div>
-                  <div class="position-dot" style="left: 83.33%;"></div>
-                  <div class="position-dot" style="left: 100%;"></div>
-                </div>
-                <div class="slider-thumb" style="left: 50%;">
-                  <span class="slider-value">0</span>
-                </div>
-              </div>
-              <div class="slider-scale">
-                <span class="scale-number">-30</span>
-                <span class="scale-number">-20</span>
-                <span class="scale-number">-10</span>
-                <span class="scale-number">0</span>
-                <span class="scale-number">10</span>
-                <span class="scale-number">20</span>
-                <span class="scale-number">30</span>
-              </div>
-              <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
-              </div>
-              <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
+            <div class="slider-scale">
+              <span class="scale-number">-30</span>
+              <span class="scale-number">-20</span>
+              <span class="scale-number">-10</span>
+              <span class="scale-number">0</span>
+              <span class="scale-number">10</span>
+              <span class="scale-number">20</span>
+              <span class="scale-number">30</span>
             </div>
+            <div class="slider-controls">
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+            </div>
+            <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
         </div>
-        
-        <!-- Центральный увеличенный алмаз -->
-        <div class="crystal-center">
-          <div class="crystal-preview-large">
-            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Развитие навыков" class="extra-large-crystal">
-          </div>
-        </div>
-        
-        <!-- Правая колонка с 2 гранями -->
-        <div class="facets-column right-column">
-          <div class="facet-input-group">
-            <div class="facet-header-compact">
-              <span class="facet-label">Навыки</span>
-              <span class="current-value-display">0</span>
-            </div>
-            <div class="advanced-slider-container">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 50%;"></div>
-                <div class="slider-positions">
-                  <div class="position-dot" style="left: 0%;"></div>
-                  <div class="position-dot" style="left: 16.66%;"></div>
-                  <div class="position-dot" style="left: 33.33%;"></div>
-                  <div class="position-dot center-dot" style="left: 50%;"></div>
-                  <div class="position-dot" style="left: 66.66%;"></div>
-                  <div class="position-dot" style="left: 83.33%;"></div>
-                  <div class="position-dot" style="left: 100%;"></div>
-                </div>
-                <div class="slider-thumb" style="left: 50%;">
-                  <span class="slider-value">0</span>
-                </div>
-              </div>
-              <div class="slider-scale">
-                <span class="scale-number">-30</span>
-                <span class="scale-number">-20</span>
-                <span class="scale-number">-10</span>
-                <span class="scale-number">0</span>
-                <span class="scale-number">10</span>
-                <span class="scale-number">20</span>
-                <span class="scale-number">30</span>
-              </div>
-              <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
-              </div>
-              <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
-            </div>
-          </div>
 
-          <div class="facet-input-group">
-            <div class="facet-header-compact">
-              <span class="facet-label">Сертификации</span>
-              <span class="current-value-display">0</span>
+        <div class="facet-input-group">
+          <div class="facet-header-compact">
+            <span class="facet-label">Сертификации</span>
+            <span class="current-value-display">0</span>
+          </div>
+          <div class="advanced-slider-container">
+            <div class="slider-track">
+              <div class="slider-fill" style="width: 50%;"></div>
+              <div class="slider-positions">
+                <div class="position-dot" style="left: 0%;"></div>
+                <div class="position-dot" style="left: 16.66%;"></div>
+                <div class="position-dot" style="left: 33.33%;"></div>
+                <div class="position-dot center-dot" style="left: 50%;"></div>
+                <div class="position-dot" style="left: 66.66%;"></div>
+                <div class="position-dot" style="left: 83.33%;"></div>
+                <div class="position-dot" style="left: 100%;"></div>
+              </div>
+              <div class="slider-thumb" style="left: 50%;">
+                <span class="slider-value">0</span>
+              </div>
             </div>
-            <div class="advanced-slider-container">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 50%;"></div>
-                <div class="slider-positions">
-                  <div class="position-dot" style="left: 0%;"></div>
-                  <div class="position-dot" style="left: 16.66%;"></div>
-                  <div class="position-dot" style="left: 33.33%;"></div>
-                  <div class="position-dot center-dot" style="left: 50%;"></div>
-                  <div class="position-dot" style="left: 66.66%;"></div>
-                  <div class="position-dot" style="left: 83.33%;"></div>
-                  <div class="position-dot" style="left: 100%;"></div>
-                </div>
-                <div class="slider-thumb" style="left: 50%;">
-                  <span class="slider-value">0</span>
-                </div>
-              </div>
-              <div class="slider-scale">
-                <span class="scale-number">-30</span>
-                <span class="scale-number">-20</span>
-                <span class="scale-number">-10</span>
-                <span class="scale-number">0</span>
-                <span class="scale-number">10</span>
-                <span class="scale-number">20</span>
-                <span class="scale-number">30</span>
-              </div>
-              <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
-              </div>
-              <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
+            <div class="slider-scale">
+              <span class="scale-number">-30</span>
+              <span class="scale-number">-20</span>
+              <span class="scale-number">-10</span>
+              <span class="scale-number">0</span>
+              <span class="scale-number">10</span>
+              <span class="scale-number">20</span>
+              <span class="scale-number">30</span>
             </div>
+            <div class="slider-controls">
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+            </div>
+            <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Уровень 3.2 - Грани - Крис Командная работа - Чаша Карьера -->
-  <div class="nav-level" data-level="8">
-    <div class="modal-content">
-      <button class="close-modal" onclick="closeModal()">×</button>
-      <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
+<!-- Уровень 3.2 - Грани - Крис Командная работа - Чаша Карьера -->
+<div class="nav-level" data-level="8">
+  <div class="modal-content">
+    <button class="close-modal" onclick="closeModal()">×</button>
+    <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
+    
+    <div class="crystal-details-layout">
+      <!-- Левая колонка с 2 гранями -->
+      <div class="facets-column left-column">
+        <div class="facet-input-group">
+          <div class="facet-header-compact">
+            <span class="facet-label">Взаимодействие с коллегами</span>
+            <span class="current-value-display">0</span>
+          </div>
+          <div class="advanced-slider-container">
+            <div class="slider-track">
+              <div class="slider-fill" style="width: 50%;"></div>
+              <div class="slider-positions">
+                <div class="position-dot" style="left: 0%;"></div>
+                <div class="position-dot" style="left: 16.66%;"></div>
+                <div class="position-dot" style="left: 33.33%;"></div>
+                <div class="position-dot center-dot" style="left: 50%;"></div>
+                <div class="position-dot" style="left: 66.66%;"></div>
+                <div class="position-dot" style="left: 83.33%;"></div>
+                <div class="position-dot" style="left: 100%;"></div>
+              </div>
+              <div class="slider-thumb" style="left: 50%;">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-scale">
+              <span class="scale-number">-30</span>
+              <span class="scale-number">-20</span>
+              <span class="scale-number">-10</span>
+              <span class="scale-number">0</span>
+              <span class="scale-number">10</span>
+              <span class="scale-number">20</span>
+              <span class="scale-number">30</span>
+            </div>
+            <div class="slider-controls">
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+            </div>
+            <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
+          </div>
+        </div>
+        
+        <div class="facet-input-group">
+          <div class="facet-header-compact">
+            <span class="facet-label">Менторство</span>
+            <span class="current-value-display">0</span>
+          </div>
+          <div class="advanced-slider-container">
+            <div class="slider-track">
+              <div class="slider-fill" style="width: 50%;"></div>
+              <div class="slider-positions">
+                <div class="position-dot" style="left: 0%;"></div>
+                <div class="position-dot" style="left: 16.66%;"></div>
+                <div class="position-dot" style="left: 33.33%;"></div>
+                <div class="position-dot center-dot" style="left: 50%;"></div>
+                <div class="position-dot" style="left: 66.66%;"></div>
+                <div class="position-dot" style="left: 83.33%;"></div>
+                <div class="position-dot" style="left: 100%;"></div>
+              </div>
+              <div class="slider-thumb" style="left: 50%;">
+                <span class="slider-value">0</span>
+              </div>
+            </div>
+            <div class="slider-scale">
+              <span class="scale-number">-30</span>
+              <span class="scale-number">-20</span>
+              <span class="scale-number">-10</span>
+              <span class="scale-number">0</span>
+              <span class="scale-number">10</span>
+              <span class="scale-number">20</span>
+              <span class="scale-number">30</span>
+            </div>
+            <div class="slider-controls">
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+            </div>
+            <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
+          </div>
+        </div>
+      </div>
       
-      <div class="crystal-details-layout">
-        <!-- Левая колонка с 2 гранями -->
-        <div class="facets-column left-column">
-          <div class="facet-input-group">
-            <div class="facet-header-compact">
-              <span class="facet-label">Взаимодействие с коллегами</span>
-              <span class="current-value-display">0</span>
-            </div>
-            <div class="advanced-slider-container">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 50%;"></div>
-                <div class="slider-positions">
-                  <div class="position-dot" style="left: 0%;"></div>
-                  <div class="position-dot" style="left: 16.66%;"></div>
-                  <div class="position-dot" style="left: 33.33%;"></div>
-                  <div class="position-dot center-dot" style="left: 50%;"></div>
-                  <div class="position-dot" style="left: 66.66%;"></div>
-                  <div class="position-dot" style="left: 83.33%;"></div>
-                  <div class="position-dot" style="left: 100%;"></div>
-                </div>
-                <div class="slider-thumb" style="left: 50%;">
-                  <span class="slider-value">0</span>
-                </div>
-              </div>
-              <div class="slider-scale">
-                <span class="scale-number">-30</span>
-                <span class="scale-number">-20</span>
-                <span class="scale-number">-10</span>
-                <span class="scale-number">0</span>
-                <span class="scale-number">10</span>
-                <span class="scale-number">20</span>
-                <span class="scale-number">30</span>
-              </div>
-              <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
-              </div>
-              <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
-            </div>
+      <!-- Центральный увеличенный алмаз -->
+      <div class="crystal-center">
+        <div class="crystal-preview-large">
+          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Командная работа" class="extra-large-crystal career-crystal">
+        </div>
+      </div>
+      
+      <!-- Правая колонка с 2 гранями -->
+      <div class="facets-column right-column">
+        <div class="facet-input-group">
+          <div class="facet-header-compact">
+            <span class="facet-label">Сетевые связи</span>
+            <span class="current-value-display">0</span>
           </div>
-          
-          <div class="facet-input-group">
-            <div class="facet-header-compact">
-              <span class="facet-label">Менторство</span>
-              <span class="current-value-display">0</span>
+          <div class="advanced-slider-container">
+            <div class="slider-track">
+              <div class="slider-fill" style="width: 50%;"></div>
+              <div class="slider-positions">
+                <div class="position-dot" style="left: 0%;"></div>
+                <div class="position-dot" style="left: 16.66%;"></div>
+                <div class="position-dot" style="left: 33.33%;"></div>
+                <div class="position-dot center-dot" style="left: 50%;"></div>
+                <div class="position-dot" style="left: 66.66%;"></div>
+                <div class="position-dot" style="left: 83.33%;"></div>
+                <div class="position-dot" style="left: 100%;"></div>
+              </div>
+              <div class="slider-thumb" style="left: 50%;">
+                <span class="slider-value">0</span>
+              </div>
             </div>
-            <div class="advanced-slider-container">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 50%;"></div>
-                <div class="slider-positions">
-                  <div class="position-dot" style="left: 0%;"></div>
-                  <div class="position-dot" style="left: 16.66%;"></div>
-                  <div class="position-dot" style="left: 33.33%;"></div>
-                  <div class="position-dot center-dot" style="left: 50%;"></div>
-                  <div class="position-dot" style="left: 66.66%;"></div>
-                  <div class="position-dot" style="left: 83.33%;"></div>
-                  <div class="position-dot" style="left: 100%;"></div>
-                </div>
-                <div class="slider-thumb" style="left: 50%;">
-                  <span class="slider-value">0</span>
-                </div>
-              </div>
-              <div class="slider-scale">
-                <span class="scale-number">-30</span>
-                <span class="scale-number">-20</span>
-                <span class="scale-number">-10</span>
-                <span class="scale-number">0</span>
-                <span class="scale-number">10</span>
-                <span class="scale-number">20</span>
-                <span class="scale-number">30</span>
-              </div>
-              <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
-              </div>
-              <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
+            <div class="slider-scale">
+              <span class="scale-number">-30</span>
+              <span class="scale-number">-20</span>
+              <span class="scale-number">-10</span>
+              <span class="scale-number">0</span>
+              <span class="scale-number">10</span>
+              <span class="scale-number">20</span>
+              <span class="scale-number">30</span>
             </div>
+            <div class="slider-controls">
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+            </div>
+            <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
         </div>
-        
-        <!-- Центральный увеличенный алмаз -->
-        <div class="crystal-center">
-          <div class="crystal-preview-large">
-            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Командная работа" class="extra-large-crystal">
-          </div>
-        </div>
-        
-        <!-- Правая колонка с 2 гранями -->
-        <div class="facets-column right-column">
-          <div class="facet-input-group">
-            <div class="facet-header-compact">
-              <span class="facet-label">Сетевые связи</span>
-              <span class="current-value-display">0</span>
-            </div>
-            <div class="advanced-slider-container">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 50%;"></div>
-                <div class="slider-positions">
-                  <div class="position-dot" style="left: 0%;"></div>
-                  <div class="position-dot" style="left: 16.66%;"></div>
-                  <div class="position-dot" style="left: 33.33%;"></div>
-                  <div class="position-dot center-dot" style="left: 50%;"></div>
-                  <div class="position-dot" style="left: 66.66%;"></div>
-                  <div class="position-dot" style="left: 83.33%;"></div>
-                  <div class="position-dot" style="left: 100%;"></div>
-                </div>
-                <div class="slider-thumb" style="left: 50%;">
-                  <span class="slider-value">0</span>
-                </div>
-              </div>
-              <div class="slider-scale">
-                <span class="scale-number">-30</span>
-                <span class="scale-number">-20</span>
-                <span class="scale-number">-10</span>
-                <span class="scale-number">0</span>
-                <span class="scale-number">10</span>
-                <span class="scale-number">20</span>
-                <span class="scale-number">30</span>
-              </div>
-              <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
-              </div>
-              <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
-            </div>
-          </div>
 
-          <div class="facet-input-group">
-            <div class="facet-header-compact">
-              <span class="facet-label">Корпоративная культура</span>
-              <span class="current-value-display">0</span>
+        <div class="facet-input-group">
+          <div class="facet-header-compact">
+            <span class="facet-label">Корпоративная культура</span>
+            <span class="current-value-display">0</span>
+          </div>
+          <div class="advanced-slider-container">
+            <div class="slider-track">
+              <div class="slider-fill" style="width: 50%;"></div>
+              <div class="slider-positions">
+                <div class="position-dot" style="left: 0%;"></div>
+                <div class="position-dot" style="left: 16.66%;"></div>
+                <div class="position-dot" style="left: 33.33%;"></div>
+                <div class="position-dot center-dot" style="left: 50%;"></div>
+                <div class="position-dot" style="left: 66.66%;"></div>
+                <div class="position-dot" style="left: 83.33%;"></div>
+                <div class="position-dot" style="left: 100%;"></div>
+              </div>
+              <div class="slider-thumb" style="left: 50%;">
+                <span class="slider-value">0</span>
+              </div>
             </div>
-            <div class="advanced-slider-container">
-              <div class="slider-track">
-                <div class="slider-fill" style="width: 50%;"></div>
-                <div class="slider-positions">
-                  <div class="position-dot" style="left: 0%;"></div>
-                  <div class="position-dot" style="left: 16.66%;"></div>
-                  <div class="position-dot" style="left: 33.33%;"></div>
-                  <div class="position-dot center-dot" style="left: 50%;"></div>
-                  <div class="position-dot" style="left: 66.66%;"></div>
-                  <div class="position-dot" style="left: 83.33%;"></div>
-                  <div class="position-dot" style="left: 100%;"></div>
-                </div>
-                <div class="slider-thumb" style="left: 50%;">
-                  <span class="slider-value">0</span>
-                </div>
-              </div>
-              <div class="slider-scale">
-                <span class="scale-number">-30</span>
-                <span class="scale-number">-20</span>
-                <span class="scale-number">-10</span>
-                <span class="scale-number">0</span>
-                <span class="scale-number">10</span>
-                <span class="scale-number">20</span>
-                <span class="scale-number">30</span>
-              </div>
-              <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
-              </div>
-              <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
+            <div class="slider-scale">
+              <span class="scale-number">-30</span>
+              <span class="scale-number">-20</span>
+              <span class="scale-number">-10</span>
+              <span class="scale-number">0</span>
+              <span class="scale-number">10</span>
+              <span class="scale-number">20</span>
+              <span class="scale-number">30</span>
             </div>
+            <div class="slider-controls">
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+            </div>
+            <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
   <!-- Тут статичтика -->
   <section class="analytics-section">
@@ -1252,6 +1256,7 @@
       </button>
     </div>
   </section>
+  <div id="breakMessagesContainer"></div>
   <script src="{{ url_for('static', filename='Js/script.js') }}"></script>
 </body>
 </html>

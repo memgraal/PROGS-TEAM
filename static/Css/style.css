@@ -1261,12 +1261,13 @@ main.balance{
 }
 
 .extra-large-crystal {
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
   object-fit: contain;
   filter: drop-shadow(0 12px 35px rgba(124,199,224,0.6));
   animation: crystalGlow 3s ease-in-out infinite alternate;
 }
+
 
 @keyframes crystalGlow {
   from {
@@ -1286,6 +1287,14 @@ main.balance{
   border: 1px solid rgba(124,199,224,0.3);
   border-radius: 16px;
   backdrop-filter: blur(10px);
+}
+
+.extra-large-crystal.family-crystal {
+  transform: rotate(-5deg); /* Синие */
+}
+
+.extra-large-crystal.career-crystal {
+  transform: rotate(-20deg); /* Фиолетовые */
 }
 
 .facets-column .advanced-slider-container {
@@ -1322,6 +1331,8 @@ main.balance{
 [data-level="6"] .extra-large-crystal,
 [data-level="7"] .extra-large-crystal,
 [data-level="8"] .extra-large-crystal {
+  width: 500px;
+  height: 500px;
   filter: drop-shadow(0 12px 35px rgba(192,126,224,0.6));
   animation: crystalGlowPurple 3s ease-in-out infinite alternate;
 }
@@ -1418,4 +1429,329 @@ main.balance{
   .crystal-details-layout {
     padding: 0.5rem;
   }
+}
+
+/* Анимация изменения положения чаши */
+@keyframes bowlTilt {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-8deg); /* Поднимаем чашу вверх */
+  }
+}
+
+.bowl-tilt-up {
+  animation: bowlTilt 1s ease-out forwards;
+}
+
+.bowl-tilt-down {
+  animation: bowlTilt 1s ease-out forwards;
+  animation-direction: reverse;
+}
+
+/* Анимация наклона весов */
+@keyframes beamTiltLeft {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-8deg); /* Наклон влево (левая чаша вверх) */
+  }
+}
+
+@keyframes beamTiltRight {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(8deg); /* Наклон вправо (правая чаша вверх) */
+  }
+}
+
+/* Классы для наклона балки */
+.beam-tilt-left .beam-img {
+  animation: beamTiltLeft 1s ease-out forwards;
+  transform-origin: center center;
+}
+
+.beam-tilt-right .beam-img {
+  animation: beamTiltRight 1s ease-out forwards;
+  transform-origin: center center;
+}
+
+/* Анимация движения чаш */
+@keyframes panMoveUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes panMoveDown {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(20px);
+  }
+}
+
+/* Классы для движения чаш */
+.pan-move-up {
+  animation: panMoveUp 1s ease-out forwards;
+}
+
+.pan-move-down {
+  animation: panMoveDown 1s ease-out forwards;
+}
+
+.crystal-broken {
+    filter: 
+        drop-shadow(0 0 25px rgba(255, 0, 0, 0.9)) 
+        drop-shadow(0 0 15px rgba(255, 50, 50, 0.7))
+        drop-shadow(0 0 5px rgba(255, 100, 100, 0.5)) !important;
+    opacity: 0.85;
+}
+
+.crystal-in-bowl.crystal-broken,
+.crystal-in-bowl.crystal-broken-red-glow {
+    filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.8)) !important;
+    opacity: 0.8;
+}
+
+.crystal-in-bowl.crystal-broken .crystal-text,
+.crystal-in-bowl.crystal-broken-red-glow .crystal-text {
+    color: rgba(255, 100, 100, 0.9) !important;
+}
+
+.crystal-in-bowl.crystal-broken {
+    filter: 
+        drop-shadow(0 0 20px rgba(255, 0, 0, 0.8))
+        drop-shadow(0 0 10px rgba(255, 50, 50, 0.6)) !important;
+    opacity: 0.8;
+}
+
+.crystal-in-bowl.crystal-broken .crystal-text {
+    color: rgba(255, 100, 100, 0.9) !important;
+}
+
+.crystal-broken {
+    /* Отключаем только анимации, которые могут двигать элемент */
+    animation: none !important;
+    
+    /* Отключаем переходы, которые могут изменять позицию */
+    transition: filter 0.3s ease, opacity 0.3s ease !important;
+}
+
+.crystal-in-bowl.crystal-broken {
+    position: absolute !important;
+    /* transform значения остаются как в оригинальных классах crystal-1, crystal-2, crystal-3 */
+}
+
+/* Для больших кристаллов на уровнях 3-8 */
+.extra-large-crystal.crystal-broken {
+    width: 500px !important;
+    height: 500px !important;
+}
+
+/* Специфичные трансформации для разных типов кристаллов */
+.extra-large-crystal.family-crystal.crystal-broken {
+    transform: rotate(-5deg) !important; /* Синие */
+}
+
+.extra-large-crystal.career-crystal.crystal-broken {
+    transform: rotate(-20deg) !important; /* Фиолетовые */
+}
+
+@keyframes pulse {
+    0% { 
+        transform: scale(1); 
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+    }
+    50% { 
+        transform: scale(1.2); 
+        box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+    }
+    100% { 
+        transform: scale(1); 
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+    }
+}
+
+.broken-crystal-indicator {
+    animation: pulse 2s infinite;
+}
+
+@keyframes crystalBreak {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 12px 35px rgba(124,199,224,0.6));
+  }
+  25% {
+    transform: scale(1.1) rotate(5deg);
+    filter: drop-shadow(0 15px 45px rgba(255,0,0,0.8));
+  }
+  50% {
+    transform: scale(0.9) rotate(-5deg);
+    filter: drop-shadow(0 20px 55px rgba(255,0,0,1));
+  }
+  75% {
+    transform: scale(1.05) rotate(3deg);
+    filter: drop-shadow(0 18px 50px rgba(255,100,100,0.9));
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 12px 35px rgba(255,0,0,0.7));
+  }
+}
+
+/* Анимация наклона весов с разной интенсивностью */
+@keyframes beamTiltLeftLight {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-5deg); }
+}
+
+@keyframes beamTiltLeftMedium {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-12deg); }
+}
+
+@keyframes beamTiltLeftHeavy {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-20deg); }
+}
+
+@keyframes beamTiltRightLight {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(5deg); }
+}
+
+@keyframes beamTiltRightMedium {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(12deg); }
+}
+
+@keyframes beamTiltRightHeavy {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(20deg); }
+}
+
+/* Классы для наклона балки с разной интенсивностью */
+.beam-tilt-left-light .beam-img {
+  animation: beamTiltLeftLight 1s ease-out forwards;
+  transform-origin: center center;
+}
+
+.beam-tilt-left-medium .beam-img {
+  animation: beamTiltLeftMedium 1s ease-out forwards;
+  transform-origin: center center;
+}
+
+.beam-tilt-left-heavy .beam-img {
+  animation: beamTiltLeftHeavy 1s ease-out forwards;
+  transform-origin: center center;
+}
+
+.beam-tilt-right-light .beam-img {
+  animation: beamTiltRightLight 1s ease-out forwards;
+  transform-origin: center center;
+}
+
+.beam-tilt-right-medium .beam-img {
+  animation: beamTiltRightMedium 1s ease-out forwards;
+  transform-origin: center center;
+}
+
+.beam-tilt-right-heavy .beam-img {
+  animation: beamTiltRightHeavy 1s ease-out forwards;
+  transform-origin: center center;
+}
+
+/* Анимация движения чаш с разной интенсивностью */
+@keyframes panMoveUpLight {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-15px); }
+}
+
+@keyframes panMoveUpMedium {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-30px); }
+}
+
+@keyframes panMoveUpHeavy {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-45px); }
+}
+
+@keyframes panMoveDownLight {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(15px); }
+}
+
+@keyframes panMoveDownMedium {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(30px); }
+}
+
+@keyframes panMoveDownHeavy {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(45px); }
+}
+
+/* Классы для движения чаш с разной интенсивностью */
+.pan-move-up-light { animation: panMoveUpLight 1s ease-out forwards; }
+.pan-move-up-medium { animation: panMoveUpMedium 1s ease-out forwards; }
+.pan-move-up-heavy { animation: panMoveUpHeavy 1s ease-out forwards; }
+
+.pan-move-down-light { animation: panMoveDownLight 1s ease-out forwards; }
+.pan-move-down-medium { animation: panMoveDownMedium 1s ease-out forwards; }
+.pan-move-down-heavy { animation: panMoveDownHeavy 1s ease-out forwards; }
+
+/* Временная иконка если нет файла */
+.icon-btn[onclick="restoreAllCrystals()"] {
+    position: relative;
+}
+
+.icon-btn[onclick="restoreAllCrystals()"]::before {
+    content: "🔄";
+    font-size: 18px;
+}
+
+/* Стили для таймера кристалла */
+.crystal-timer {
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.timer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.timer-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+.timer-value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+}
+
+/* Анимация пульсации для привлечения внимания */
+@keyframes timerPulse {
+    0% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.05); }
+    100% { transform: translateX(-50%) scale(1); }
+}
+
+.crystal-timer {
+    animation: timerPulse 2s ease-in-out infinite;
 }
