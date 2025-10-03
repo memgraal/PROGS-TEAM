@@ -1,5 +1,4 @@
 <!doctype html>
-<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
@@ -63,18 +62,24 @@
       
       <div class="crystals-container">
         <!-- Кристаллы с навигацией на следующий уровень -->
-        <div class="crystal-card" onclick="navigateTo(3)">
-          <div class="crystal-icon"></div>
+        <div class="crystal-card">
+          <button class="crystal-btn" onclick="navigateTo(3)">
+            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Дети" class="crystal-img">
+          </button>
           <h3>Дети</h3>
         </div>
         
-        <div class="crystal-card" onclick="navigateTo(4)">
-          <div class="crystal-icon"></div>
+        <div class="crystal-card">
+          <button class="crystal-btn" onclick="navigateTo(4)">
+            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Партнер" class="crystal-img">
+          </button>
           <h3>Партнер</h3>
         </div>
         
-        <div class="crystal-card" onclick="navigateTo(5)">
-          <div class="crystal-icon"></div>
+        <div class="crystal-card">
+          <button class="crystal-btn" onclick="navigateTo(5)">
+            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Быт" class="crystal-img">
+          </button>
           <h3>Быт</h3>
         </div>
       </div>
@@ -93,18 +98,24 @@
       <h2>Карьера</h2>
       
       <div class="crystals-container">
-        <div class="crystal-card" onclick="navigateTo(6)">
-          <div class="crystal-icon"></div>
+        <div class="crystal-card">
+          <button class="crystal-btn" onclick="navigateTo(6)">
+            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Основная работа" class="crystal-img">
+          </button>
           <h3>Основная работа</h3>
         </div>
         
-        <div class="crystal-card" onclick="navigateTo(7)">
-          <div class="crystal-icon"></div>
+        <div class="crystal-card">
+          <button class="crystal-btn" onclick="navigateTo(7)">
+            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Развитие навыков" class="crystal-img">
+          </button>
           <h3>Развитие навыков</h3>
         </div>
         
-        <div class="crystal-card" onclick="navigateTo(8)">
-          <div class="crystal-icon"></div>
+        <div class="crystal-card">
+          <button class="crystal-btn" onclick="navigateTo(8)">
+            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Командная работа" class="crystal-img">
+          </button>
           <h3>Командная работа</h3>
         </div>
       </div>

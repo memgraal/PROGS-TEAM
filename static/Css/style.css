@@ -73,7 +73,7 @@ body {
 .icon-btn img{ width: 22px; height: 22px; color: inherit; }
 
 main.balance{
-  padding: 0.25rem var(--gap) 3rem;
+  padding: 0.25rem 18rem 5rem;
   max-width: 95%;
   margin: 0 auto 2.5%;
   background-color: rgba(32, 30, 42, 1);
@@ -124,7 +124,7 @@ main.balance{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 88%;
+  width: 100%;
   margin: 10px auto 0;
 }
 
@@ -446,6 +446,12 @@ main.balance{
 
 .nav-level[data-level]:not([data-level="0"]).active .modal-content {
     animation: slideInFromRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    overflow-y: auto;
 }
 
 /* Адаптивность для тел */
@@ -475,3 +481,121 @@ main.balance{
 .close-modal, .back-to-bowl{
   color: #e6eef6;
 }
+
+    .nav-level[data-level]:not([data-level="0"]).active .modal-content {
+      /* Сохраняем позиционирование, но задаём конкретный контейнерный фон и выравнивание */
+      animation: slideInFromRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      overflow-y: auto;
+      max-width: 860px;
+      width: calc(100% - 48px);
+      padding: 28px 28px 20px;
+      background: rgba(18,18,26,0.95);
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      text-align: center; /* центрирование текста по умолчанию */
+    }
+
+    .modal-content .close-modal {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 1.6rem;
+      background: transparent;
+      border-radius: 8px;
+      padding: 6px 10px;
+    }
+
+    .modal-content h2 {
+      margin: 12px 0 18px;
+      font-size: 1.8rem;
+      color: var(--accent-1);
+    }
+
+    /* Мини-чаша (иконка) */
+    .mini-bowl {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 6px auto 8px;
+    }
+    .mini-bowl img {
+      width: 120px;
+      max-width: 28%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,0.6));
+    }
+
+    /* Контейнер для трёх кристаллов */
+    .crystals-container {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      align-items: flex-start;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .crystal-card {
+      width: 150px;
+      min-width: 120px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 12px;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    }
+    .crystal-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      border-color: rgba(178,152,220,0.18);
+    }
+
+    .crystal-card img {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .crystal-card h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: #e6eef6;
+      font-weight: 600;
+    }
+
+    /* Вертикальное расположение в узких экранах */
+    @media (max-width: 640px) {
+      .nav-level[data-level]:not([data-level="0"]).active .modal-content {
+        width: calc(100% - 24px);
+        padding: 18px;
+      }
+      .mini-bowl img { width: 92px; }
+      .crystals-container { gap: 0.75rem; }
+      .crystal-card { width: 30%; min-width: 96px; padding: 10px; }
+    }
+
+    /* Доп. мелкие правки для кнопки "назад" и заголовка кристалла */
+    .back-to-bowl {
+      position: absolute;
+      left: 14px;
+      top: 12px;
+      background: rgba(255,255,255,0.03);
+      padding: 8px 12px;
+      border-radius: 10px;
+    }
+
+    
