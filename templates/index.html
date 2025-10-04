@@ -12,25 +12,37 @@
   <!-- Система уведомлений -->
   <div id="notificationSystem" class="notification-system" aria-live="polite"></div>
 
+  <!-- Оверлей для закрытия меню (ПЕРЕД основным контентом) -->
+  <div class="dropdown-overlay"></div>
+
   <!-- Главный экран - Уровень 0 -->
   <div class="first-screen nav-level active" data-level="0">
     <header class="site-header">
       <h1 class="site-title">Кристаллы Фемиды</h1>
       <nav class="control-panel" aria-label="Панель управления">
-  <button class="icon-btn" aria-label="О разработчиках">
-    <img src="{{ url_for('static', filename='Img/logo.svg') }}" alt="PR логотип" />
-  </button>
-  <button class="icon-btn" aria-label="Уведомления">
-    <img src="{{ url_for('static', filename='Img/bell.svg') }}" alt="Уведомления" />
-  </button>
-  <button class="icon-btn" aria-label="Настройки">
-    <img src="{{ url_for('static', filename='Img/gear.svg') }}" alt="Настройки" />
-  </button>
-  <!-- ДОБАВЬТЕ ЭТУ КНОПКУ -->
-  <button class="icon-btn" aria-label="Восстановить кристаллы" onclick="restoreAllCrystals()" title="Восстановить все кристаллы">
-    <img src="{{ url_for('static', filename='Img/refresh.svg') }}" alt="Восстановить" />
-  </button>
-</nav>
+        <!-- Основная иконка с выпадающим меню -->
+        <div class="dropdown-menu">
+          <button class="icon-btn dropdown-toggle" aria-label="Меню приложения" aria-expanded="false">
+            <img src="{{ url_for('static', filename='Img/logo.svg') }}" alt="Меню приложения" />
+          </button>
+          
+          <!-- Выпадающее меню СЛЕВА от иконки -->
+          <div class="dropdown-content">
+            <button class="dropdown-item" aria-label="Уведомления" onclick="showNotifications()">
+              <img src="{{ url_for('static', filename='Img/bell.svg') }}" alt="Уведомления" />
+              <span>Уведомления</span>
+            </button>
+            <button class="dropdown-item" aria-label="Настройки" onclick="showSettings()">
+              <img src="{{ url_for('static', filename='Img/gear.svg') }}" alt="Настройки" />
+              <span>Настройки</span>
+            </button>
+            <button class="dropdown-item" aria-label="Сбросить весы" onclick="resetAllWeights()">
+    <img src="{{ url_for('static', filename='Img/refresh.svg') }}" alt="Сбросить" />
+    <span>Сбросить все значения</span>
+</button>
+          </div>
+        </div>
+      </nav>
     </header>
 
     <main class="balance">
@@ -1266,6 +1278,7 @@
       </button>
     </div>
   </section>
+  
   <div id="breakMessagesContainer"></div>
   <script src="{{ url_for('static', filename='Js/script.js') }}"></script>
 </body>

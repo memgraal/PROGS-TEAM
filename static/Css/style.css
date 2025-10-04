@@ -1958,3 +1958,104 @@ main.balance{
     padding-right: 15px; 
     margin-top: 5px; 
 }
+
+/* ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ ВЫПАДАЮЩЕГО МЕНЮ */
+.dropdown-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  position: relative;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem;
+  border-radius: 8px;
+  transition: .18s, border-color .18s;
+  border: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+}
+
+.dropdown-toggle:hover {
+  background: var(--glass);
+  border-color: rgba(178,152,220,0.25);
+}
+
+.dropdown-toggle img {
+  width: 22px;
+  height: 22px;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: var(--panel-bg);
+  border-radius: 14px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  border: 1px solid rgba(178,152,220,0.25);
+  min-width: 200px;
+  z-index: 1002;
+  display: none; /* Скрыто по умолчанию */
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+/* Когда меню активно - показываем */
+.dropdown-content.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1rem;
+  width: 100%;
+  text-align: left;
+  color: #e6eef6;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background: var(--glass);
+}
+
+.dropdown-item img {
+  width: 18px;
+  height: 18px;
+  opacity: 0.8;
+}
+
+.dropdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 1000;
+  display: none;
+}
+
+.dropdown-overlay.active {
+  display: block;
+}
