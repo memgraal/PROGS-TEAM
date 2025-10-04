@@ -5,8 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Кристаллы Фемиды</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='Css/style.css') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+  <meta name="theme-color" content="#16161e">
 </head>
 <body>
+  <!-- Система уведомлений -->
+  <div id="notificationSystem" class="notification-system" aria-live="polite"></div>
+
   <!-- Главный экран - Уровень 0 -->
   <div class="first-screen nav-level active" data-level="0">
     <header class="site-header">
@@ -29,6 +34,11 @@
     </header>
 
     <main class="balance">
+        <div class="scale-status-container">
+          <div class="scale-status" id="scaleStatus">
+            <div class="status-text">Загрузка...</div>
+          </div>
+        </div>
       <section class="categories" aria-label="Категории баланса">
         <div class="card family"><h2>Семья</h2></div>
         <div class="divider" aria-hidden="true">&amp;</div>
@@ -126,11 +136,11 @@
         <div class="facet-input-group">
           <div class="facet-header-compact">
             <span class="facet-label">Времяпровождение</span>
-            <span class="current-value-display">5</span>
+            <span class="current-value-display">0</span>
           </div>
           <div class="advanced-slider-container">
             <div class="slider-track">
-              <div class="slider-fill" style="width: 58.33%;"></div>
+              <div class="slider-fill" style="width: 50%;"></div>
               <div class="slider-positions">
                 <div class="position-dot" style="left: 0%;"></div>
                 <div class="position-dot" style="left: 16.66%;"></div>
@@ -140,8 +150,8 @@
                 <div class="position-dot" style="left: 83.33%;"></div>
                 <div class="position-dot" style="left: 100%;"></div>
               </div>
-              <div class="slider-thumb" style="left: 58.33%;">
-                <span class="slider-value">5</span>
+              <div class="slider-thumb" style="left: 50%;">
+                <span class="slider-value">0</span>
               </div>
             </div>
             <div class="slider-scale">
@@ -157,7 +167,7 @@
               <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
               <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
             </div>
-            <input type="hidden" class="advanced-slider-input" value="5" min="-30" max="30">
+            <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
         </div>
         
