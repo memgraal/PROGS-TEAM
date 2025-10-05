@@ -62,13 +62,12 @@ function showWelcomeMessageSimple() {
     if (window.notificationSystem) {
         window.notificationSystem.show(`
             <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="font-size: 1.5rem;">⚖️</div>
                 <div>
                     <strong style="color: var(--accent-1);">Добро пожаловать в Кристаллы Фемиды!</strong><br>
-                    <span style="color: var(--muted); font-size: 0.9rem;">Отслеживайте баланс между семьей и карьерой</span>
+                    <span style="color: var(--muted); font-size: 0.9rem;">Отслеживайте баланс между сферами жизни</span>
                 </div>
             </div>
-        `, 'info', 5000);
+        `, 5000);
     }
     
     sessionStorage.setItem('welcomeShown', 'true');
@@ -2138,3 +2137,191 @@ function setInitialBalancedState() {
         window.scaleManager.state = 'balanced';
     }
 }
+
+// Показать приветственное сообщение при загрузке сайта
+function showWelcomeMessage() {
+    const welcomeShown = sessionStorage.getItem('welcomeShown');
+    if (welcomeShown) return;
+    
+    // Создаем уведомление в стиле системы уведомлений
+    const notificationSystem = document.getElementById('notificationSystem');
+    if (!notificationSystem) return;
+    
+    const notification = document.createElement('div');
+    notification.className = 'notification info';
+    notification.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div>
+                <strong>Добро пожаловать в Кристаллы Фемиды!</strong>
+            </div>
+        </div>
+    `;
+    
+    notification.style.opacity = '0';
+    notification.style.transform = 'translateX(100%)';
+    
+    notificationSystem.appendChild(notification);
+    
+    // Анимация появления
+    setTimeout(() => {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateX(0)';
+        notification.style.transition = 'all 0.3s ease';
+    }, 100);
+    
+    // Помечаем, что сообщение было показано
+    sessionStorage.setItem('welcomeShown', 'true');
+    
+    let closeTimer;
+    
+    // Функция закрытия уведомления
+    const closeNotification = () => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 300);
+        clearTimeout(closeTimer);
+        // Удаляем обработчики событий
+        document.removeEventListener('click', closeOnOutsideClick);
+        document.removeEventListener('keydown', closeOnEscape);
+    };
+    
+    // Автоматическое закрытие через 5 секунд
+    closeTimer = setTimeout(closeNotification, 5000);
+    
+    // Закрытие при клике на уведомление
+    notification.addEventListener('click', (event) => {
+        event.stopPropagation();
+        closeNotification();
+    });
+    
+    // Закрытие при клике в любом месте вне уведомления
+    const closeOnOutsideClick = (event) => {
+        if (!notification.contains(event.target)) {
+            closeNotification();
+        }
+    };
+    
+    // Закрытие при нажатии ESC
+    const closeOnEscape = (event) => {
+        if (event.key === 'Escape') {
+            closeNotification();
+        }
+    };
+    
+    // Добавляем обработчики с небольшой задержкой
+    setTimeout(() => {
+        document.addEventListener('click', closeOnOutsideClick);
+        document.addEventListener('keydown', closeOnEscape);
+    }, 100);
+}
+
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    // Показываем приветственное сообщение с небольшой задержкой
+    setTimeout(showWelcomeMessage, 1000);
+});
+
+// Функция для тестирования (добавьте в консоль браузера)
+window.testWelcomeMessage = function() {
+    sessionStorage.removeItem('welcomeShown');
+    showWelcomeMessage();
+};
+
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    // Показываем приветственное сообщение с небольшой задержкой
+    setTimeout(showWelcomeMessage, 1000);
+});
+
+// Функция для тестирования (добавьте в консоль браузера)
+window.testWelcomeMessage = function() {
+    sessionStorage.removeItem('welcomeShown');
+    showWelcomeMessage();
+};
+
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    // Показываем приветственное сообщение с небольшой задержкой
+    setTimeout(showWelcomeMessage, 1000);
+});
+
+
+window.testWelcomeMessage = function() {
+    sessionStorage.removeItem('welcomeShown');
+    showWelcomeMessage();
+};
+
+// Обновленная функция для обработки ESC - навигация по стеку
+function handleEscapeKey(event) {
+    if (event.key === 'Escape') {
+        // Если есть приветственное сообщение - закрываем его
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        if (welcomeMessage) {
+            welcomeMessage.click(); // Имитируем клик для закрытия
+            return;
+        }
+        
+        // Навигация по стеку
+        if (navStack.length > 1) {
+            navigateBack();
+        } else {
+            closeModal();
+        }
+    }
+}
+
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    // Показываем приветственное сообщение
+    setTimeout(showWelcomeMessage, 500);
+    
+    // Устанавливаем обработчик ESC
+    document.addEventListener('keydown', handleEscapeKey);
+});
+
+// Убедитесь, что ваши функции навигации выглядят так:
+window.navigateBack = function() { 
+    try {
+        if (navStack.length > 1) { 
+            navStack.pop(); 
+            const current = document.querySelector(".nav-level.active"); 
+            if (current) current.classList.remove("active");
+
+            const prevLevel = navStack[navStack.length - 1];
+            const prevElement = document.querySelector(`[data-level="${prevLevel}"]`);
+            if (prevElement) {
+                prevElement.classList.add("active");
+                
+                if (prevLevel === 1 || prevLevel === 2) {
+                    updateBrokenCrystalsOnBowlLevel(prevLevel);
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error in navigateBack:', error);
+    }
+};
+
+window.closeModal = function() { 
+    try {
+        document.querySelectorAll('.nav-level').forEach(function(level) {
+            if (level.getAttribute("data-level") !== "0") {
+                level.classList.remove("active");
+            }
+        });
+
+        const mainScreen = document.querySelector('[data-level="0"]');
+        if (mainScreen) {
+            mainScreen.classList.add("active");
+        }
+
+        navStack = [0];
+    } catch (error) {
+        console.error('Error closing modal:', error);
+    }
+};
+
