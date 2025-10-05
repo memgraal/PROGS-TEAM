@@ -2521,6 +2521,11 @@ window.changeAdvancedValue = function(button, change) {
 };
 
 function showReflectionModal() {
+
+    if (currentReflectionContext.sliderValue === null) {
+    currentReflectionContext.sliderValue = 0;
+}
+
     const modal = document.querySelector('.reflection-modal');
     if (!modal) return;
     
@@ -2601,34 +2606,16 @@ function updateReflectionBalance(sliderValue, isCareerCrystal) {
     const statusElement = document.getElementById('reflectionStatus');
     const valueElement = document.getElementById('reflectionValue');
     
-    // Рассчитываем процент баланса (от -30 до +30 -> 0% до 100%)
     const percentage = Math.round(((sliderValue + 30) / 60) * 100);
     
-    // Определяем статус на основе значения
-    let status = '';
-    let statusClass = '';
+    let status = '', statusClass = '';
+    if (sliderValue >= 20) { status = 'Отличный'; statusClass = 'excellent'; }
+    else if (sliderValue >= 10) { status = 'Хороший'; statusClass = 'good'; }
+    else if (sliderValue >= 0) { status = 'Нормальный'; statusClass = 'normal'; }
+    else if (sliderValue >= -10) { status = 'Напряженный'; statusClass = 'tense'; }
+    else if (sliderValue >= -20) { status = 'Критический'; statusClass = 'critical'; }
+    else { status = 'Опасный'; statusClass = 'dangerous'; }
     
-    if (sliderValue >= 20) {
-        status = 'Отличный';
-        statusClass = 'excellent';
-    } else if (sliderValue >= 10) {
-        status = 'Хороший';
-        statusClass = 'good';
-    } else if (sliderValue >= 0) {
-        status = 'Нормальный';
-        statusClass = 'normal';
-    } else if (sliderValue >= -10) {
-        status = 'Напряженный';
-        statusClass = 'tense';
-    } else if (sliderValue >= -20) {
-        status = 'Критический';
-        statusClass = 'critical';
-    } else {
-        status = 'Опасный';
-        statusClass = 'dangerous';
-    }
-    
-    // Обновляем элементы
     if (balanceElement) balanceElement.textContent = `${percentage}%`;
     if (statusElement) {
         statusElement.textContent = status;
@@ -2636,20 +2623,37 @@ function updateReflectionBalance(sliderValue, isCareerCrystal) {
     }
     if (valueElement) valueElement.textContent = sliderValue;
     
-    // Динамически меняем цвет на основе значения и типа кристалла
+    // ОБНОВЛЕННАЯ ЛОГИКА ЦВЕТОВ ДЛЯ ВСЕХ ЭЛЕМЕНТОВ
     if (sliderValue === 0) {
-        // Оранжевый для нуля
+        // ОРАНЖЕВЫЙ для нуля
         if (balanceElement) balanceElement.style.color = '#ffa500';
         if (valueElement) valueElement.style.color = '#ffa500';
+        if (statusElement) {
+            statusElement.style.color = '#ffa500';
+            statusElement.style.background = 'rgba(255,165,0,0.15)';
+        }
     } else if (sliderValue > 0) {
-        // Положительные - цвет кристалла
+        // Положительные значения - цвет кристалла
         const positiveColor = isCareerCrystal ? 'var(--accent-3)' : 'var(--accent-2)';
+        const positiveBg = isCareerCrystal ? 'rgba(192,126,224,0.15)' : 'rgba(124,199,224,0.15)';
+        
         if (balanceElement) balanceElement.style.color = positiveColor;
         if (valueElement) valueElement.style.color = positiveColor;
+        if (statusElement) {
+            statusElement.style.color = positiveColor;
+            statusElement.style.background = positiveBg;
+        }
     } else {
-        // Красный для отрицательных
-        if (balanceElement) balanceElement.style.color = '#ff6b6b';
-        if (valueElement) valueElement.style.color = '#ff6b6b';
+        // КРАСНЫЙ для отрицательных
+        const negativeColor = sliderValue <= -15 ? '#ef4444' : '#f87171';
+        const negativeBg = sliderValue <= -15 ? 'rgba(239,68,68,0.15)' : 'rgba(248,113,113,0.15)';
+        
+        if (balanceElement) balanceElement.style.color = negativeColor;
+        if (valueElement) valueElement.style.color = negativeColor;
+        if (statusElement) {
+            statusElement.style.color = negativeColor;
+            statusElement.style.background = negativeBg;
+        }
     }
 }
 
@@ -2811,4 +2815,3 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeReflectionModal();
     // ... остальной код инициализации
 });
-
