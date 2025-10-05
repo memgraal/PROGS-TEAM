@@ -45,15 +45,6 @@ const CRYSTAL_CONFIG = {
     }
 };
 
-// Глобальные переменные для рефлексии
-let currentReflectionContext = {
-    level: null,
-    facetName: null,
-    crystalName: null,
-    sliderValue: null,
-    container: null
-};
-
 // Функция для показа приветственного сообщения
 function showWelcomeMessageSimple() {
     const welcomeShown = sessionStorage.getItem('welcomeShown');
@@ -1236,29 +1227,6 @@ function setupPerformanceMonitoring() {
     }
 }
 
-// Функции для модального окна рефлексии
-function showReflectionModal() {
-    const modal = document.querySelector('.reflection-modal');
-    if (!modal) return;
-    
-    // Заполняем контекстную информацию
-    document.getElementById('reflectionCrystalName').textContent = currentReflectionContext.crystalName;
-    document.getElementById('reflectionFacetName').textContent = currentReflectionContext.facetName;
-    document.getElementById('reflectionValue').textContent = currentReflectionContext.sliderValue;
-    
-    // Сбрасываем форму
-    resetReflectionForm();
-    
-    // Показываем модальное окно
-    modal.style.display = 'flex';
-    setTimeout(() => {
-        modal.classList.add('active');
-    }, 10);
-    
-    // Загружаем сохраненные данные если есть
-    loadReflectionData();
-}
-
 function closeReflectionModal() {
     const modal = document.querySelector('.reflection-modal');
     if (!modal) return;
@@ -1297,38 +1265,6 @@ function loadReflectionData() {
         document.getElementById('reflectionGoal').value = data.goal || '';
         document.getElementById('reflectionComment').value = data.comment || '';
     }
-}
-
-function saveReflection() {
-    const assessmentBtn = document.querySelector('.assessment-btn.active');
-    const assessment = assessmentBtn ? parseInt(assessmentBtn.dataset.value) : null;
-    const goal = document.getElementById('reflectionGoal').value;
-    const comment = document.getElementById('reflectionComment').value;
-    
-    const reflectionData = {
-        assessment: assessment,
-        goal: goal,
-        comment: comment,
-        timestamp: new Date().toISOString(),
-        sliderValue: currentReflectionContext.sliderValue,
-        facet: currentReflectionContext.facetName,
-        crystal: currentReflectionContext.crystalName
-    };
-    
-    // Сохраняем в localStorage
-    const savedReflections = JSON.parse(localStorage.getItem('crystalReflections') || '{}');
-    const key = `${currentReflectionContext.level}_${currentReflectionContext.facetName}`;
-    savedReflections[key] = reflectionData;
-    localStorage.setItem('crystalReflections', JSON.stringify(savedReflections));
-    
-    // Сохраняем в общее состояние
-    window.stateManager.saveAllStates();
-    
-    // Показываем уведомление
-    window.notificationSystem.success('Рефлексия сохранена');
-    
-    // Закрываем модальное окно
-    closeReflectionModal();
 }
 
 function getCrystalName(levelElement) {
@@ -2534,4 +2470,345 @@ window.closeModal = function() {
         console.error('Error closing modal:', error);
     }
 };
+
+// Глобальные переменные для рефлексии
+let currentReflectionContext = {
+    level: null,
+    facetName: null,
+    crystalName: null,
+    sliderValue: null,
+    container: null,
+    pendingChange: 0 // -1 или +1
+};
+
+// Обновленная функция для кнопок ±1
+window.changeAdvancedValue = function(button, change) {
+    const container = button.closest('.advanced-slider-container');
+    const input = container.querySelector('.advanced-slider-input');
+    
+    let currentValue = parseInt(input.value) || 0;
+    let newValue = currentValue + change;
+    
+    const min = parseInt(input.min) || -30;
+    const max = parseInt(input.max) || 30;
+    
+    if (newValue >= min && newValue <= max) {
+        // Сохраняем контекст для рефлексии
+        currentReflectionContext = {
+            level: container.closest('.nav-level')?.dataset.level,
+            facetName: container.closest('.facet-input-group')?.querySelector('.facet-label')?.textContent || 'Неизвестная грань',
+            crystalName: getCrystalName(container.closest('.nav-level')),
+            sliderValue: currentValue,
+            container: container,
+            pendingChange: change,
+            newValue: newValue
+        };
+        
+        // Показываем модальное окно рефлексии
+        showReflectionModal();
+        
+        button.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            button.style.transform = '';
+        }, 150);
+        
+    } else {
+        button.style.background = 'rgba(255,0,0,0.3)';
+        setTimeout(() => {
+            button.style.background = '';
+        }, 300);
+    }
+};
+
+function showReflectionModal() {
+    const modal = document.querySelector('.reflection-modal');
+    if (!modal) return;
+    
+    const reflectionContent = modal.querySelector('.reflection-content');
+    
+    // Определяем тип кристалла и добавляем соответствующий класс
+    const isCareerCrystal = currentReflectionContext.level >= 6;
+    reflectionContent.className = 'modal-content reflection-content ' + 
+        (isCareerCrystal ? 'career-crystal' : 'family-crystal');
+    
+    // Также добавляем класс к самому модальному окну для скроллбара
+    modal.className = 'reflection-modal ' + 
+        (isCareerCrystal ? 'career-scroll' : 'family-scroll');
+    
+    // Заполняем контекстную информацию
+    document.getElementById('reflectionCrystalName').textContent = currentReflectionContext.crystalName;
+    document.getElementById('reflectionFacetName').textContent = currentReflectionContext.facetName;
+    document.getElementById('reflectionValue').textContent = currentReflectionContext.sliderValue;
+    
+    // Рассчитываем и отображаем баланс
+    updateReflectionBalance(currentReflectionContext.sliderValue, isCareerCrystal);
+    
+    // Сбрасываем форму
+    resetReflectionForm();
+    
+    // Показываем модальное окно
+    modal.style.display = 'flex';
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 10);
+    
+    // Загружаем сохраненные данные если есть
+    loadReflectionData();
+}
+
+// Новая функция для обновления цветов ползунка в модальном окне
+function updateReflectionSliderColors(isCareerCrystal) {
+    const balanceElement = document.getElementById('reflectionBalance');
+    const valueElement = document.getElementById('reflectionValue');
+    const sliderValue = currentReflectionContext.sliderValue;
+    
+    // Цвета для семьи (синие)
+    if (!isCareerCrystal) {
+        if (sliderValue === 0) {
+            // Оранжевый на нуле
+            if (balanceElement) balanceElement.style.color = '#ffa500';
+            if (valueElement) valueElement.style.color = '#ffa500';
+        } else if (sliderValue > 0) {
+            // Синий для положительных
+            if (balanceElement) balanceElement.style.color = 'var(--accent-2)';
+            if (valueElement) valueElement.style.color = 'var(--accent-2)';
+        } else {
+            // Красный для отрицательных
+            if (balanceElement) balanceElement.style.color = '#ff6b6b';
+            if (valueElement) valueElement.style.color = '#ff6b6b';
+        }
+    } 
+    // Цвета для карьеры (фиолетовые)
+    else {
+        if (sliderValue === 0) {
+            // Оранжевый на нуле
+            if (balanceElement) balanceElement.style.color = '#ffa500';
+            if (valueElement) valueElement.style.color = '#ffa500';
+        } else if (sliderValue > 0) {
+            // Фиолетовый для положительных
+            if (balanceElement) balanceElement.style.color = 'var(--accent-3)';
+            if (valueElement) valueElement.style.color = 'var(--accent-3)';
+        } else {
+            // Красный для отрицательных
+            if (balanceElement) balanceElement.style.color = '#ff6b6b';
+            if (valueElement) valueElement.style.color = '#ff6b6b';
+        }
+    }
+}
+
+function updateReflectionBalance(sliderValue, isCareerCrystal) {
+    const balanceElement = document.getElementById('reflectionBalance');
+    const statusElement = document.getElementById('reflectionStatus');
+    const valueElement = document.getElementById('reflectionValue');
+    
+    // Рассчитываем процент баланса (от -30 до +30 -> 0% до 100%)
+    const percentage = Math.round(((sliderValue + 30) / 60) * 100);
+    
+    // Определяем статус на основе значения
+    let status = '';
+    let statusClass = '';
+    
+    if (sliderValue >= 20) {
+        status = 'Отличный';
+        statusClass = 'excellent';
+    } else if (sliderValue >= 10) {
+        status = 'Хороший';
+        statusClass = 'good';
+    } else if (sliderValue >= 0) {
+        status = 'Нормальный';
+        statusClass = 'normal';
+    } else if (sliderValue >= -10) {
+        status = 'Напряженный';
+        statusClass = 'tense';
+    } else if (sliderValue >= -20) {
+        status = 'Критический';
+        statusClass = 'critical';
+    } else {
+        status = 'Опасный';
+        statusClass = 'dangerous';
+    }
+    
+    // Обновляем элементы
+    if (balanceElement) balanceElement.textContent = `${percentage}%`;
+    if (statusElement) {
+        statusElement.textContent = status;
+        statusElement.setAttribute('data-status', statusClass);
+    }
+    if (valueElement) valueElement.textContent = sliderValue;
+    
+    // Динамически меняем цвет на основе значения и типа кристалла
+    if (sliderValue === 0) {
+        // Оранжевый для нуля
+        if (balanceElement) balanceElement.style.color = '#ffa500';
+        if (valueElement) valueElement.style.color = '#ffa500';
+    } else if (sliderValue > 0) {
+        // Положительные - цвет кристалла
+        const positiveColor = isCareerCrystal ? 'var(--accent-3)' : 'var(--accent-2)';
+        if (balanceElement) balanceElement.style.color = positiveColor;
+        if (valueElement) valueElement.style.color = positiveColor;
+    } else {
+        // Красный для отрицательных
+        if (balanceElement) balanceElement.style.color = '#ff6b6b';
+        if (valueElement) valueElement.style.color = '#ff6b6b';
+    }
+}
+
+// Функция закрытия модального окна
+function closeReflectionModal() {
+    const modal = document.querySelector('.reflection-modal');
+    if (!modal) return;
+    
+    modal.classList.remove('active');
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 300);
+    
+    // Убираем обработчики
+    document.removeEventListener('keydown', handleReflectionEscape);
+}
+
+// Обработчик ESC
+function handleReflectionEscape(event) {
+    if (event.key === 'Escape') {
+        cancelReflection();
+    }
+}
+
+// Отмена рефлексии
+function cancelReflection() {
+    // Не применяем изменения значения
+    console.log('Изменение отменено');
+    closeReflectionModal();
+    
+    // Показываем уведомление
+    if (window.notificationSystem) {
+        window.notificationSystem.info('Изменение отменено');
+    }
+}
+
+// Сохранение рефлексии
+function saveReflection() {
+    const assessmentBtn = document.querySelector('.assessment-btn.active');
+    const assessment = assessmentBtn ? parseInt(assessmentBtn.dataset.value) : null;
+    const goal = document.getElementById('reflectionGoal').value;
+    const comment = document.getElementById('reflectionComment').value;
+    
+    // Применяем изменение значения
+    if (currentReflectionContext.container && currentReflectionContext.pendingChange !== 0) {
+        updateSliderValue(currentReflectionContext.container, currentReflectionContext.newValue);
+        
+        const level = currentReflectionContext.container.closest('.nav-level')?.dataset.level;
+        if (level) {
+            setTimeout(() => checkCrystalBalance(level), 100);
+        }
+    }
+    
+    // Сохраняем данные рефлексии
+    const reflectionData = {
+        assessment: assessment,
+        goal: goal,
+        comment: comment,
+        timestamp: new Date().toISOString(),
+        sliderValue: currentReflectionContext.newValue,
+        facet: currentReflectionContext.facetName,
+        crystal: currentReflectionContext.crystalName
+    };
+    
+    // Сохраняем в localStorage
+    const savedReflections = JSON.parse(localStorage.getItem('crystalReflections') || '{}');
+    const key = `${currentReflectionContext.level}_${currentReflectionContext.facetName}`;
+    savedReflections[key] = reflectionData;
+    localStorage.setItem('crystalReflections', JSON.stringify(savedReflections));
+    
+    // Сохраняем в общее состояние
+    if (window.stateManager) {
+        window.stateManager.saveAllStates();
+    }
+    
+    // Показываем уведомление
+    if (window.notificationSystem) {
+        window.notificationSystem.success('Рефлексия сохранена');
+    }
+    
+    // Закрываем модальное окно
+    closeReflectionModal();
+}
+
+// Сброс формы рефлексии
+function resetReflectionForm() {
+    document.querySelectorAll('.assessment-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.getElementById('reflectionGoal').value = '';
+    document.getElementById('reflectionComment').value = '';
+}
+
+// Загрузка сохраненных данных рефлексии
+function loadReflectionData() {
+    const savedReflections = JSON.parse(localStorage.getItem('crystalReflections') || '{}');
+    const key = `${currentReflectionContext.level}_${currentReflectionContext.facetName}`;
+    
+    if (savedReflections[key]) {
+        const data = savedReflections[key];
+        
+        // Устанавливаем оценку
+        if (data.assessment !== undefined) {
+            document.querySelectorAll('.assessment-btn').forEach(btn => {
+                if (parseInt(btn.dataset.value) === data.assessment) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
+        // Заполняем поля
+        document.getElementById('reflectionGoal').value = data.goal || '';
+        document.getElementById('reflectionComment').value = data.comment || '';
+    }
+}
+
+// Вспомогательная функция для получения имени кристалла
+function getCrystalName(levelElement) {
+    if (!levelElement) return 'Неизвестный кристалл';
+    
+    const level = levelElement.dataset.level;
+    const crystalTitles = {
+        '3': 'Дети',
+        '4': 'Партнер', 
+        '5': 'Быт',
+        '6': 'Основная работа',
+        '7': 'Развитие навыков',
+        '8': 'Командная работа'
+    };
+    
+    return crystalTitles[level] || 'Кристалл';
+}
+
+// Инициализация обработчиков для модального окна
+function initializeReflectionModal() {
+    // Обработчики для кнопок оценки
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('assessment-btn')) {
+            // Снимаем активный класс со всех кнопок
+            document.querySelectorAll('.assessment-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Добавляем активный класс к нажатой кнопке
+            e.target.classList.add('active');
+        }
+    });
+    
+    // Закрытие по клику на оверлей
+    document.addEventListener('click', function(e) {
+        const modal = document.querySelector('.reflection-modal');
+        if (modal && modal.style.display !== 'none' && e.target === modal) {
+            cancelReflection();
+        }
+    });
+}
+
+// Добавьте вызов инициализации в DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeReflectionModal();
+    // ... остальной код инициализации
+});
 

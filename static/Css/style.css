@@ -2129,3 +2129,713 @@ main.balance{
     animation-duration: 1s !important;
   }
 }
+
+/* Стили для модального окна рефлексии */
+.reflection-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(22, 22, 30, 0.98);
+  backdrop-filter: blur(15px);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.reflection-modal.active {
+  opacity: 1;
+}
+
+.reflection-content {
+  background: rgba(32, 30, 42, 0.95);
+  border-radius: 20px;
+  padding: 25px;
+  max-width: 480px;
+  width: 95%;
+  max-height: 85vh;
+  position: relative;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Динамические цвета границы на основе типа кристалла */
+.reflection-content.family-crystal {
+  border: 2px solid var(--accent-2); /* Синий для семьи */
+}
+
+.reflection-content.career-crystal {
+  border: 2px solid var(--accent-3); /* Фиолетовый для карьеры */
+}
+
+.reflection-modal.active .reflection-content {
+  transform: scale(1);
+}
+
+.reflection-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10001;
+}
+
+.reflection-close:hover {
+  background: rgba(255,255,255,0.1);
+  color: #e6eef6;
+}
+
+.reflection-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 1rem;
+}
+
+.reflection-header h2 {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.6rem;
+}
+
+.reflection-subtitle {
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Компактная статистика в одну строку */
+.reflection-stats-compact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255,255,255,0.03);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+  flex-wrap: nowrap;
+  min-height: 60px;
+}
+
+.stat-compact-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.stat-compact-label {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+  text-align: center;
+}
+
+.stat-compact-value {
+  color: #e6eef6;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.stat-compact-percentage {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.stat-compact-status {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+  text-align: center;
+}
+
+.reflection-form {
+  margin-bottom: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.reflection-form::-webkit-scrollbar {
+  width: 4px;
+}
+
+.reflection-form::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 2px;
+}
+
+.reflection-form::-webkit-scrollbar-thumb {
+  background: var(--accent-1);
+  border-radius: 2px;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-label {
+  display: block;
+  color: #e6eef6;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Кнопки оценки */
+.assessment-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.assessment-btn {
+  flex: 1;
+  padding: 0.8rem;
+  background: rgba(255,255,255,0.05);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: var(--muted);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.assessment-btn:hover {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
+
+.assessment-btn.active {
+  background: var(--accent-1);
+  border-color: var(--accent-1);
+  color: #16161e;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 0.8rem;
+  background: rgba(255,255,255,0.05);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: #e6eef6;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.form-input:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--accent-1);
+  background: rgba(255,255,255,0.08);
+}
+
+.form-input::placeholder, .form-textarea::placeholder {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.input-hint {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+/* Кнопки на всю ширину */
+.reflection-actions-full {
+  display: flex;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.btn-cancel-full, .btn-save-full {
+  flex: 1;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.btn-cancel-full {
+  background: rgba(255,255,255,0.08);
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn-cancel-full:hover {
+  background: rgba(255,255,255,0.15);
+  color: #e6eef6;
+  border-color: rgba(255,255,255,0.2);
+}
+
+.btn-save-full {
+  background: var(--accent-1);
+  color: #16161e;
+  border: 1px solid var(--accent-1);
+}
+
+.btn-save-full:hover {
+  background: var(--accent-2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(178,152,220,0.3);
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .reflection-content {
+    padding: 20px;
+    margin: 1rem;
+    max-height: 90vh;
+  }
+  
+  .reflection-stats-compact {
+    padding: 0.8rem;
+  }
+  
+  .stat-compact-value,
+  .stat-compact-percentage {
+    font-size: 1.1rem;
+  }
+  
+  .reflection-actions-full {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  
+  .assessment-buttons {
+    gap: 0.3rem;
+  }
+  
+  .assessment-btn {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+  
+  .form-input, .form-textarea {
+    padding: 0.7rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-height: 700px) {
+  .reflection-content {
+    max-height: 95vh;
+    padding: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-textarea {
+    min-height: 60px;
+  }
+}
+
+/* Общие стили для полей ввода */
+.reflection-content .form-input,
+.reflection-content .form-textarea {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: #e6eef6;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+/* Стили при фокусе для СЕМЬИ (синие) */
+.reflection-content.family-crystal .form-input:focus,
+.reflection-content.family-crystal .form-textarea:focus {
+    outline: none;
+    border-color: var(--accent-2); /* Синий */
+    background: rgba(124, 199, 224, 0.08);
+}
+
+/* Стили при фокусе для КАРЬЕРЫ (фиолетовые) */
+.reflection-content.career-crystal .form-input:focus,
+.reflection-content.career-crystal .form-textarea:focus {
+    outline: none;
+    border-color: var(--accent-3); /* Фиолетовый */
+    background: rgba(192, 126, 224, 0.08);
+}
+
+/* Кнопки оценки для СЕМЬИ */
+.reflection-content.family-crystal .assessment-btn:hover {
+    border-color: var(--accent-2); /* Синий */
+    color: var(--accent-2);
+}
+
+.reflection-content.family-crystal .assessment-btn.active {
+    background: var(--accent-2); /* Синий */
+    border-color: var(--accent-2);
+    color: #16161e;
+}
+
+/* Кнопки оценки для КАРЬЕРЫ */
+.reflection-content.career-crystal .assessment-btn:hover {
+    border-color: var(--accent-3); /* Фиолетовый */
+    color: var(--accent-3);
+}
+
+.reflection-content.career-crystal .assessment-btn.active {
+    background: var(--accent-3); /* Фиолетовый */
+    border-color: var(--accent-3);
+    color: #16161e;
+}
+
+/* Статистика для СЕМЬИ */
+.reflection-content.family-crystal .stat-compact-value,
+.reflection-content.family-crystal .stat-compact-percentage {
+    color: var(--accent-2); /* Синий */
+}
+
+.reflection-content.family-crystal .reflection-stats-compact {
+    border-color: var(--accent-2); /* Синий */
+}
+
+/* Статистика для КАРЬЕРЫ */
+.reflection-content.career-crystal .stat-compact-value,
+.reflection-content.career-crystal .stat-compact-percentage {
+    color: var(--accent-3); /* Фиолетовый */
+}
+
+.reflection-content.career-crystal .reflection-stats-compact {
+    border-color: var(--accent-3); /* Фиолетовый */
+}
+
+/* Заголовки для СЕМЬИ */
+.reflection-content.family-crystal .reflection-header h2 {
+    color: var(--accent-2); /* Синий */
+}
+
+/* Заголовки для КАРЬЕРЫ */
+.reflection-content.career-crystal .reflection-header h2 {
+    color: var(--accent-3); /* Фиолетовый */
+}
+
+/* Кнопка сохранения для СЕМЬИ */
+.reflection-content.family-crystal .btn-save-full {
+    background: var(--accent-2); /* Синий */
+    border-color: var(--accent-2);
+}
+
+.reflection-content.family-crystal .btn-save-full:hover {
+    background: #6cb2be;
+    border-color: #6cb2be;
+}
+
+/* Кнопка сохранения для КАРЬЕРЫ */
+.reflection-content.career-crystal .btn-save-full {
+    background: var(--accent-3); /* Фиолетовый */
+    border-color: var(--accent-3);
+}
+
+.reflection-content.career-crystal .btn-save-full:hover {
+    background: #a86cc5;
+    border-color: #a86cc5;
+}
+
+/* Переопределение глобальных стилей скроллбара для модального окна */
+.reflection-modal ::-webkit-scrollbar {
+    width: 8px;
+}
+
+.reflection-modal ::-webkit-scrollbar-track {
+    background: rgba(32, 30, 42, 0.8);
+    border-radius: 4px;
+}
+
+.reflection-modal ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+/* СИНИЙ скроллбар для семьи */
+.reflection-modal.family-scroll ::-webkit-scrollbar-thumb {
+    background: var(--accent-2) !important;
+}
+
+/* ФИОЛЕТОВЫЙ скроллбар для карьеры */
+.reflection-modal.career-scroll ::-webkit-scrollbar-thumb {
+    background: var(--accent-3) !important;
+}
+
+/* ПЕРЕОПРЕДЕЛЕНИЕ СТИЛЕЙ СКРОЛЛБАРА ДЛЯ МОДАЛЬНОГО ОКНА РЕФЛЕКСИИ */
+
+/* Отключаем глобальные стили для модального окна рефлексии */
+.reflection-modal ::-webkit-scrollbar,
+.reflection-modal ::-webkit-scrollbar-track,
+.reflection-modal ::-webkit-scrollbar-thumb {
+    all: unset;
+}
+
+/* Специфичные стили скроллбара для текстовых областей в модальном окне рефлексии */
+.reflection-content .form-textarea::-webkit-scrollbar {
+    width: 8px !important;
+}
+
+.reflection-content .form-textarea::-webkit-scrollbar-track {
+    background: rgba(32, 30, 42, 0.8) !important;
+    border-radius: 4px !important;
+}
+
+.reflection-content .form-textarea::-webkit-scrollbar-thumb {
+    border-radius: 4px !important;
+    border: 2px solid transparent !important;
+    background-clip: content-box !important;
+}
+
+/* СИНИЙ скроллбар для семьи */
+.reflection-content.family-crystal .form-textarea::-webkit-scrollbar-thumb {
+    background: var(--accent-2) !important; /* Синий */
+}
+
+.reflection-content.family-crystal .form-textarea::-webkit-scrollbar-thumb:hover {
+    background: #6cb2be !important; /* Более светлый синий */
+}
+
+/* ФИОЛЕТОВЫЙ скроллбар для карьеры */
+.reflection-content.career-crystal .form-textarea::-webkit-scrollbar-thumb {
+    background: var(--accent-3) !important; /* Фиолетовый */
+}
+
+.reflection-content.career-crystal .form-textarea::-webkit-scrollbar-thumb:hover {
+    background: #a86cc5 !important; /* Более светлый фиолетовый */
+}
+
+/* Для Firefox */
+.reflection-content.family-crystal .form-textarea {
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--accent-2) rgba(32, 30, 42, 0.8) !important;
+}
+
+.reflection-content.career-crystal .form-textarea {
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--accent-3) rgba(32, 30, 42, 0.8) !important;
+}
+
+/* Стили для скроллбара самой формы рефлексии */
+.reflection-form::-webkit-scrollbar {
+    width: 6px !important;
+}
+
+.reflection-form::-webkit-scrollbar-track {
+    background: rgba(32, 30, 42, 0.8) !important;
+    border-radius: 3px !important;
+}
+
+.reflection-form::-webkit-scrollbar-thumb {
+    border-radius: 3px !important;
+    background-clip: content-box !important;
+}
+
+/* Цвета скроллбара формы для семьи */
+.reflection-content.family-crystal .reflection-form::-webkit-scrollbar-thumb {
+    background: var(--accent-2) !important; /* Синий */
+}
+
+/* Цвета скроллбара формы для карьеры */
+.reflection-content.career-crystal .reflection-form::-webkit-scrollbar-thumb {
+    background: var(--accent-3) !important; /* Фиолетовый */
+}
+
+/* Дополнительные стили для скроллбара модального окна */
+.reflection-modal.family-scroll ::-webkit-scrollbar {
+    width: 8px !important;
+}
+
+.reflection-modal.family-scroll ::-webkit-scrollbar-track {
+    background: rgba(32, 30, 42, 0.8) !important;
+    border-radius: 4px !important;
+}
+
+.reflection-modal.family-scroll ::-webkit-scrollbar-thumb {
+    background: var(--accent-2) !important; /* Синий */
+    border-radius: 4px !important;
+}
+
+.reflection-modal.career-scroll ::-webkit-scrollbar {
+    width: 8px !important;
+}
+
+.reflection-modal.career-scroll ::-webkit-scrollbar-track {
+    background: rgba(32, 30, 42, 0.8) !important;
+    border-radius: 4px !important;
+}
+
+.reflection-modal.career-scroll ::-webkit-scrollbar-thumb {
+    background: var(--accent-3) !important; /* Фиолетовый */
+    border-radius: 4px !important;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: bold;
+  min-width: 30px;
+  text-align: center;
+}
+
+.stat-percentage {
+  font-size: 1.1rem;
+  font-weight: bold;
+  min-width: 40px;
+  text-align: center;
+}
+
+.stat-status {
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  white-space: nowrap;
+}
+
+.stat-divider {
+  color: var(--muted);
+  font-size: 1.2rem;
+  opacity: 0.5;
+}
+
+/* ЦВЕТА ДЛЯ СЕМЬИ */
+.reflection-content.family-crystal .stat-value,
+.reflection-content.family-crystal .stat-percentage {
+  color: var(--accent-2);
+}
+
+.reflection-content.family-crystal .stat-status {
+  color: var(--accent-2);
+  background: rgba(124, 199, 224, 0.15);
+}
+
+.reflection-content.family-crystal .reflection-stats-compact {
+  border-color: var(--accent-2);
+}
+
+/* ЦВЕТА ДЛЯ КАРЬЕРЫ */
+.reflection-content.career-crystal .stat-value,
+.reflection-content.career-crystal .stat-percentage {
+  color: var(--accent-3);
+}
+
+.reflection-content.career-crystal .stat-status {
+  color: var(--accent-3);
+  background: rgba(192, 126, 224, 0.15);
+}
+
+.reflection-content.career-crystal .reflection-stats-compact {
+  border-color: var(--accent-3);
+}
+
+/* ЦВЕТА СТАТУСОВ НА ОСНОВЕ ЗНАЧЕНИЙ */
+.reflection-content .stat-status[data-status="Опасный"],
+.reflection-content .stat-status[data-status="Критический"] {
+  color: #ff6b6b !important;
+  background: rgba(255, 107, 107, 0.15) !important;
+}
+
+.reflection-content .stat-status[data-status="Напряженный"] {
+  color: #ffa500 !important;
+  background: rgba(255, 165, 0, 0.15) !important;
+}
+
+.reflection-content .stat-status[data-status="Нормальный"] {
+  color: #4ecdc4 !important;
+  background: rgba(78, 205, 196, 0.15) !important;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .reflection-stats-compact {
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+  }
+  
+  .stat-item {
+    gap: 0.3rem;
+  }
+  
+  .stat-label {
+    font-size: 0.8rem;
+  }
+  
+  .stat-value,
+  .stat-percentage {
+    font-size: 1rem;
+  }
+  
+  .stat-status {
+    font-size: 0.8rem;
+    padding: 0.15rem 0.5rem;
+  }
+  
+  .stat-divider {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .reflection-stats-compact {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .stat-divider {
+    display: none;
+  }
+  
+  .stat-item {
+    justify-content: center;
+  }
+}

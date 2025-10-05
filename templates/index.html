@@ -1257,6 +1257,68 @@
     </div>
   </section>
   <div id="breakMessagesContainer"></div>
+<!-- Модальное окно рефлексии -->
+<div class="reflection-modal" style="display: none;">
+  <div class="modal-content reflection-content">
+    <button class="close-modal reflection-close" onclick="closeReflectionModal()">×</button>
+    
+    <div class="reflection-header">
+      <h2 id="reflectionCrystalName">Карьера</h2>
+      <div class="reflection-subtitle" id="reflectionFacetName">Профессиональный рост</div>
+    </div>
+
+    <!-- Статистика в одну строку -->
+<div class="reflection-stats-compact super-compact">
+  <div class="stat-item">
+    <span class="stat-label">Значение:</span>
+    <span class="stat-value" id="reflectionValue">0</span>
+  </div>
+  <div class="stat-divider">•</div>
+  <div class="stat-item">
+    <span class="stat-label">Баланс:</span>
+    <span class="stat-percentage" id="reflectionBalance">50%</span>
+    <span class="stat-status" id="reflectionStatus">Нормальный</span>
+  </div>
+</div>
+
+    <div class="reflection-form">
+      <!-- Оценка как кнопки -->
+      <div class="form-group">
+        <label class="form-label">Оценка удовлетворенности</label>
+        <div class="assessment-buttons">
+          <button class="assessment-btn" data-value="1">1</button>
+          <button class="assessment-btn" data-value="2">2</button>
+          <button class="assessment-btn" data-value="3">3</button>
+          <button class="assessment-btn" data-value="4">4</button>
+          <button class="assessment-btn" data-value="5">5</button>
+        </div>
+        <div class="input-hint">1 - совсем не доволен, 5 - полностью доволен текущим состоянием</div>
+      </div>
+
+      <!-- Цель -->
+      <div class="form-group">
+        <label class="form-label">Цель на ближайшее время</label>
+        <input type="text" class="form-input" id="reflectionGoal" 
+               placeholder="Какой результат я хочу увидеть?">
+        <div class="input-hint">Сформулируйте конкретный измеримый результат</div>
+      </div>
+
+      <!-- Комментарий -->
+      <div class="form-group">
+        <label class="form-label">Комментарий и план действий</label>
+        <textarea class="form-textarea" id="reflectionComment" 
+                  placeholder="Что я могу сделать для улучшения ситуации?"></textarea>
+        <div class="input-hint">Опишите конкретные шаги, которые планируете предпринять</div>
+      </div>
+    </div>
+
+    <!-- Кнопки по центру на всю ширину -->
+    <div class="reflection-actions-full">
+      <button class="btn-cancel-full" onclick="cancelReflection()">Отменить</button>
+      <button class="btn-save-full" onclick="saveReflection()">Переогранить</button>
+    </div>
+  </div>
+</div>
   <script src="{{ url_for('static', filename='Js/script.js') }}"></script>
 </body>
 </html>
