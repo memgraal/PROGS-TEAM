@@ -525,175 +525,198 @@ class CrystalManager {
     }
     
     showBreakMessage(level, isCareerCrystal) {
-        this.hideBreakMessage(level);
-        
-        const message = document.createElement('div');
-        message.className = 'break-notification-center';
-        message.dataset.level = level;
-        
-        message.innerHTML = `
-            <div class="break-notification-content">
-                <button class="break-notification-close" aria-label="Закрыть уведомление">×</button>
-                <div class="break-notification-text">
-                    Слишком большой дисбаланс в гранях привел к поломке кристалла.
-                </div>
-                <div class="break-timer-container">
-                    <span class="break-timer-label">Кристалл восстановится через:</span>
-                    <span class="break-timer">60:00</span>
-                </div>
+    this.hideBreakMessage(level);
+    
+    const message = document.createElement('div');
+    message.className = 'break-notification-center';
+    message.dataset.level = level;
+    
+    message.innerHTML = `
+        <div class="break-notification-content">
+            <button class="break-notification-close" aria-label="Закрыть уведомление">×</button>
+            <div class="break-notification-text">
+                Слишком большой дисбаланс в гранях привел к поломке кристалла.
             </div>
-        `;
+            <div class="break-timer-container">
+                <span class="break-timer-label">Кристалл восстановится через:</span>
+                <span class="break-timer">60:00</span>
+            </div>
+        </div>
+    `;
+    
+    message.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 50, 50, 0.95);
+        color: white;
+        padding: 25px 30px;
+        border-radius: 12px;
+        z-index: 10000;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 100, 100, 0.8);
+        box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+        min-width: 400px;
+        max-width: 500px;
+        font-size: 16px;
+        line-height: 1.4;
+    `;
+    
+    const closeBtn = message.querySelector('.break-notification-close');
+    closeBtn.style.cssText = `
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+        z-index: 10001;
+    `;
+    
+    const content = message.querySelector('.break-notification-content');
+    content.style.cssText = `
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    `;
+    
+    const textElement = message.querySelector('.break-notification-text');
+    textElement.style.cssText = `
+        margin: 0;
+        font-weight: 500;
+        font-size: 17px;
+        padding-right: 15px;
+        margin-top: 5px;
+    `;
+    
+    message.style.opacity = '0';
+    message.style.transform = 'translate(-50%, -50%) scale(0.8)';
+    
+    document.body.appendChild(message);
+    
+    setTimeout(() => {
+        message.style.opacity = '1';
+        message.style.transform = 'translate(-50%, -50%) scale(1)';
+        message.style.transition = 'all 0.3s ease';
+    }, 10);
+    
+    let timeLeft = 3600;
+    const timerEl = message.querySelector('.break-timer');
+    
+    const updateTimer = () => {
+        timeLeft--;
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
         
-        message.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 50, 50, 0.95);
-            color: white;
-            padding: 25px 30px;
-            border-radius: 12px;
-            z-index: 10000;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 100, 100, 0.8);
-            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
-            min-width: 400px;
-            max-width: 500px;
-            font-size: 16px;
-            line-height: 1.4;
-        `;
+        if (timerEl) {
+            timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
         
-        const closeBtn = message.querySelector('.break-notification-close');
-        closeBtn.style.cssText = `
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease;
-            z-index: 10001;
-        `;
-        
-        const content = message.querySelector('.break-notification-content');
-        content.style.cssText = `
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        `;
-        
-        const textElement = message.querySelector('.break-notification-text');
-        textElement.style.cssText = `
-            margin: 0;
-            font-weight: 500;
-            font-size: 17px;
-            padding-right: 15px;
-            margin-top: 5px;
-        `;
-        
-        message.style.opacity = '0';
-        message.style.transform = 'translate(-50%, -50%) scale(0.8)';
-        
-        document.body.appendChild(message);
-        
-        setTimeout(() => {
-            message.style.opacity = '1';
-            message.style.transform = 'translate(-50%, -50%) scale(1)';
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            if (timerEl) timerEl.textContent = "00:00";
+        }
+    };
+    
+    const timer = setInterval(updateTimer, 1000);
+    updateTimer();
+    
+    message.timer = timer;
+    
+    // Функция закрытия сообщения
+    const closeMessage = () => {
+        if (message.parentNode) {
+            if (message.timer) {
+                clearInterval(message.timer);
+            }
+            if (message.autoCloseTimer) {
+                clearTimeout(message.autoCloseTimer);
+            }
+            if (message.escapeHandler) {
+                document.removeEventListener('keydown', message.escapeHandler);
+            }
+            message.style.opacity = '0';
+            message.style.transform = 'translate(-50%, -50%) scale(0.9)';
             message.style.transition = 'all 0.3s ease';
-        }, 10);
-        
-        let timeLeft = 3600;
-        const timerEl = message.querySelector('.break-timer');
-        
-        const updateTimer = () => {
-            timeLeft--;
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            
-            if (timerEl) {
-                timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }
-            
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                if (timerEl) timerEl.textContent = "00:00";
-            }
-        };
-        
-        const timer = setInterval(updateTimer, 1000);
-        updateTimer();
-        
-        message.timer = timer;
-        
-        const closeMessage = () => {
-            if (message.parentNode) {
-                if (message.timer) {
-                    clearInterval(message.timer);
+            setTimeout(() => {
+                if (message.parentNode) {
+                    message.remove();
                 }
-                message.style.opacity = '0';
-                message.style.transform = 'translate(-50%, -50%) scale(0.9)';
-                message.style.transition = 'all 0.3s ease';
-                setTimeout(() => {
-                    if (message.parentNode) {
-                        message.remove();
-                    }
-                }, 300);
-            }
-        };
-        
-        closeBtn.addEventListener('click', (event) => {
-            event.stopPropagation();
+            }, 300);
+        }
+    };
+    
+    // Обработчик ESC
+    message.escapeHandler = (event) => {
+        if (event.key === 'Escape') {
             closeMessage();
-        });
-        
-        closeBtn.addEventListener('mouseenter', () => {
-            closeBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-        });
-        
-        closeBtn.addEventListener('mouseleave', () => {
-            closeBtn.style.backgroundColor = 'transparent';
-        });
-        
-        const autoCloseTimer = setTimeout(() => {
-            closeMessage();
-        }, 6000);
-        
-        message.autoCloseTimer = autoCloseTimer;
+        }
+    };
+    
+    // Добавляем обработчик ESC
+    document.addEventListener('keydown', message.escapeHandler);
+    
+    closeBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        closeMessage();
+    });
+    
+    closeBtn.addEventListener('mouseenter', () => {
+        closeBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+    });
+    
+    closeBtn.addEventListener('mouseleave', () => {
+        closeBtn.style.backgroundColor = 'transparent';
+    });
+    
+    const autoCloseTimer = setTimeout(() => {
+        closeMessage();
+    }, 6000);
+    
+    message.autoCloseTimer = autoCloseTimer;
+}
+
+hideBreakMessage(level) {
+    const centerMessage = document.querySelector(`.break-notification-center[data-level="${level}"]`);
+    if (centerMessage) {
+        if (centerMessage.timer) {
+            clearInterval(centerMessage.timer);
+        }
+        if (centerMessage.autoCloseTimer) {
+            clearTimeout(centerMessage.autoCloseTimer);
+        }
+        if (centerMessage.escapeHandler) {
+            document.removeEventListener('keydown', centerMessage.escapeHandler);
+        }
+        centerMessage.remove();
     }
     
-    hideBreakMessage(level) {
-        const centerMessage = document.querySelector(`.break-notification-center[data-level="${level}"]`);
-        if (centerMessage) {
-            if (centerMessage.timer) {
-                clearInterval(centerMessage.timer);
-            }
-            centerMessage.remove();
-        }
-        
-        const notification = document.querySelector(`.break-notification-tracker[data-break-level="${level}"]`);
-        if (notification) {
-            notification.remove();
-        }
-        
-        const oldMessage = document.querySelector(`.break-message[data-level="${level}"]`);
-        if (oldMessage) {
-            if (oldMessage.timer) {
-                clearInterval(oldMessage.timer);
-            }
-            oldMessage.remove();
-        }
+    const notification = document.querySelector(`.break-notification-tracker[data-break-level="${level}"]`);
+    if (notification) {
+        notification.remove();
     }
+    
+    const oldMessage = document.querySelector(`.break-message[data-level="${level}"]`);
+    if (oldMessage) {
+        if (oldMessage.timer) {
+            clearInterval(oldMessage.timer);
+        }
+        oldMessage.remove();
+    }
+}
 }
 
 class ScaleManager {
@@ -1600,60 +1623,246 @@ function setupSliderDrag(container) {
     }
 }
 
-// Обновленная функция для обновления визуала слайдера
+
+
+// Функция для обновления всех слайдеров при загрузке
+function updateAllSlidersOnLoad() {
+    const sliders = document.querySelectorAll('.advanced-slider-container');
+    sliders.forEach(container => {
+        const input = container.querySelector('.advanced-slider-input');
+        const currentValue = parseInt(input.value) || 0;
+        updateSliderVisuals(container, currentValue);
+    });
+}
+
 function updateSliderVisuals(container, value) {
-    const thumb = container.querySelector('.slider-thumb');
-    const valueDisplay = container.querySelector('.slider-value');
-    const fill = container.querySelector('.slider-fill');
-    const headerValue = container.closest('.facet-input-group')?.querySelector('.current-value-display');
-    
-    const crystalContainer = container.closest('.nav-level');
-    const isCareerCrystal = crystalContainer?.querySelector('.career-crystal') !== null;
-    
-    if (valueDisplay) valueDisplay.textContent = value;
-    if (headerValue) headerValue.textContent = value;
-    
-    const percentage = ((value + 30) / 60) * 100;
-    
-    if (thumb) thumb.style.left = `${percentage}%`;
-    if (fill) fill.style.width = `${percentage}%`;
-    
-    if (value < 0) {
-        if (fill) fill.style.background = 'linear-gradient(90deg, #ff6b6b 0%, #ffa500 100%)';
-        if (thumb) thumb.style.background = '#ff6b6b';
-        if (headerValue) {
-            headerValue.style.borderColor = '#ff6b6b';
-            headerValue.style.background = 'rgba(255, 107, 107, 0.2)';
-            headerValue.style.color = '#ff6b6b';
+    try {
+        const thumb = container.querySelector('.slider-thumb');
+        const valueDisplay = container.querySelector('.slider-value');
+        const fill = container.querySelector('.slider-fill');
+        const headerValue = container.closest('.facet-input-group')?.querySelector('.current-value-display');
+        
+        const crystalContainer = container.closest('.nav-level');
+        const level = parseInt(crystalContainer?.dataset.level);
+        const isCareerCrystal = level >= 6 && level <= 8;
+        
+        if (valueDisplay) valueDisplay.textContent = value;
+        if (headerValue) headerValue.textContent = value;
+        
+        const percentage = ((value + 30) / 60) * 100;
+        
+        if (thumb) {
+            thumb.style.transition = 'left 0.3s ease, background 0.3s ease';
+            thumb.style.left = `${percentage}%`;
         }
-    } else if (value > 0) {
-        if (isCareerCrystal) {
-            if (fill) fill.style.background = 'linear-gradient(90deg, rgba(192,126,224,0.8) 0%, rgba(178,152,220,0.9) 100%)';
-            if (thumb) thumb.style.background = 'var(--accent-3)';
+        
+        if (fill) {
+            fill.style.transition = 'width 0.3s ease, background 0.3s ease';
+            fill.style.width = `${percentage}%`;
+        }
+        
+        // ЛОГИКА ЦВЕТОВ С МИНИМАЛЬНЫМИ ИЗМЕНЕНИЯМИ
+        if (value === 0) {
+            // 🟠 ОРАНЖЕВЫЙ на нуле
+            if (fill) fill.style.background = '#ffa500';
+            if (thumb) thumb.style.background = '#ffa500';
             if (headerValue) {
-                headerValue.style.borderColor = 'var(--accent-3)';
-                headerValue.style.background = 'rgba(192,126,224,0.2)';
-                headerValue.style.color = 'var(--accent-3)';
+                headerValue.style.transition = 'all 0.3s ease';
+                headerValue.style.borderColor = '#ffa500';
+                headerValue.style.background = 'rgba(255,165,0,0.2)';
+                headerValue.style.color = '#ffa500';
+            }
+        } else if (value > 0) {
+            // Положительные значения - СВЕТЛЕЕТ
+            if (isCareerCrystal) {
+                // 🟣 ФИОЛЕТОВЫЙ для карьеры (+)
+                let currentColor = value >= 15 ? '#C17CE3' : '#9E67B8'; // Светлеет
+                
+                if (fill) fill.style.background = currentColor;
+                if (thumb) thumb.style.background = currentColor;
+                if (headerValue) {
+                    headerValue.style.transition = 'all 0.3s ease';
+                    headerValue.style.borderColor = currentColor;
+                    headerValue.style.background = 'rgba(216,180,254,0.2)';
+                    headerValue.style.color = currentColor;
+                }
+            } else {
+                // 🔵 СИНИЙ для семьи (+)
+                let currentColor = value >= 15 ? '#6cb2beff' : '#6CAABE'; // Светлеет
+                
+                if (fill) fill.style.background = currentColor;
+                if (thumb) thumb.style.background = currentColor;
+                if (headerValue) {
+                    headerValue.style.transition = 'all 0.3s ease';
+                    headerValue.style.borderColor = currentColor;
+                    headerValue.style.background = 'rgba(147,197,253,0.2)';
+                    headerValue.style.color = currentColor;
+                }
             }
         } else {
-            if (fill) fill.style.background = 'linear-gradient(90deg, rgba(124,199,224,0.8) 0%, rgba(78,205,196,0.9) 100%)';
-            if (thumb) thumb.style.background = 'var(--accent-2)';
+            // 🔴 КРАСНЫЙ для отрицательных значений - немного темнеет
+            let currentColor = value <= -15 ? '#ef4444' : '#f87171';
+            
+            if (fill) fill.style.background = currentColor;
+            if (thumb) thumb.style.background = currentColor;
             if (headerValue) {
-                headerValue.style.borderColor = 'var(--accent-2)';
-                headerValue.style.background = 'rgba(124,199,224,0.2)';
-                headerValue.style.color = 'var(--accent-2)';
+                headerValue.style.transition = 'all 0.3s ease';
+                headerValue.style.borderColor = currentColor;
+                headerValue.style.background = value <= -15 ? 'rgba(239,68,68,0.2)' : 'rgba(248,113,113,0.2)';
+                headerValue.style.color = currentColor;
             }
         }
-    } else {
-        if (fill) fill.style.background = 'linear-gradient(90deg, #ffa500 0%, #ffa500 100%)';
-        if (thumb) thumb.style.background = '#ffa500';
-        if (headerValue) {
-            headerValue.style.borderColor = '#ffa500';
-            headerValue.style.background = 'rgba(255, 165, 0, 0.2)';
-            headerValue.style.color = '#ffa500';
+
+        // Плавные переходы
+        if (thumb) {
+            thumb.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
+            thumb.style.transition = 'left 0.3s ease, background 0.3s ease, box-shadow 0.3s ease';
         }
+
+        if (fill) {
+            fill.style.borderRadius = '8px';
+            fill.style.transition = 'width 0.3s ease, background 0.3s ease';
+        }
+
+    } catch (error) {
+        console.error('Error updating slider visuals:', error);
     }
 }
+
+// Функция для обновления всех слайдеров при загрузке
+function updateAllSlidersOnLoad() {
+    const sliders = document.querySelectorAll('.advanced-slider-container');
+    sliders.forEach(container => {
+        const input = container.querySelector('.advanced-slider-input');
+        const currentValue = parseInt(input.value) || 0;
+        updateSliderVisuals(container, currentValue);
+    });
+}
+
+// Вызов после загрузки страницы
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        updateAllSlidersOnLoad();
+    }, 100);
+});
+
+// Обновляем при изменении значений
+function updateSliderValue(container, value) {
+    try {
+        const input = container.querySelector('.advanced-slider-input');
+        const min = parseInt(input.min) || -30;
+        const max = parseInt(input.max) || 30;
+        
+        value = Math.max(min, Math.min(max, value));
+        input.value = value;
+        
+        updateSliderVisuals(container, value);
+        
+        const valueDisplay = container.closest('.facet-input-group')?.querySelector('.current-value-display');
+        if (valueDisplay) {
+            valueDisplay.textContent = value;
+        }
+        
+        saveAllStates();
+    } catch (error) {
+        console.error('Error updating slider value:', error);
+    }
+}
+
+// Функция для обновления всех слайдеров при загрузке
+function updateAllSlidersOnLoad() {
+    const sliders = document.querySelectorAll('.advanced-slider-container');
+    sliders.forEach(container => {
+        const input = container.querySelector('.advanced-slider-input');
+        const currentValue = parseInt(input.value) || 0;
+        updateSliderVisuals(container, currentValue);
+    });
+}
+
+// Вызов после загрузки страницы
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        updateAllSlidersOnLoad();
+    }, 100);
+});
+
+// Обновляем при изменении значений
+function updateSliderValue(container, value) {
+    try {
+        const input = container.querySelector('.advanced-slider-input');
+        const min = parseInt(input.min) || -30;
+        const max = parseInt(input.max) || 30;
+        
+        value = Math.max(min, Math.min(max, value));
+        input.value = value;
+        
+        updateSliderVisuals(container, value);
+        
+        const valueDisplay = container.closest('.facet-input-group')?.querySelector('.current-value-display');
+        if (valueDisplay) {
+            valueDisplay.textContent = value;
+        }
+        
+        saveAllStates();
+    } catch (error) {
+        console.error('Error updating slider value:', error);
+    }
+}
+
+// Функция для обновления всех слайдеров при загрузке
+function updateAllSlidersOnLoad() {
+    const sliders = document.querySelectorAll('.advanced-slider-container');
+    sliders.forEach(container => {
+        const input = container.querySelector('.advanced-slider-input');
+        const currentValue = parseInt(input.value) || 0;
+        updateSliderVisuals(container, currentValue);
+    });
+}
+
+// Вызов после загрузки страницы
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        updateAllSlidersOnLoad();
+    }, 100);
+});
+
+// Обновляем при изменении значений
+function updateSliderValue(container, value) {
+    try {
+        const input = container.querySelector('.advanced-slider-input');
+        const min = parseInt(input.min) || -30;
+        const max = parseInt(input.max) || 30;
+        
+        value = Math.max(min, Math.min(max, value));
+        input.value = value;
+        
+        updateSliderVisuals(container, value);
+        
+        const valueDisplay = container.closest('.facet-input-group')?.querySelector('.current-value-display');
+        if (valueDisplay) {
+            valueDisplay.textContent = value;
+        }
+        
+        saveAllStates();
+    } catch (error) {
+        console.error('Error updating slider value:', error);
+    }
+}
+
+// Функция для обновления всех слайдеров при загрузке
+function updateAllSlidersOnLoad() {
+    const sliders = document.querySelectorAll('.advanced-slider-container');
+    sliders.forEach(container => {
+        const input = container.querySelector('.advanced-slider-input');
+        const currentValue = parseInt(input.value) || 0;
+        updateSliderVisuals(container, currentValue);
+    });
+}
+
+// Вызов после загрузки страницы
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(updateAllSlidersOnLoad, 100);
+});
 
 // Обновленная функция для кнопок ±1 с вызовом модального окна рефлексии
 window.changeAdvancedValue = function(button, change) {
@@ -2153,6 +2362,7 @@ function showWelcomeMessage() {
         <div style="display: flex; align-items: center; gap: 12px;">
             <div>
                 <strong>Добро пожаловать в Кристаллы Фемиды!</strong>
+                <strong style="color: var(--accent-1);">Помоги себе что бы помочь другим</strong><br>
             </div>
         </div>
     `;
