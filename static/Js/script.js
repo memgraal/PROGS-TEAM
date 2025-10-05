@@ -45,6 +45,301 @@ const CRYSTAL_CONFIG = {
     }
 };
 
+// Глобальные переменные для рефлексии
+let currentReflectionContext = {
+    level: null,
+    facetName: null,
+    crystalName: null,
+    sliderValue: null,
+    container: null
+};
+
+// Функция для показа приветственного сообщения
+function showWelcomeMessageSimple() {
+    const welcomeShown = sessionStorage.getItem('welcomeShown');
+    if (welcomeShown) return;
+    
+    if (window.notificationSystem) {
+        window.notificationSystem.show(`
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="font-size: 1.5rem;">⚖️</div>
+                <div>
+                    <strong style="color: var(--accent-1);">Добро пожаловать в Кристаллы Фемиды!</strong><br>
+                    <span style="color: var(--muted); font-size: 0.9rem;">Отслеживайте баланс между семьей и карьерой</span>
+                </div>
+            </div>
+        `, 'info', 5000);
+    }
+    
+    sessionStorage.setItem('welcomeShown', 'true');
+}
+
+// Ленивая загрузка модальных окон
+class LazyLoader {
+    constructor() {
+        this.loadedLevels = new Set([0]); // Главный экран загружен сразу
+        this.observer = null;
+        this.initIntersectionObserver();
+    }
+
+    initIntersectionObserver() {
+        this.observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const level = entry.target.dataset.level;
+                    this.loadLevelContent(level);
+                    this.observer.unobserve(entry.target);
+                }
+            });
+        }, { 
+            rootMargin: '50px',
+            threshold: 0.1 
+        });
+    }
+
+    loadLevelContent(level) {
+        if (this.loadedLevels.has(level)) return;
+
+        console.log(`Lazy loading level ${level}`);
+        this.loadedLevels.add(level);
+
+        // Для уровней 3-8 загружаем тяжелые ресурсы
+        if (level >= 3 && level <= 8) {
+            this.preloadCrystalImages(level);
+        }
+    }
+
+    preloadCrystalImages(level) {
+        const crystalType = level >= 6 ? 'purple' : 'blue';
+        const img = new Image();
+        img.src = `/static/Img/diamond ${crystalType}.svg`;
+        
+        img.onload = () => {
+            const crystal = document.querySelector(`[data-level="${level}"] .extra-large-crystal`);
+            if (crystal && !crystal.src.includes('diamond')) {
+                crystal.src = img.src;
+            }
+        };
+    }
+
+    observeLevel(levelElement) {
+        if (this.observer && !this.loadedLevels.has(levelElement.dataset.level)) {
+            this.observer.observe(levelElement);
+        }
+    }
+}
+
+// Оптимизатор слайдеров
+class SliderOptimizer {
+    constructor() {
+        this.activeSliders = new Set();
+        this.debouncedUpdate = this.debounce(this.updateSliderPriorities.bind(this), 100);
+        this.setupVisibilityListener();
+    }
+
+    setupVisibilityListener() {
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.suspendAllAnimations();
+            } else {
+                this.resumeAllAnimations();
+            }
+        });
+    }
+
+    optimizeSlidersForLevel(level) {
+        const sliders = document.querySelectorAll(`[data-level="${level}"] .advanced-slider-container`);
+        
+        sliders.forEach((slider, index) => {
+            if (index > 1) {
+                this.lazyInitSlider(slider);
+            } else {
+                this.immediateInitSlider(slider);
+            }
+        });
+    }
+
+    lazyInitSlider(slider) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.immediateInitSlider(slider);
+                    observer.unobserve(slider);
+                }
+            });
+        });
+
+        observer.observe(slider);
+    }
+
+    immediateInitSlider(slider) {
+        this.activeSliders.add(slider);
+        const input = slider.querySelector('.advanced-slider-input');
+        const initialValue = parseInt(input.value) || 0;
+        updateSliderVisuals(slider, initialValue);
+    }
+
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    suspendAllAnimations() {
+        document.querySelectorAll('.slider-thumb, .extra-large-crystal').forEach(el => {
+            el.style.animationPlayState = 'paused';
+        });
+    }
+
+    resumeAllAnimations() {
+        document.querySelectorAll('.slider-thumb, .extra-large-crystal').forEach(el => {
+            el.style.animationPlayState = 'running';
+        });
+    }
+
+    isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+}
+
+// Менеджер памяти
+class MemoryManager {
+    constructor() {
+        this.cleanupCallbacks = new Map();
+        this.setupCleanupListeners();
+    }
+
+    setupCleanupListeners() {
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.cleanupInactiveResources();
+            }
+        });
+    }
+
+    scheduleCleanup() {
+        requestAnimationFrame(() => {
+            this.cleanupInactiveResources();
+        });
+    }
+
+    cleanupInactiveResources() {
+        const activeLevel = navStack[navStack.length - 1];
+        
+        document.querySelectorAll('.nav-level.active').forEach(level => {
+            if (level.dataset.level !== activeLevel.toString()) {
+                this.cleanupLevelResources(level.dataset.level);
+            }
+        });
+
+        this.cleanupOrphanedTimers();
+        
+        if (window.gc) {
+            window.gc();
+        }
+    }
+
+    cleanupLevelResources(level) {
+        if (level >= 3 && level <= 8) {
+            this.suspendCrystalAnimations(level);
+        }
+    }
+
+    suspendCrystalAnimations(level) {
+        const crystal = document.querySelector(`[data-level="${level}"] .extra-large-crystal`);
+        if (crystal) {
+            crystal.style.animationPlayState = 'paused';
+        }
+    }
+
+    cleanupOrphanedTimers() {
+        Object.entries(window.crystalManager.cooldownTimers).forEach(([level, timer]) => {
+            if (!document.querySelector(`[data-level="${level}"]`)) {
+                clearTimeout(timer);
+                delete window.crystalManager.cooldownTimers[level];
+            }
+        });
+    }
+
+    restoreLevel(level) {
+        const crystal = document.querySelector(`[data-level="${level}"] .extra-large-crystal`);
+        if (crystal) {
+            crystal.style.animationPlayState = 'running';
+        }
+    }
+}
+
+// Оптимизатор изображений
+class ImageOptimizer {
+    constructor() {
+        this.imageCache = new Map();
+        this.initPreloadStrategy();
+    }
+
+    initPreloadStrategy() {
+        this.preloadCriticalImages();
+        this.setupLazyLoading();
+    }
+
+    preloadCriticalImages() {
+        const criticalImages = [
+            '/static/Img/stand.svg',
+            '/static/Img/beam.svg',
+            '/static/Img/left-pan.svg',
+            '/static/Img/right-pan.svg'
+        ];
+
+        criticalImages.forEach(src => {
+            const img = new Image();
+            img.src = src;
+            this.imageCache.set(src, img);
+        });
+    }
+
+    setupLazyLoading() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    this.loadImage(img);
+                    observer.unobserve(img);
+                }
+            });
+        });
+
+        document.querySelectorAll('img[data-src]').forEach(img => {
+            observer.observe(img);
+        });
+    }
+
+    loadImage(imgElement) {
+        const src = imgElement.dataset.src;
+        if (this.imageCache.has(src)) {
+            imgElement.src = src;
+        } else {
+            const img = new Image();
+            img.onload = () => {
+                imgElement.src = src;
+                this.imageCache.set(src, img);
+            };
+            img.src = src;
+        }
+        imgElement.removeAttribute('data-src');
+    }
+}
+
 // Менеджер кристаллов
 class CrystalManager {
     constructor() {
@@ -67,28 +362,22 @@ class CrystalManager {
             return;
         }
         
-        // Убираем предупреждение перед поломкой
         removeCrystalWarning(level);
         
         const isCareerCrystal = crystal.classList.contains('career-crystal');
         
-        // Помечаем кристалл как сломанный
         this.brokenCrystals[level] = true;
         
-        // Добавляем класс поломки
         crystal.classList.add('crystal-broken');
         
-        // Блокируем взаимодействие
         const sliders = crystalContainer.querySelectorAll('.slider-btn, .slider-track');
         sliders.forEach(slider => {
             slider.style.pointerEvents = 'none';
             slider.style.opacity = '0.5';
         });
         
-        // Обновляем веса на основе количества сломанных кристаллов
         window.scaleManager.updateWeightsFromBrokenCrystals();
         
-        // Добавляем таймер на уровень кристалла
         this.addCrystalTimer(level);
         
         window.scaleManager.updateScaleBalance();
@@ -103,52 +392,43 @@ class CrystalManager {
         console.log(`Crystal at level ${level} broken. Will restore in 1 hour.`);
     }
     
-    // В классе CrystalManager обновите метод restoreCrystal:
-restoreCrystal(level) {
-    console.log(`Restoring crystal at level ${level}`);
-    
-    // Скрываем сообщение о поломке
-    this.hideBreakMessage(level);
-    
-    const crystalContainer = document.querySelector(`[data-level="${level}"]`);
-    if (crystalContainer) {
-        // Удаляем таймер
-        const timer = crystalContainer.querySelector('.crystal-timer');
-        if (timer) {
-            if (timer.timer) clearInterval(timer.timer);
-            timer.remove();
+    restoreCrystal(level) {
+        console.log(`Restoring crystal at level ${level}`);
+        
+        this.hideBreakMessage(level);
+        
+        const crystalContainer = document.querySelector(`[data-level="${level}"]`);
+        if (crystalContainer) {
+            const timer = crystalContainer.querySelector('.crystal-timer');
+            if (timer) {
+                if (timer.timer) clearInterval(timer.timer);
+                timer.remove();
+            }
+            
+            const crystal = crystalContainer.querySelector('.extra-large-crystal');
+            if (crystal) {
+                crystal.classList.remove('crystal-broken');
+            }
+            
+            const sliders = crystalContainer.querySelectorAll('.slider-btn, .slider-track');
+            sliders.forEach(slider => {
+                slider.style.pointerEvents = 'auto';
+                slider.style.opacity = '1';
+            });
         }
         
-        // Убираем класс поломки с большого кристалла
-        const crystal = crystalContainer.querySelector('.extra-large-crystal');
-        if (crystal) {
-            crystal.classList.remove('crystal-broken');
-        }
+        this.brokenCrystals[level] = false;
         
-        // Разблокируем слайдеры
-        const sliders = crystalContainer.querySelectorAll('.slider-btn, .slider-track');
-        sliders.forEach(slider => {
-            slider.style.pointerEvents = 'auto';
-            slider.style.opacity = '1';
-        });
+        window.scaleManager.updateWeightsFromBrokenCrystals();
+        
+        window.scaleManager.updateScaleBalance();
+        window.stateManager.saveAllStates();
+        
+        const isCareerCrystal = level >= 6;
+        this.updateBrokenCrystalsOnBowlLevel(isCareerCrystal ? 2 : 1);
+        
+        console.log(`Crystal at level ${level} restored.`);
     }
-    
-    // Обновляем состояние
-    this.brokenCrystals[level] = false;
-    
-    // Обновляем веса на основе количества сломанных кристаллов
-    window.scaleManager.updateWeightsFromBrokenCrystals();
-    
-    // Обновляем визуал
-    window.scaleManager.updateScaleBalance();
-    window.stateManager.saveAllStates();
-    
-    // Определяем тип кристалла для обновления чаши
-    const isCareerCrystal = level >= 6;
-    this.updateBrokenCrystalsOnBowlLevel(isCareerCrystal ? 2 : 1);
-    
-    console.log(`Crystal at level ${level} restored.`);
-}
     
     addCrystalTimer(level) {
         const crystalContainer = document.querySelector(`[data-level="${level}"]`);
@@ -157,11 +437,9 @@ restoreCrystal(level) {
         const crystalCenter = crystalContainer.querySelector('.crystal-center');
         if (!crystalCenter) return;
         
-        // Удаляем старый таймер если есть
         const oldTimer = crystalContainer.querySelector('.crystal-timer');
         if (oldTimer) oldTimer.remove();
         
-        // Создаем контейнер для таймера
         const timerContainer = document.createElement('div');
         timerContainer.className = 'crystal-timer';
         timerContainer.innerHTML = `
@@ -191,8 +469,7 @@ restoreCrystal(level) {
         crystalCenter.style.position = 'relative';
         crystalCenter.appendChild(timerContainer);
         
-        // Запускаем таймер с секундами
-        let timeLeft = 3600; // 1 час в секундах
+        let timeLeft = 3600;
         const timerElement = timerContainer.querySelector('.timer-value');
         
         const timer = setInterval(() => {
@@ -207,16 +484,14 @@ restoreCrystal(level) {
             if (timeLeft <= 0) {
                 clearInterval(timer);
                 if (timerElement) timerElement.textContent = "00:00";
-                // Автоматически удаляем таймер после завершения
                 setTimeout(() => {
                     if (timerContainer.parentNode) {
                         timerContainer.remove();
                     }
                 }, 2000);
             }
-        }, 1000); // Обновляем каждую секунду
+        }, 1000);
         
-        // Сохраняем ссылку на таймер для возможности очистки
         timerContainer.timer = timer;
     }
     
@@ -231,23 +506,19 @@ restoreCrystal(level) {
         const bowlContainer = document.querySelector(`[data-level="${bowlLevel}"] .crystals-group`);
         if (!bowlContainer) return;
         
-        // Удаляем старые индикаторы
         const oldIndicators = bowlContainer.querySelectorAll('.broken-crystal-indicator');
         oldIndicators.forEach(indicator => indicator.remove());
         
-        // Убираем классы поломки со всех кристаллов
         const allCrystals = bowlContainer.querySelectorAll('.crystal-in-bowl');
         allCrystals.forEach(crystal => {
             crystal.classList.remove('crystal-broken');
         });
         
-        // Добавляем классы только для сломанных кристаллов (БЕЗ ИНДИКАТОРОВ)
         crystalLevels.forEach(crystalLevel => {
             if (this.brokenCrystals[crystalLevel]) {
                 const crystalIndex = crystalLevels.indexOf(crystalLevel) + 1;
                 const crystalElement = bowlContainer.querySelector(`.crystal-${crystalIndex}`);
                 if (crystalElement) {
-                    // ТОЛЬКО добавляем класс поломки, НЕ добавляем индикатор
                     crystalElement.classList.add('crystal-broken');
                 }
             }
@@ -257,7 +528,6 @@ restoreCrystal(level) {
     showBreakMessage(level, isCareerCrystal) {
         this.hideBreakMessage(level);
         
-        // Создаем отдельное сообщение по центру экрана
         const message = document.createElement('div');
         message.className = 'break-notification-center';
         message.dataset.level = level;
@@ -295,7 +565,6 @@ restoreCrystal(level) {
             line-height: 1.4;
         `;
         
-        // Стили для кнопки закрытия 
         const closeBtn = message.querySelector('.break-notification-close');
         closeBtn.style.cssText = `
             position: absolute;
@@ -316,7 +585,6 @@ restoreCrystal(level) {
             z-index: 10001;
         `;
         
-        // Стили для контента
         const content = message.querySelector('.break-notification-content');
         content.style.cssText = `
             position: relative;
@@ -326,7 +594,6 @@ restoreCrystal(level) {
             gap: 15px;
         `;
         
-        // Стили для текста
         const textElement = message.querySelector('.break-notification-text');
         textElement.style.cssText = `
             margin: 0;
@@ -336,21 +603,18 @@ restoreCrystal(level) {
             margin-top: 5px;
         `;
         
-        // Анимация появления
         message.style.opacity = '0';
         message.style.transform = 'translate(-50%, -50%) scale(0.8)';
         
         document.body.appendChild(message);
         
-        // Анимация появления
         setTimeout(() => {
             message.style.opacity = '1';
             message.style.transform = 'translate(-50%, -50%) scale(1)';
             message.style.transition = 'all 0.3s ease';
         }, 10);
         
-        // Запускаем таймер
-        let timeLeft = 3600; // 1 час в секундах
+        let timeLeft = 3600;
         const timerEl = message.querySelector('.break-timer');
         
         const updateTimer = () => {
@@ -369,12 +633,10 @@ restoreCrystal(level) {
         };
         
         const timer = setInterval(updateTimer, 1000);
-        updateTimer(); // Первоначальное обновление
+        updateTimer();
         
-        // Сохраняем ссылку на таймер
         message.timer = timer;
         
-        // Функция для закрытия сообщения
         const closeMessage = () => {
             if (message.parentNode) {
                 if (message.timer) {
@@ -391,13 +653,11 @@ restoreCrystal(level) {
             }
         };
         
-        // Обработчик для кнопки закрытия
         closeBtn.addEventListener('click', (event) => {
             event.stopPropagation();
             closeMessage();
         });
         
-        // Обработчик при наведении на кнопку закрытия
         closeBtn.addEventListener('mouseenter', () => {
             closeBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
         });
@@ -406,17 +666,14 @@ restoreCrystal(level) {
             closeBtn.style.backgroundColor = 'transparent';
         });
         
-        // Автоматически скрываем через 6 секунд
         const autoCloseTimer = setTimeout(() => {
             closeMessage();
         }, 6000);
         
-        // Сохраняем таймер авто-закрытия для возможности отмены
         message.autoCloseTimer = autoCloseTimer;
     }
     
     hideBreakMessage(level) {
-        // Удаляем центральное сообщение
         const centerMessage = document.querySelector(`.break-notification-center[data-level="${level}"]`);
         if (centerMessage) {
             if (centerMessage.timer) {
@@ -425,13 +682,11 @@ restoreCrystal(level) {
             centerMessage.remove();
         }
         
-        // Удаляем трекер из системы уведомлений
         const notification = document.querySelector(`.break-notification-tracker[data-break-level="${level}"]`);
         if (notification) {
             notification.remove();
         }
         
-        // Также удаляем старые сообщения (для обратной совместимости)
         const oldMessage = document.querySelector(`.break-message[data-level="${level}"]`);
         if (oldMessage) {
             if (oldMessage.timer) {
@@ -442,7 +697,6 @@ restoreCrystal(level) {
     }
 }
 
-// Менеджер весов
 class ScaleManager {
     constructor() {
         this.weights = { left: 0, right: 0 };
@@ -450,15 +704,15 @@ class ScaleManager {
     }
     
     countBrokenCrystals() {
-        let leftCount = 0; // Карьера (уровни 6,7,8)
-        let rightCount = 0; // Семья (уровни 3,4,5)
+        let leftCount = 0;
+        let rightCount = 0;
         
         for (let level = 3; level <= 8; level++) {
             if (window.crystalManager.brokenCrystals[level]) {
                 if (level >= 6) {
-                    leftCount++;
+                    leftCount = leftCount + 1;
                 } else {
-                    rightCount++;
+                    rightCount = rightCount + 1;
                 }
             }
         }
@@ -477,11 +731,9 @@ class ScaleManager {
     updateWeightsFromBrokenCrystals() {
         const brokenCounts = this.countBrokenCrystals();
         
-        // Рассчитываем новые веса
         const newLeftWeight = this.calculateBrokenWeight(brokenCounts.left);
         const newRightWeight = this.calculateBrokenWeight(brokenCounts.right);
         
-        // Устанавливаем новые веса
         this.weights.left = newLeftWeight;
         this.weights.right = newRightWeight;
         
@@ -507,7 +759,6 @@ class ScaleManager {
         
         if (!scaleContainer || !leftPan || !rightPan) return;
         
-        // Сбрасываем все классы
         scaleContainer.className = 'scale';
         leftPan.className = 'pan-btn left-pan-btn';
         rightPan.className = 'pan-btn right-pan-btn';
@@ -528,42 +779,42 @@ class ScaleManager {
             this.state = 'balanced';
         }
         
-        // Обновляем отображение весов
         this.updateWeightDisplay();
     }
     
     updateWeightDisplay() {
         const statusElement = document.getElementById('scaleStatus');
-        if (!statusElement) return;
+        if (!statusElement) {
+            console.warn('Scale status element not found');
+            return;
+        }
+
+        if (!this.state) {
+            this.state = 'balanced';
+        }
 
         const brokenCounts = this.countBrokenCrystals();
-        
-        // Рассчитываем количество ЦЕЛЫХ алмазов
-        const familyIntact = 3 - brokenCounts.right;  // Семья: уровни 3,4,5
-        const careerIntact = 3 - brokenCounts.left;   // Карьера: уровни 6,7,8
+        const familyIntact = 3 - brokenCounts.right;
+        const careerIntact = 3 - brokenCounts.left;
         
         const totalLeftWeight = this.weights.left;
         const totalRightWeight = this.weights.right;
         const weightDifference = Math.abs(totalLeftWeight - totalRightWeight);
 
         let statusText = '';
-        let statusClass = '';
+        let statusClass = 'balanced';
 
-        // Сначала проверяем баланс весов
         if (weightDifference === 0) {
             statusClass = 'balanced';
-            // Сбалансированные случаи
             if (familyIntact === 3 && careerIntact === 3) {
                 statusText = 'Весы сбалансированы';
             } else {
                 statusText = `Весы сбалансированы ${familyIntact} | ${careerIntact}`;
             }
         } else {
-            // Несбалансированные случаи - ВСЕГДА начинаем с Семьи
             statusText = `В чаше Семья ${this.formatCrystalText(familyIntact)} | В Карьере ${careerIntact}`;
             
-            // Определяем класс для стилизации
-            const isFamilyHeavier = totalRightWeight > totalLeftWeight; // Семья тяжелее
+            const isFamilyHeavier = totalRightWeight > totalLeftWeight;
             if (isFamilyHeavier) {
                 statusClass = 'family-heavy';
             } else {
@@ -571,14 +822,15 @@ class ScaleManager {
             }
         }
 
-        // Обновляем элемент
         statusElement.className = `scale-status ${statusClass}`;
-        statusElement.querySelector('.status-text').textContent = statusText;
+        const statusTextElement = statusElement.querySelector('.status-text');
+        if (statusTextElement) {
+            statusTextElement.textContent = statusText;
+        }
         
         console.log(`Status: ${statusText}, Family intact: ${familyIntact}, Career intact: ${careerIntact}`);
     }
 
-    // Вспомогательный метод для форматирования текста алмазов
     formatCrystalText(count) {
         if (count === 1) return '1 алмаз';
         if (count === 0) return '0 алмазов';
@@ -586,22 +838,28 @@ class ScaleManager {
     }
 }
 
-// Менеджер состояния
 class StateManager {
     constructor() {
         this.brokenCrystals = {};
-        this.sliderValues = {}; // Добавляем хранение значений слайдеров
+        this.sliderValues = {};
     }
     
     saveAllStates() {
-        localStorage.setItem('crystalStates', JSON.stringify(window.crystalManager.brokenCrystals));
-        localStorage.setItem('scaleState', JSON.stringify({
-            weights: window.scaleManager.weights,
-            state: window.scaleManager.state
-        }));
-        
-        // Сохраняем значения слайдеров
-        this.saveSliderValues();
+        try {
+            localStorage.setItem('crystalStates', JSON.stringify(window.crystalManager.brokenCrystals));
+            localStorage.setItem('scaleState', JSON.stringify({
+                weights: window.scaleManager.weights,
+                state: window.scaleManager.state
+            }));
+            
+            this.saveSliderValues();
+            this.saveReflectionData();
+        } catch (error) {
+            console.error('Failed to save states:', error);
+            if (window.notificationSystem) {
+                window.notificationSystem.error('Не удалось сохранить данные');
+            }
+        }
     }
     
     saveSliderValues() {
@@ -617,41 +875,51 @@ class StateManager {
         localStorage.setItem('sliderValues', JSON.stringify(sliderValues));
     }
     
+    saveReflectionData() {
+        // Рефлексии сохраняются отдельно в saveReflection()
+    }
+    
     loadAllStates() {
-        // Загружаем состояния кристаллов
-        const savedStates = localStorage.getItem('crystalStates');
-        if (savedStates) {
-            window.crystalManager.brokenCrystals = JSON.parse(savedStates);
-            this.updateBrokenCrystalsVisuals();
-        }
-        
-        // Загружаем состояние весов
-        const savedScaleState = localStorage.getItem('scaleState');
-        if (savedScaleState) {
-            try {
-                const scaleState = JSON.parse(savedScaleState);
-                window.scaleManager.weights = scaleState.weights || { left: 0, right: 0 };
-                window.scaleManager.state = scaleState.state || 'balanced';
-                
-                // Применяем сохраненное состояние весов
-                setTimeout(() => {
-                    window.scaleManager.updateScaleBalance();
-                    window.scaleManager.updateWeightDisplay();
-                }, 100);
-            } catch (e) {
-                console.error('Error loading scale state:', e);
+        try {
+            const savedStates = localStorage.getItem('crystalStates');
+            if (savedStates) {
+                window.crystalManager.brokenCrystals = JSON.parse(savedStates);
+                this.updateBrokenCrystalsVisuals();
             }
+            
+            const savedScaleState = localStorage.getItem('scaleState');
+            if (savedScaleState) {
+                try {
+                    const scaleState = JSON.parse(savedScaleState);
+                    window.scaleManager.weights = scaleState.weights || { left: 0, right: 0 };
+                    window.scaleManager.state = scaleState.state || 'balanced';
+                } catch (e) {
+                    console.error('Error loading scale state:', e);
+                    window.scaleManager.weights = { left: 0, right: 0 };
+                    window.scaleManager.state = 'balanced';
+                }
+            } else {
+                window.scaleManager.weights = { left: 0, right: 0 };
+                window.scaleManager.state = 'balanced';
+            }
+            
+            setTimeout(() => {
+                window.scaleManager.updateScaleBalance();
+                window.scaleManager.updateWeightDisplay();
+            }, 50);
+            
+        } catch (error) {
+            console.error('Error loading states:', error);
+            window.scaleManager.weights = { left: 0, right: 0 };
+            window.scaleManager.state = 'balanced';
+            window.scaleManager.updateWeightDisplay();
         }
-        
-        // Загружаем значения слайдеров или сбрасываем на 0
-        this.loadSliderValues();
     }
     
     loadSliderValues() {
         const savedSliderValues = localStorage.getItem('sliderValues');
         
         if (savedSliderValues) {
-            // Если есть сохраненные значения - загружаем их
             try {
                 const sliderValues = JSON.parse(savedSliderValues);
                 this.applySliderValues(sliderValues);
@@ -660,7 +928,6 @@ class StateManager {
                 this.resetAllSlidersToZero();
             }
         } else {
-            // Если нет сохраненных значений - сбрасываем все на 0
             this.resetAllSlidersToZero();
         }
     }
@@ -737,20 +1004,17 @@ class NotificationSystem {
         notification.className = `notification ${type}`;
         notification.innerHTML = message;
         
-        // Добавляем анимацию появления
         notification.style.opacity = '0';
         notification.style.transform = 'translateX(100%)';
         
         this.container.appendChild(notification);
         
-        // Анимация появления
         setTimeout(() => {
             notification.style.opacity = '1';
             notification.style.transform = 'translateX(0)';
             notification.style.transition = 'all 0.3s ease';
         }, 10);
 
-        // Функция закрытия уведомления
         const closeNotification = () => {
             notification.style.opacity = '0';
             notification.style.transform = 'translateX(100%)';
@@ -758,29 +1022,24 @@ class NotificationSystem {
                 if (notification.parentNode) {
                     notification.remove();
                 }
-                // Удаляем обработчик клика по документу
                 document.removeEventListener('click', outsideClickListener);
             }, 300);
         };
 
-        // Обработчик клика вне уведомления
         const outsideClickListener = (event) => {
             if (!notification.contains(event.target)) {
                 closeNotification();
             }
         };
 
-        // Добавляем обработчик клика по всему документу
         setTimeout(() => {
             document.addEventListener('click', outsideClickListener);
         }, 100);
 
-        // Также добавляем обработчик на само уведомление чтобы клик внутри не закрывал его
         notification.addEventListener('click', (event) => {
             event.stopPropagation();
         });
 
-        // Автоматическое скрытие через 3 секунды
         if (duration > 0) {
             setTimeout(() => {
                 closeNotification();
@@ -807,28 +1066,6 @@ class NotificationSystem {
     }
 }
 
-// Утилиты
-class Utils {
-    static debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-    
-    static handleCrystalError(level, error) {
-        console.error(`Crystal error at level ${level}:`, error);
-        
-        // Показать пользовательское сообщение
-        window.notificationSystem.error(`Ошибка в кристалле: ${error.message}`);
-    }
-}
-
 // Простой и надежный класс для выпадающего меню
 class DropdownMenu {
     constructor() {
@@ -848,40 +1085,34 @@ class DropdownMenu {
             return;
         }
         
-        // Обработчик клика по кнопке меню
         toggle.addEventListener('click', (e) => {
             e.stopPropagation();
             this.toggleMenu();
         });
         
-        // Обработчики для пунктов меню
         const menuItems = menu.querySelectorAll('.dropdown-item');
         menuItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
                 console.log('Клик по пункту меню:', item.textContent.trim());
-                // Закрываем меню после клика
                 setTimeout(() => {
                     this.closeMenu();
                 }, 300);
             });
         });
         
-        // Закрытие при клике на оверлей
         if (overlay) {
             overlay.addEventListener('click', () => {
                 this.closeMenu();
             });
         }
         
-        // Закрытие при клике вне меню
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.dropdown-menu')) {
                 this.closeMenu();
             }
         });
         
-        // Закрытие при нажатии Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.isOpen) {
                 this.closeMenu();
@@ -910,7 +1141,6 @@ class DropdownMenu {
         
         this.isOpen = true;
         
-        // Анимация появления
         setTimeout(() => {
             if (menu) {
                 menu.style.opacity = '1';
@@ -944,23 +1174,229 @@ class DropdownMenu {
     }
 }
 
+// Мониторинг производительности
+function setupPerformanceMonitoring() {
+    let frameCount = 0;
+    let lastTime = performance.now();
+    
+    function checkFPS() {
+        frameCount++;
+        const currentTime = performance.now();
+        
+        if (currentTime - lastTime >= 1000) {
+            const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+            
+            if (fps < 30) {
+                console.warn(`Low FPS: ${fps}. Optimizing...`);
+                if (window.sliderOptimizer) {
+                    window.sliderOptimizer.suspendAllAnimations();
+                }
+            }
+            
+            frameCount = 0;
+            lastTime = currentTime;
+        }
+        
+        requestAnimationFrame(checkFPS);
+    }
+    
+    checkFPS();
+    
+    if (performance.memory) {
+        setInterval(() => {
+            const usedMB = performance.memory.usedJSHeapSize / 1048576;
+            if (usedMB > 50) {
+                if (window.memoryManager) {
+                    window.memoryManager.cleanupInactiveResources();
+                }
+            }
+        }, 10000);
+    }
+}
+
+// Функции для модального окна рефлексии
+function showReflectionModal() {
+    const modal = document.querySelector('.reflection-modal');
+    if (!modal) return;
+    
+    // Заполняем контекстную информацию
+    document.getElementById('reflectionCrystalName').textContent = currentReflectionContext.crystalName;
+    document.getElementById('reflectionFacetName').textContent = currentReflectionContext.facetName;
+    document.getElementById('reflectionValue').textContent = currentReflectionContext.sliderValue;
+    
+    // Сбрасываем форму
+    resetReflectionForm();
+    
+    // Показываем модальное окно
+    modal.style.display = 'flex';
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 10);
+    
+    // Загружаем сохраненные данные если есть
+    loadReflectionData();
+}
+
+function closeReflectionModal() {
+    const modal = document.querySelector('.reflection-modal');
+    if (!modal) return;
+    
+    modal.classList.remove('active');
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 300);
+}
+
+function resetReflectionForm() {
+    document.querySelectorAll('.assessment-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.getElementById('reflectionGoal').value = '';
+    document.getElementById('reflectionComment').value = '';
+}
+
+function loadReflectionData() {
+    const savedReflections = JSON.parse(localStorage.getItem('crystalReflections') || '{}');
+    const key = `${currentReflectionContext.level}_${currentReflectionContext.facetName}`;
+    
+    if (savedReflections[key]) {
+        const data = savedReflections[key];
+        
+        // Устанавливаем оценку
+        if (data.assessment !== undefined) {
+            document.querySelectorAll('.assessment-btn').forEach(btn => {
+                if (parseInt(btn.dataset.value) === data.assessment) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
+        // Заполняем поля
+        document.getElementById('reflectionGoal').value = data.goal || '';
+        document.getElementById('reflectionComment').value = data.comment || '';
+    }
+}
+
+function saveReflection() {
+    const assessmentBtn = document.querySelector('.assessment-btn.active');
+    const assessment = assessmentBtn ? parseInt(assessmentBtn.dataset.value) : null;
+    const goal = document.getElementById('reflectionGoal').value;
+    const comment = document.getElementById('reflectionComment').value;
+    
+    const reflectionData = {
+        assessment: assessment,
+        goal: goal,
+        comment: comment,
+        timestamp: new Date().toISOString(),
+        sliderValue: currentReflectionContext.sliderValue,
+        facet: currentReflectionContext.facetName,
+        crystal: currentReflectionContext.crystalName
+    };
+    
+    // Сохраняем в localStorage
+    const savedReflections = JSON.parse(localStorage.getItem('crystalReflections') || '{}');
+    const key = `${currentReflectionContext.level}_${currentReflectionContext.facetName}`;
+    savedReflections[key] = reflectionData;
+    localStorage.setItem('crystalReflections', JSON.stringify(savedReflections));
+    
+    // Сохраняем в общее состояние
+    window.stateManager.saveAllStates();
+    
+    // Показываем уведомление
+    window.notificationSystem.success('Рефлексия сохранена');
+    
+    // Закрываем модальное окно
+    closeReflectionModal();
+}
+
+function getCrystalName(levelElement) {
+    if (!levelElement) return 'Неизвестный кристалл';
+    
+    const level = levelElement.dataset.level;
+    const crystalTitles = {
+        '3': 'Дети',
+        '4': 'Партнер', 
+        '5': 'Быт',
+        '6': 'Основная работа',
+        '7': 'Развитие навыков',
+        '8': 'Командная работа'
+    };
+    
+    return crystalTitles[level] || 'Кристалл';
+}
+
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM fully loaded");
+    console.log("DOM fully loaded and parsed");
     
-    // Инициализация менеджеров
+    // СНАЧАЛА устанавливаем начальное состояние статуса
+    setInitialBalancedState();
+    
+    // ПОТОМ инициализируем менеджеры
     window.crystalManager = new CrystalManager();
     window.scaleManager = new ScaleManager();
     window.stateManager = new StateManager();
     window.notificationSystem = new NotificationSystem();
     window.dropdownMenu = new DropdownMenu();
     
+    // Новые оптимизации
+    window.lazyLoader = new LazyLoader();
+    window.sliderOptimizer = new SliderOptimizer();
+    window.memoryManager = new MemoryManager();
+    window.imageOptimizer = new ImageOptimizer();
+    
+    // ТЕПЕРЬ инициализируем приложение
     initializeApp();
     window.stateManager.loadAllStates();
+    
+    // Запускаем мониторинг производительности
+    setupPerformanceMonitoring();
+    
+    // ПОКАЗЫВАЕМ ПРИВЕТСТВЕННОЕ СООБЩЕНИЕ
+    showWelcomeMessageSimple();
+    
+    // Инициализация обработчиков для модального окна рефлексии
+    initializeReflectionModal();
 });
 
-// Инициализация приложения
+function initializeReflectionModal() {
+    // Обработчики для кнопок оценки
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('assessment-btn')) {
+            // Снимаем активный класс со всех кнопок
+            document.querySelectorAll('.assessment-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Добавляем активный класс к нажатой кнопке
+            e.target.classList.add('active');
+        }
+    });
+    
+    // Закрытие по ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modal = document.querySelector('.reflection-modal');
+            if (modal && modal.style.display !== 'none') {
+                closeReflectionModal();
+            }
+        }
+    });
+    
+    // Закрытие по клику на оверлей
+    document.addEventListener('click', function(e) {
+        const modal = document.querySelector('.reflection-modal');
+        if (modal && modal.style.display !== 'none' && e.target === modal) {
+            closeReflectionModal();
+        }
+    });
+}
+
 function initializeApp() {
+    console.log("Initializing application...");
+    
+    // СНАЧАЛА устанавливаем сбалансированное состояние
+    setInitialBalancedState();
+    
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             if (navStack.length > 1) {
@@ -973,19 +1409,77 @@ function initializeApp() {
     
     initializeAllSliders();
     addDynamicStyles();
-    window.scaleManager.updateWeightDisplay();
     
-    // Показываем приветственное сообщение
+    // ОБНОВЛЯЕМ статус после полной инициализации
+    if (window.scaleManager && typeof window.scaleManager.updateWeightDisplay === 'function') {
+        window.scaleManager.updateWeightDisplay();
+    } else {
+        // Если scaleManager еще не готов, используем fallback
+        updateWeightDisplayImmediately();
+    }
+    
+    // Наблюдаем за уровнями для ленивой загрузки
+    document.querySelectorAll('.nav-level[data-level]:not([data-level="0"])').forEach(level => {
+        if (window.lazyLoader) {
+            window.lazyLoader.observeLevel(level);
+        }
+    });
+    
     setTimeout(() => {
-        window.notificationSystem.info('Добро пожаловать в Кристаллы Фемиды!');
-    }, 1000);
+        // Финальное обновление статуса
+        if (window.scaleManager) {
+            window.scaleManager.updateWeightDisplay();
+        }
+    }, 100);
 }
 
 // Добавление динамических стилей
 function addDynamicStyles() {
     const style = document.createElement('style');
     style.textContent = `
-        /* Анимация предупреждения */
+        .nav-level {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000;
+        }
+
+        .extra-large-crystal,
+        .slider-thumb,
+        .pan-img {
+            will-change: transform, filter;
+            transform: translateZ(0);
+        }
+
+        @media (max-width: 768px) {
+            .crystal-in-bowl,
+            .slider-thumb {
+                transition-duration: 0.2s !important;
+            }
+            
+            .pan-img {
+                box-shadow: 0 2px 10px var(--accent-3) !important;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        .slider-track {
+            contain: layout style paint;
+        }
+
+        .crystals-group {
+            contain: layout;
+        }
+
         @keyframes crystalWarningPulse {
             0% { 
                 filter: drop-shadow(0 8px 25px rgba(124,199,224,0.4));
@@ -999,7 +1493,6 @@ function addDynamicStyles() {
             animation: crystalWarningPulse 0.5s infinite alternate !important;
         }
         
-        /* Для кристаллов карьеры */
         [data-level="6"] .crystal-warning,
         [data-level="7"] .crystal-warning,
         [data-level="8"] .crystal-warning {
@@ -1022,7 +1515,8 @@ function addDynamicStyles() {
         .crystal-broken {
             filter: 
                 drop-shadow(0 0 25px rgba(255, 0, 0, 0.9)) 
-                drop-shadow(0 0 15px rgba(255, 50, 50, 0.7)) !important;
+                drop-shadow(0 0 15px rgba(255, 50, 50, 0.7))
+                drop-shadow(0 0 5px rgba(255, 100, 100, 0.5)) !important;
             opacity: 0.85;
         }
         
@@ -1037,7 +1531,6 @@ function addDynamicStyles() {
             color: rgba(255, 100, 100, 0.9) !important;
         }
         
-        /* Анимация появления сообщения */
         @keyframes breakNotificationAppear {
             0% {
                 opacity: 0;
@@ -1053,7 +1546,6 @@ function addDynamicStyles() {
             animation: breakNotificationAppear 0.3s ease-out;
         }
         
-        /* Стили для выпадающего меню */
         .dropdown-content {
             transition: all 0.3s ease;
             opacity: 0;
@@ -1063,6 +1555,21 @@ function addDynamicStyles() {
         .dropdown-overlay {
             transition: opacity 0.3s ease;
             opacity: 0;
+        }
+        
+        @keyframes reflectionModalAppear {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        .reflection-modal.active .modal-content {
+            animation: reflectionModalAppear 0.3s ease-out;
         }
     `;
     document.head.appendChild(style);
@@ -1074,7 +1581,6 @@ function initializeAllSliders() {
     sliders.forEach(container => {
         const input = container.querySelector('.advanced-slider-input');
         
-        // Принудительно устанавливаем значение 0 при инициализации
         const initialValue = 0;
         input.value = initialValue;
         
@@ -1083,88 +1589,19 @@ function initializeAllSliders() {
     });
 }
 
-// Настройка перетаскивания для слайдера
+// Настройка слайдера (УПРОЩЕННАЯ ВЕРСИЯ БЕЗ ПЕРЕТАСКИВАНИЯ)
 function setupSliderDrag(container) {
     const track = container.querySelector('.slider-track');
     const thumb = container.querySelector('.slider-thumb');
-    const input = container.querySelector('.advanced-slider-input');
     
-    if (!track || !thumb || !input) return;
-    
-    let isDragging = false;
-    
-    const startDrag = (e) => {
-        isDragging = true;
-        thumb.style.cursor = 'grabbing';
-        document.addEventListener('mousemove', onDrag);
-        document.addEventListener('mouseup', stopDrag);
-        if (e.type === 'touchstart') {
-            document.addEventListener('touchmove', onDrag);
-            document.addEventListener('touchend', stopDrag);
-        }
-    };
-    
-    const onDrag = (e) => {
-        if (!isDragging) return;
-        
-        const rect = track.getBoundingClientRect();
-        const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-        let percentage = ((clientX - rect.left) / rect.width) * 100;
-        percentage = Math.max(0, Math.min(100, percentage));
-        
-        const value = Math.round((percentage / 100) * 60 - 30);
-        updateSliderValue(container, value);
-    };
-    
-    const stopDrag = () => {
-        isDragging = false;
-        thumb.style.cursor = 'grab';
-        document.removeEventListener('mousemove', onDrag);
-        document.removeEventListener('mouseup', stopDrag);
-        document.removeEventListener('touchmove', onDrag);
-        document.removeEventListener('touchend', stopDrag);
-        
-        const level = container.closest('.nav-level')?.dataset.level;
-        if (level) {
-            setTimeout(() => checkCrystalBalance(level), 100);
-        }
-    };
-    
-    thumb.addEventListener('mousedown', startDrag);
-    thumb.addEventListener('touchstart', startDrag);
-    track.addEventListener('click', (e) => {
-        const rect = track.getBoundingClientRect();
-        const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-        let percentage = ((clientX - rect.left) / rect.width) * 100;
-        percentage = Math.max(0, Math.min(100, percentage));
-        
-        const value = Math.round((percentage / 100) * 60 - 30);
-        updateSliderValue(container, value);
-        
-        const level = container.closest('.nav-level')?.dataset.level;
-        if (level) {
-            setTimeout(() => checkCrystalBalance(level), 100);
-        }
-    });
-}
-
-// Обновление значения слайдера
-function updateSliderValue(container, value) {
-    const input = container.querySelector('.advanced-slider-input');
-    const min = parseInt(input.min) || -30;
-    const max = parseInt(input.max) || 30;
-    
-    value = Math.max(min, Math.min(max, value));
-    input.value = value;
-    updateSliderVisuals(container, value);
-    
-    const valueDisplay = container.closest('.facet-input-group')?.querySelector('.current-value-display');
-    if (valueDisplay) {
-        valueDisplay.textContent = value;
+    if (track && thumb) {
+        track.style.pointerEvents = 'none';
+        thumb.style.pointerEvents = 'none';
+        thumb.style.cursor = 'default';
     }
 }
 
-// Функция для обновления визуала продвинутого ползунка
+// Обновленная функция для обновления визуала слайдера
 function updateSliderVisuals(container, value) {
     const thumb = container.querySelector('.slider-thumb');
     const valueDisplay = container.querySelector('.slider-value');
@@ -1219,16 +1656,165 @@ function updateSliderVisuals(container, value) {
     }
 }
 
+// Обновленная функция для кнопок ±1 с вызовом модального окна рефлексии
+window.changeAdvancedValue = function(button, change) {
+    const container = button.closest('.advanced-slider-container');
+    const input = container.querySelector('.advanced-slider-input');
+    
+    let currentValue = parseInt(input.value) || 0;
+    let newValue = currentValue + change;
+    
+    const min = parseInt(input.min) || -30;
+    const max = parseInt(input.max) || 30;
+    
+    if (newValue >= min && newValue <= max) {
+        updateSliderValue(container, newValue);
+        
+        // Сохраняем контекст для рефлексии
+        currentReflectionContext = {
+            level: container.closest('.nav-level')?.dataset.level,
+            facetName: container.closest('.facet-input-group')?.querySelector('.facet-label')?.textContent || 'Неизвестная грань',
+            crystalName: getCrystalName(container.closest('.nav-level')),
+            sliderValue: newValue,
+            container: container
+        };
+        
+        // Показываем модальное окно рефлексии
+        showReflectionModal();
+        
+        button.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            button.style.transform = '';
+        }, 150);
+        
+        const level = container.closest('.nav-level')?.dataset.level;
+        if (level) {
+            setTimeout(() => checkCrystalBalance(level), 100);
+        }
+        
+        console.log(`Advanced slider value changed to: ${newValue}`);
+    } else {
+        button.style.background = 'rgba(255,0,0,0.3)';
+        setTimeout(() => {
+            button.style.background = '';
+        }, 300);
+    }
+};
+
+// Обновление значения слайдера
+function updateSliderValue(container, value) {
+    const input = container.querySelector('.advanced-slider-input');
+    const min = parseInt(input.min) || -30;
+    const max = parseInt(input.max) || 30;
+    
+    value = Math.max(min, Math.min(max, value));
+    input.value = value;
+    updateSliderVisuals(container, value);
+    
+    const valueDisplay = container.closest('.facet-input-group')?.querySelector('.current-value-display');
+    if (valueDisplay) {
+        valueDisplay.textContent = value;
+    }
+}
+
+// Функция для проверки баланса и ломки алмаза
+function checkCrystalBalance(level) {
+    const crystalContainer = document.querySelector(`[data-level="${level}"]`);
+    if (!crystalContainer) return;
+    
+    if (window.crystalManager.brokenCrystals[level]) return;
+    
+    const sliders = crystalContainer.querySelectorAll('.advanced-slider-input');
+    const values = Array.from(sliders).map(slider => parseInt(slider.value) || 0);
+    
+    const mean = values.reduce((a, b) => a + b, 0) / values.length;
+    const squareDiffs = values.map(value => Math.pow(value - mean, 2));
+    const variance = squareDiffs.reduce((a, b) => a + b, 0) / values.length;
+    const standardDeviation = Math.sqrt(variance);
+    
+    const criticalCount = values.filter(value => value <= CONFIG.CRITICAL_VALUE).length;
+    
+    const negativeSum = values.reduce((sum, value) => sum + Math.min(value, 0), 0);
+    
+    const effectiveThreshold = CONFIG.BREAK_THRESHOLD - criticalCount;
+    
+    console.log(`Level ${level} - SD: ${standardDeviation.toFixed(2)}, Critical: ${criticalCount}, Negative Sum: ${negativeSum}, Effective threshold: ${effectiveThreshold}, Values: ${values}`);
+    
+    removeCrystalWarning(level);
+    
+    const shouldBreak = 
+        standardDeviation >= effectiveThreshold ||
+        negativeSum <= -35;
+    
+    const shouldWarn = 
+        (standardDeviation >= CONFIG.WARNING_THRESHOLD && standardDeviation < effectiveThreshold) ||
+        (negativeSum <= -25 && negativeSum > -35);
+    
+    if (shouldBreak && !window.crystalManager.brokenCrystals[level]) {
+        window.crystalManager.breakCrystal(level);
+    } else if (shouldWarn) {
+        showCrystalWarning(level, crystalContainer);
+    }
+}
+
+// Функция показа предупреждения
+function showCrystalWarning(level, crystalContainer) {
+    const crystal = crystalContainer.querySelector('.extra-large-crystal');
+    if (!crystal) return;
+    
+    crystal.classList.add('crystal-warning');
+    
+    crystal.style.animation = 'crystalWarningPulse 0.5s infinite alternate';
+    
+    const sliders = crystalContainer.querySelectorAll('.slider-track, .slider-thumb');
+    sliders.forEach(slider => {
+        slider.style.boxShadow = '0 0 10px orange';
+    });
+    
+    crystal.warningLevel = level;
+}
+
+// Функция удаления предупреждения
+function removeCrystalWarning(level) {
+    const crystalContainer = document.querySelector(`[data-level="${level}"]`);
+    if (!crystalContainer) return;
+    
+    const crystal = crystalContainer.querySelector('.extra-large-crystal');
+    if (crystal) {
+        crystal.classList.remove('crystal-warning');
+        crystal.style.animation = '';
+    }
+    
+    const sliders = crystalContainer.querySelectorAll('.slider-track, .slider-thumb');
+    sliders.forEach(slider => {
+        slider.style.boxShadow = '';
+    });
+}
+
 // Навигационные функции
 window.navigateTo = function(level) { 
     console.log("Navigating to level:", level); 
+    
+    // Очистка ресурсов предыдущего уровня
+    if (window.memoryManager) {
+        const previousLevel = navStack[navStack.length - 1];
+        window.memoryManager.cleanupLevelResources(previousLevel);
+    }
+    
     const current = document.querySelector(".nav-level.active"); 
     if (current) current.classList.remove("active");
 
-    const target = document.querySelector('[data-level="' + level + '"]');
+    const target = document.querySelector(`[data-level="${level}"]`);
     if (target) {
         target.classList.add("active");
         navStack.push(level);
+        
+        // Восстановление ресурсов нового уровня
+        if (window.memoryManager) {
+            setTimeout(() => {
+                window.memoryManager.restoreLevel(level);
+            }, 100);
+        }
         
         if (level === 1 || level === 2) {
             window.crystalManager.updateBrokenCrystalsOnBowlLevel(level);
@@ -1278,142 +1864,22 @@ window.navigateBack = function() {
     }
 };
 
-// Функция для продвинутого ползунка
-window.changeAdvancedValue = function(button, change) {
-    const container = button.closest('.advanced-slider-container');
-    const input = container.querySelector('.advanced-slider-input');
-    
-    let currentValue = parseInt(input.value) || 0;
-    let newValue = currentValue + change;
-    
-    const min = parseInt(input.min) || -30;
-    const max = parseInt(input.max) || 30;
-    
-    if (newValue >= min && newValue <= max) {
-        updateSliderValue(container, newValue);
-        
-        button.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            button.style.transform = '';
-        }, 150);
-        
-        const level = container.closest('.nav-level')?.dataset.level;
-        if (level) {
-            setTimeout(() => checkCrystalBalance(level), 100);
-        }
-        
-        console.log(`Advanced slider value changed to: ${newValue}`);
-    }
-};
-
-// Функция для проверки баланса и ломки алмаза
-function checkCrystalBalance(level) {
-    const crystalContainer = document.querySelector(`[data-level="${level}"]`);
-    if (!crystalContainer) return;
-    
-    // Если кристалл уже сломан, выходим
-    if (window.crystalManager.brokenCrystals[level]) return;
-    
-    const sliders = crystalContainer.querySelectorAll('.advanced-slider-input');
-    const values = Array.from(sliders).map(slider => parseInt(slider.value) || 0);
-    
-    // Рассчитываем стандартное отклонение
-    const mean = values.reduce((a, b) => a + b, 0) / values.length;
-    const squareDiffs = values.map(value => Math.pow(value - mean, 2));
-    const variance = squareDiffs.reduce((a, b) => a + b, 0) / values.length;
-    const standardDeviation = Math.sqrt(variance);
-    
-    // Считаем количество критических значений
-    const criticalCount = values.filter(value => value <= CONFIG.CRITICAL_VALUE).length;
-    
-    // Рассчитываем суммарный отрицательный баланс
-    const negativeSum = values.reduce((sum, value) => sum + Math.min(value, 0), 0);
-    
-    // Рассчитываем эффективный порог
-    const effectiveThreshold = CONFIG.BREAK_THRESHOLD - criticalCount;
-    
-    console.log(`Level ${level} - SD: ${standardDeviation.toFixed(2)}, Critical: ${criticalCount}, Negative Sum: ${negativeSum}, Effective threshold: ${effectiveThreshold}, Values: ${values}`);
-    
-    // Убираем предыдущие предупреждения
-    removeCrystalWarning(level);
-    
-    // Проверяем условия поломки
-    const shouldBreak = 
-        standardDeviation >= effectiveThreshold || // Сильный разброс значений
-        negativeSum <= -35; // Слишком большой отрицательный баланс
-    
-    // Проверяем условия предупреждения
-    const shouldWarn = 
-        (standardDeviation >= CONFIG.WARNING_THRESHOLD && standardDeviation < effectiveThreshold) || // Приближение к порогу разброса
-        (negativeSum <= -25 && negativeSum > -35); // Приближение к порогу отрицательного баланса
-    
-    if (shouldBreak && !window.crystalManager.brokenCrystals[level]) {
-        // ПОЛОМКА
-        window.crystalManager.breakCrystal(level);
-    } else if (shouldWarn) {
-        // ПРЕДУПРЕЖДЕНИЕ
-        showCrystalWarning(level, crystalContainer);
-    }
-}
-
-// Функция показа предупреждения
-function showCrystalWarning(level, crystalContainer) {
-    const crystal = crystalContainer.querySelector('.extra-large-crystal');
-    if (!crystal) return;
-    
-    // Добавляем класс предупреждения
-    crystal.classList.add('crystal-warning');
-    
-    // Добавляем вибрацию
-    crystal.style.animation = 'crystalWarningPulse 0.5s infinite alternate';
-    
-    // Подсвечиваем слайдеры
-    const sliders = crystalContainer.querySelectorAll('.slider-track, .slider-thumb');
-    sliders.forEach(slider => {
-        slider.style.boxShadow = '0 0 10px orange';
-    });
-    
-    // Сохраняем ссылку на кристалл для удаления предупреждения
-    crystal.warningLevel = level;
-}
-
-// Функция удаления предупреждения
-function removeCrystalWarning(level) {
-    const crystalContainer = document.querySelector(`[data-level="${level}"]`);
-    if (!crystalContainer) return;
-    
-    const crystal = crystalContainer.querySelector('.extra-large-crystal');
-    if (crystal) {
-        crystal.classList.remove('crystal-warning');
-        crystal.style.animation = '';
-    }
-    
-    // Убираем подсветку слайдеров
-    const sliders = crystalContainer.querySelectorAll('.slider-track, .slider-thumb');
-    sliders.forEach(slider => {
-        slider.style.boxShadow = '';
-    });
-}
-
 // Функция восстановления всех кристаллов
 window.restoreAllCrystals = function() {
     if (confirm('Восстановить все сломанные кристаллы?')) {
         console.log('Восстановление всех кристаллов...');
         
-        // Очищаем все таймеры восстановления
         Object.values(window.crystalManager.cooldownTimers).forEach(timer => {
             if (timer) clearTimeout(timer);
         });
         window.crystalManager.cooldownTimers = {};
         
-        // Восстанавливаем ВСЕ кристаллы
         for (let level = 3; level <= 8; level++) {
             if (window.crystalManager.brokenCrystals[level]) {
                 window.crystalManager.restoreCrystal(level);
             }
         }
         
-        // Удаляем все таймеры
         for (let level = 3; level <= 8; level++) {
             const crystalContainer = document.querySelector(`[data-level="${level}"]`);
             if (crystalContainer) {
@@ -1425,17 +1891,13 @@ window.restoreAllCrystals = function() {
             }
         }
         
-        // Сбрасываем веса весов
         window.scaleManager.weights = { left: 0, right: 0 };
         
-        // Сохраняем состояние
         window.stateManager.saveAllStates();
         
-        // Обновляем визуальное отображение
         window.stateManager.updateBrokenCrystalsVisuals();
         window.scaleManager.updateScaleBalance();
         
-        // Закрываем все сообщения о поломке
         document.querySelectorAll('.break-message').forEach(msg => {
             if (msg.timer) {
                 clearInterval(msg.timer);
@@ -1452,7 +1914,6 @@ window.restoreAllCrystals = function() {
 window.resetAllWeights = function() {
     console.log('Reset weights clicked');
     
-    // Закрываем меню
     if (window.dropdownMenu) {
         window.dropdownMenu.closeMenu();
     }
@@ -1460,26 +1921,21 @@ window.resetAllWeights = function() {
     if (confirm('Сбросить все значения на 0 и восстановить кристаллы?')) {
         console.log('Сброс всех значений и восстановление кристаллов...');
         
-        // 1. ВОССТАНАВЛИВАЕМ ВСЕ КРИСТАЛЛЫ
         if (window.crystalManager) {
-            // Очищаем все таймеры восстановления
             Object.values(window.crystalManager.cooldownTimers).forEach(timer => {
                 if (timer) clearTimeout(timer);
             });
             window.crystalManager.cooldownTimers = {};
             
-            // Восстанавливаем ВСЕ кристаллы
             for (let level = 3; level <= 8; level++) {
                 if (window.crystalManager.brokenCrystals[level]) {
                     window.crystalManager.restoreCrystal(level);
                 }
             }
             
-            // Очищаем состояния поломки
             window.crystalManager.brokenCrystals = {};
         }
         
-        // 2. СБРАСЫВАЕМ ВСЕ СЛАЙДЕРЫ НА 0
         const allSliders = document.querySelectorAll('.advanced-slider-input');
         allSliders.forEach(slider => {
             slider.value = 0;
@@ -1489,14 +1945,12 @@ window.resetAllWeights = function() {
             }
         });
         
-        // 3. СБРАСЫВАЕМ ВЕСА ВЕСОВ
         if (window.scaleManager) {
             window.scaleManager.weights = { left: 0, right: 0 };
             window.scaleManager.updateScaleBalance();
             window.scaleManager.updateWeightDisplay();
         }
         
-        // 4. УДАЛЯЕМ ВСЕ ТАЙМЕРЫ КРИСТАЛЛОВ
         for (let level = 3; level <= 8; level++) {
             const crystalContainer = document.querySelector(`[data-level="${level}"]`);
             if (crystalContainer) {
@@ -1508,7 +1962,6 @@ window.resetAllWeights = function() {
             }
         }
         
-        // 5. УДАЛЯЕМ ВСЕ СООБЩЕНИЯ О ПОЛОМКЕ
         document.querySelectorAll('.break-notification-center').forEach(msg => {
             if (msg.timer) {
                 clearInterval(msg.timer);
@@ -1523,18 +1976,15 @@ window.resetAllWeights = function() {
             msg.remove();
         });
         
-        // 6. ОБНОВЛЯЕМ ВИЗУАЛ КРИСТАЛЛОВ
         if (window.crystalManager) {
             window.crystalManager.updateBrokenCrystalsOnBowlLevel(1);
             window.crystalManager.updateBrokenCrystalsOnBowlLevel(2);
         }
         
-        // 7. УБИРАЕМ ПРЕДУПРЕЖДЕНИЯ
         for (let level = 3; level <= 8; level++) {
             removeCrystalWarning(level);
         }
         
-        // 8. СОХРАНЯЕМ СОСТОЯНИЕ
         if (window.stateManager) {
             window.stateManager.saveAllStates();
         }
@@ -1552,7 +2002,6 @@ window.showNotifications = function() {
     if (window.notificationSystem) {
         window.notificationSystem.info('Уведомления будут здесь');
     }
-    // Закрываем меню
     if (window.dropdownMenu) {
         window.dropdownMenu.closeMenu();
     }
@@ -1563,7 +2012,6 @@ window.showSettings = function() {
     if (window.notificationSystem) {
         window.notificationSystem.info('Настройки будут здесь');
     }
-    // Закрываем меню
     if (window.dropdownMenu) {
         window.dropdownMenu.closeMenu();
     }
@@ -1616,18 +2064,77 @@ window.resetAllSliders = function() {
         window.stateManager.resetAllSlidersToZero();
         window.notificationSystem.success('Все слайдеры сброшены на 0');
         
-        // Проверяем баланс после сброса
         for (let level = 3; level <= 8; level++) {
             setTimeout(() => checkCrystalBalance(level), 100);
         }
     }
 };
 
-// Проверка что все функции загружены
-console.log('Functions loaded:', {
-    resetAllWeights: typeof resetAllWeights,
-    dropdownMenu: typeof DropdownMenu,
-    updateSliderVisuals: typeof updateSliderVisuals,
-    navigateTo: typeof navigateTo,
-    closeModal: typeof closeModal
-});
+// Функция для точной установки значения слайдера
+window.setExactValue = function(container, value) {
+    const input = container.querySelector('.advanced-slider-input');
+    const min = parseInt(input.min) || -30;
+    const max = parseInt(input.max) || 30;
+    
+    value = Math.max(min, Math.min(max, value));
+    updateSliderValue(container, value);
+    
+    const level = container.closest('.nav-level')?.dataset.level;
+    if (level) {
+        setTimeout(() => checkCrystalBalance(level), 100);
+    }
+};
+
+function updateWeightDisplayImmediately() {
+    console.log("Updating weight display immediately...");
+    
+    const statusElement = document.getElementById('scaleStatus');
+    if (!statusElement) {
+        console.error('Scale status element not found during immediate update');
+        // Попробуем найти элемент через разные селекторы
+        const alternativeElement = document.querySelector('.scale-status');
+        if (alternativeElement) {
+            alternativeElement.className = 'scale-status balanced';
+            const textElement = alternativeElement.querySelector('.status-text');
+            if (textElement) {
+                textElement.textContent = 'Весы сбалансированы';
+            }
+            console.log("Found alternative element and updated it");
+        }
+        return;
+    }
+
+    // Устанавливаем сбалансированное состояние по умолчанию
+    statusElement.className = 'scale-status balanced';
+    const statusTextElement = statusElement.querySelector('.status-text');
+    if (statusTextElement) {
+        statusTextElement.textContent = 'Весы сбалансированы';
+        console.log('Immediately set scale status to: Весы сбалансированы');
+    } else {
+        console.error("Status text element not found in updateWeightDisplayImmediately");
+    }
+}
+
+function setInitialBalancedState() {
+    console.log("Setting initial balanced state...");
+    
+    const statusElement = document.getElementById('scaleStatus');
+    if (statusElement) {
+        statusElement.className = 'scale-status balanced';
+        const statusTextElement = statusElement.querySelector('.status-text');
+        if (statusTextElement) {
+            statusTextElement.textContent = 'Весы сбалансированы';
+            console.log("Status text set to: Весы сбалансированы");
+        } else {
+            console.error("Status text element not found");
+        }
+    } else {
+        console.error("Scale status element not found");
+    }
+    
+    // Также обновляем менеджер весов, если он уже существует
+    if (window.scaleManager) {
+        window.scaleManager.weights = { left: 0, right: 0 };
+        window.scaleManager.state = 'balanced';
+    }
+}

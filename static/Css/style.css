@@ -1,8 +1,11 @@
 *,
 *::before,
 *::after { box-sizing: border-box; }
+
 html, body { height: 100%; margin: 0; }
+
 img { display: block; max-width: 100%; height: auto; }
+
 button { font: inherit; border: none; background: none; cursor: pointer; }
 
 :root{
@@ -136,9 +139,9 @@ main.balance{
   color: var(--accent-2);
   font-weight: 600;
   height: 45px;          
-  display: flex;         
-  align-items: center;   
-  justify-content: center; 
+  display: flex;        
+  align-items: center;  
+  justify-content: center;
 }
 .card.career { color: var(--accent-3); }
 
@@ -166,12 +169,12 @@ main.balance{
 }
 
 .stand-img{
-  z-index: 1; 
+  z-index: 1;
 }
 
 .beam-img{
   position: relative;
-  z-index: 2; 
+  z-index: 2;
   bottom: 15px;
   width: 75%;
 }
@@ -249,7 +252,6 @@ main.balance{
   .pans {
     gap: 15rem;
   }
-  
   .pan-btn {
     width: 120px;
     height: 120px;
@@ -259,7 +261,7 @@ main.balance{
 @media (max-width: 640px){
   .control-panel{ top: 12px; right: 12px; padding: 0.35rem; }
   .site-title{ font-size: 1rem; }
-  .pans{ 
+  .pans{
     gap: 8rem;
     flex-direction: row;
   }
@@ -675,89 +677,71 @@ main.balance{
     height: 95%;
     padding: 20px;
   }
-  
   .bowl-container {
     margin: 40px auto 20px;
     min-height: 300px;
   }
-  
   .crystals-group {
     width: 400px;
     height: 400px;
   }
-  
   .crystal-in-bowl {
     width: 100px;
     height: 100px;
   }
-  
   .crystal-text {
     font-size: 1rem;
   }
-  
   .crystal-in-bowl:hover .crystal-text {
     font-size: 1.1rem;
   }
-  
   .crystal-1 {
     top: 12%;
     left: 18%;
   }
-  
   .crystal-2 {
     top: 12%;
     right: 18%;
   }
-  
   .crystal-3 {
     bottom: 12%;
   }
-  
   .bowl-title-frame {
     top: 15px;
     left: 15px;
     padding: 12px 20px;
   }
-  
   .bowl-title-frame h2 {
     font-size: 1.5rem;
   }
-  
   .crystal-details-container {
     flex-direction: column;
     gap: 2rem;
   }
-  
   .large-crystal {
     width: 150px;
     height: 150px;
   }
-  
   .facets-inputs {
     width: 100%;
   }
-  
   .facet-input-group {
     flex-direction: column;
     align-items: stretch;
     gap: 0.5rem;
   }
-  
   .facet-slider {
     width: 100%;
   }
-  
   .slider-container {
     gap: 0.25rem;
     padding: 0.15rem;
   }
-  
   .slider-btn {
     width: 28px;
     height: 28px;
     font-size: 1rem;
   }
-  
   .facet-slider {
     width: 60px;
     font-size: 1rem;
@@ -770,44 +754,35 @@ main.balance{
     width: 320px;
     height: 320px;
   }
-  
   .crystal-in-bowl {
     width: 80px;
     height: 80px;
   }
-  
   .crystal-text {
     font-size: 0.9rem;
   }
-  
   .crystal-in-bowl:hover .crystal-text {
     font-size: 1rem;
   }
-  
   .crystal-1 {
     top: 15%;
     left: 20%;
   }
-  
   .crystal-2 {
     top: 15%;
     right: 20%;
   }
-  
   .crystal-3 {
     bottom: 15%;
   }
-  
   .bowl-title-frame {
     top: 10px;
     left: 10px;
     padding: 10px 15px;
   }
-  
   .bowl-title-frame h2 {
     font-size: 1.3rem;
   }
-  
   .large-crystal {
     width: 120px;
     height: 120px;
@@ -1103,19 +1078,16 @@ main.balance{
 .scale-number:nth-child(7) { transform: translateX(-100%); }
 
 .slider-controls {
-  display: flex;
-  gap: 0.8rem;
-  justify-content: center;
-  margin-top: 0.8rem;
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    margin-top: 0.8rem;
 }
 
-.advanced-slider-container .slider-btn {
-  padding: 0.3rem 0.8rem;
-  border-radius: 6px;
-  font-weight: bold;
-  font-size: 0.85rem;
-  min-width: 55px;
-  transition: all 0.3s ease;
+.advanced-slider-container .minus-btn {
+    background: rgba(255, 107, 107, 0.2);
+    border: 2px solid #ff6b6b;
+    color: #ff6b6b;
 }
 
 .advanced-slider-container .minus-btn {
@@ -1125,21 +1097,21 @@ main.balance{
 }
 
 .advanced-slider-container .minus-btn:hover {
-  background: rgba(255, 107, 107, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    background: rgba(255, 107, 107, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
 }
 
 .advanced-slider-container .plus-btn {
-  background: rgba(78, 205, 196, 0.2);
-  border: 2px solid #4ecdc4;
-  color: #4ecdc4;
+    background: rgba(78, 205, 196, 0.2);
+    border: 2px solid #4ecdc4;
+    color: #4ecdc4;
 }
 
 .advanced-slider-container .plus-btn:hover {
-  background: rgba(78, 205, 196, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+    background: rgba(78, 205, 196, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
 }
 
 .advanced-slider-input {
@@ -1202,36 +1174,45 @@ main.balance{
   .facet-header-compact {
     margin-bottom: 0.4rem;
   }
-  
   .facet-header-compact .facet-label {
     font-size: 0.9rem;
   }
-  
   .facet-header-compact .current-value-display {
     font-size: 0.85rem;
     padding: 0.15rem 0.5rem;
     min-width: 35px;
   }
-  
   .slider-thumb {
     width: 28px;
     height: 28px;
   }
-  
   .slider-value {
     font-size: 0.65rem;
   }
-  
   .advanced-slider-container .slider-btn {
     padding: 0.25rem 0.6rem;
     min-width: 45px;
     font-size: 0.8rem;
   }
-  
   .slider-controls {
     gap: 0.6rem;
     margin-top: 0.6rem;
   }
+}
+
+[data-level="6"] .plus-btn,
+[data-level="7"] .plus-btn,
+[data-level="8"] .plus-btn {
+    background: rgba(192,126,224,0.2);
+    border: 2px solid var(--accent-3);
+    color: var(--accent-3);
+}
+
+[data-level="6"] .plus-btn:hover,
+[data-level="7"] .plus-btn:hover,
+[data-level="8"] .plus-btn:hover {
+    background: rgba(192,126,224,0.3);
+    box-shadow: 0 4px 12px rgba(192,126,224,0.3);
 }
 
 /* Убираем старые стили обычных ползунков для уровней 3-8 */
@@ -1303,7 +1284,6 @@ main.balance{
   filter: drop-shadow(0 12px 35px rgba(124,199,224,0.6));
   animation: crystalGlow 3s ease-in-out infinite alternate;
 }
-
 
 @keyframes crystalGlow {
   from {
@@ -1402,31 +1382,25 @@ main.balance{
     gap: 2rem;
     padding: 1rem;
   }
-  
   .facets-column {
     flex: 1;
     width: 100%;
     max-width: 500px;
   }
-  
   .left-column,
   .right-column {
     align-items: center;
   }
-  
   .left-column .facet-input-group,
   .right-column .facet-input-group {
     text-align: center;
   }
-  
   .left-column .facet-header-compact {
     flex-direction: row;
   }
-  
   .left-column .facet-label {
     text-align: left;
   }
-  
   .extra-large-crystal {
     width: 300px;
     height: 300px;
@@ -1437,20 +1411,16 @@ main.balance{
   .crystal-details-layout {
     gap: 1.5rem;
   }
-  
   .facets-column {
     gap: 1.5rem;
   }
-  
   .extra-large-crystal {
     width: 250px;
     height: 250px;
   }
-  
   .facets-column .facet-input-group {
     max-width: 100%;
   }
-  
   .facets-column .advanced-slider-container {
     max-width: 100%;
   }
@@ -1461,7 +1431,6 @@ main.balance{
     width: 200px;
     height: 200px;
   }
-  
   .crystal-details-layout {
     padding: 0.5rem;
   }
@@ -1545,8 +1514,8 @@ main.balance{
 }
 
 .crystal-broken {
-    filter: 
-        drop-shadow(0 0 25px rgba(255, 0, 0, 0.9)) 
+    filter:
+        drop-shadow(0 0 25px rgba(255, 0, 0, 0.9))
         drop-shadow(0 0 15px rgba(255, 50, 50, 0.7))
         drop-shadow(0 0 5px rgba(255, 100, 100, 0.5)) !important;
     opacity: 0.85;
@@ -1564,7 +1533,7 @@ main.balance{
 }
 
 .crystal-in-bowl.crystal-broken {
-    filter: 
+    filter:
         drop-shadow(0 0 20px rgba(255, 0, 0, 0.8))
         drop-shadow(0 0 10px rgba(255, 50, 50, 0.6)) !important;
     opacity: 0.8;
@@ -1577,7 +1546,6 @@ main.balance{
 .crystal-broken {
     /* Отключаем только анимации, которые могут двигать элемент */
     animation: none !important;
-    
     /* Отключаем переходы, которые могут изменять позицию */
     transition: filter 0.3s ease, opacity 0.3s ease !important;
 }
@@ -1603,16 +1571,16 @@ main.balance{
 }
 
 @keyframes pulse {
-    0% { 
-        transform: scale(1); 
+    0% {
+        transform: scale(1);
         box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
     }
-    50% { 
-        transform: scale(1.2); 
+    50% {
+        transform: scale(1.2);
         box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
     }
-    100% { 
-        transform: scale(1); 
+    100% {
+        transform: scale(1);
         box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
     }
 }
@@ -1838,7 +1806,7 @@ main.balance{
 
 /* Плавные переходы для всех интерактивных элементов */
 * {
-  transition: 
+  transition:
       transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
       opacity 0.2s ease,
       border-color 0.2s ease,
@@ -1955,8 +1923,8 @@ main.balance{
 }
 
 .break-notification-text {
-    padding-right: 15px; 
-    margin-top: 5px; 
+    padding-right: 15px;
+    margin-top: 5px;
 }
 
 /* ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ ВЫПАДАЮЩЕГО МЕНЮ */
@@ -2058,4 +2026,106 @@ main.balance{
 
 .dropdown-overlay.active {
   display: block;
+}
+
+/* Отключаем взаимодействие с ползунком */
+.slider-track,
+.slider-thumb {
+    pointer-events: none !important;
+    cursor: default !important;
+}
+
+.slider-track {
+    background: rgba(255,255,255,0.1) !important;
+}
+
+/* Делаем точки позиций менее заметными */
+.position-dot {
+    background: rgba(255,255,255,0.3) !important;
+}
+
+.position-dot.center-dot {
+    background: rgba(255,165,0,0.5) !important;
+}
+
+/* Улучшаем видимость кнопок */
+.slider-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.advanced-slider-container .slider-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    min-width: 60px;
+    transition: all 0.3s ease;
+    border: 2px solid;
+}
+
+.advanced-slider-container .minus-btn {
+    background: rgba(255, 107, 107, 0.2);
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+}
+
+.advanced-slider-container .minus-btn:hover {
+    background: rgba(255, 107, 107, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.advanced-slider-container .plus-btn {
+    background: rgba(78, 205, 196, 0.2);
+    border-color: #4ecdc4;
+    color: #4ecdc4;
+}
+
+.advanced-slider-container .plus-btn:hover {
+    background: rgba(78, 205, 196, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+}
+
+/* Для кристаллов карьеры */
+[data-level="6"] .plus-btn,
+[data-level="7"] .plus-btn,
+[data-level="8"] .plus-btn {
+    background: rgba(192,126,224,0.2);
+    border-color: var(--accent-3);
+    color: var(--accent-3);
+}
+
+[data-level="6"] .plus-btn:hover,
+[data-level="7"] .plus-btn:hover,
+[data-level="8"] .plus-btn:hover {
+    background: rgba(192,126,224,0.3);
+    box-shadow: 0 4px 12px rgba(192,126,224,0.3);
+}
+
+/* Добавить prefers-reduced-motion для доступности */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.performance-optimized {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.nav-level {
+  contain: layout style paint; /* Изоляция для производительности */
+}
+
+/* Уменьшите количество анимаций на мобильных */
+@media (max-width: 768px) {
+  .pan-img, .crystal-in-bowl {
+    animation-duration: 1s !important;
+  }
 }

@@ -12,7 +12,7 @@
   <!-- Система уведомлений -->
   <div id="notificationSystem" class="notification-system" aria-live="polite"></div>
 
-  <!-- Оверлей для закрытия меню (ПЕРЕД основным контентом) -->
+  <!-- Оверлей для закрытия меню -->
   <div class="dropdown-overlay"></div>
 
   <!-- Главный экран - Уровень 0 -->
@@ -20,26 +20,24 @@
     <header class="site-header">
       <h1 class="site-title">Кристаллы Фемиды</h1>
       <nav class="control-panel" aria-label="Панель управления">
-        <!-- Основная иконка с выпадающим меню -->
         <div class="dropdown-menu">
           <button class="icon-btn dropdown-toggle" aria-label="Меню приложения" aria-expanded="false">
-            <img src="{{ url_for('static', filename='Img/logo.svg') }}" alt="Меню приложения" />
+            <img src="{{ url_for('static', filename='Img/logo.svg') }}" alt="Меню приложения" loading="lazy" />
           </button>
           
-          <!-- Выпадающее меню СЛЕВА от иконки -->
           <div class="dropdown-content">
             <button class="dropdown-item" aria-label="Уведомления" onclick="showNotifications()">
-              <img src="{{ url_for('static', filename='Img/bell.svg') }}" alt="Уведомления" />
+              <img src="{{ url_for('static', filename='Img/bell.svg') }}" alt="Уведомления" loading="lazy" />
               <span>Уведомления</span>
             </button>
             <button class="dropdown-item" aria-label="Настройки" onclick="showSettings()">
-              <img src="{{ url_for('static', filename='Img/gear.svg') }}" alt="Настройки" />
+              <img src="{{ url_for('static', filename='Img/gear.svg') }}" alt="Настройки" loading="lazy" />
               <span>Настройки</span>
             </button>
             <button class="dropdown-item" aria-label="Сбросить весы" onclick="resetAllWeights()">
-    <img src="{{ url_for('static', filename='Img/refresh.svg') }}" alt="Сбросить" />
-    <span>Сбросить все значения</span>
-</button>
+              <img src="{{ url_for('static', filename='Img/refresh.svg') }}" alt="Сбросить" loading="lazy" />
+              <span>Сбросить все значения</span>
+            </button>
           </div>
         </div>
       </nav>
@@ -47,10 +45,10 @@
 
     <main class="balance">
         <div class="scale-status-container">
-          <div class="scale-status" id="scaleStatus">
-            <div class="status-text">Загрузка...</div>
-          </div>
-        </div>
+  <div class="scale-status balanced" id="scaleStatus">
+    <div class="status-text">Весы сбалансированы</div>
+  </div>
+</div>
       <section class="categories" aria-label="Категории баланса">
         <div class="card family"><h2>Семья</h2></div>
         <div class="divider" aria-hidden="true">&amp;</div>
@@ -58,23 +56,23 @@
       </section>
       <section class="scale" aria-label="Визуализация весов">
         <div class="stand">
-          <img src="{{ url_for('static', filename='Img/stand.svg') }}" alt="Стойка весов" class="stand-img">
-          <img src="{{ url_for('static', filename='Img/beam.svg') }}" alt="Балка весов" class="beam-img">
+          <img src="{{ url_for('static', filename='Img/stand.svg') }}" alt="Стойка весов" class="stand-img" loading="lazy">
+          <img src="{{ url_for('static', filename='Img/beam.svg') }}" alt="Балка весов" class="beam-img" loading="lazy">
         </div>
         <div class="pans">
-          <!-- нав к чашам -->
           <button class="pan-btn left-pan-btn" onclick="navigateTo(1)">
-            <img src="{{ url_for('static', filename='Img/left-pan.svg') }}" alt="Левая чаша" class="pan-img">
+            <img src="{{ url_for('static', filename='Img/left-pan.svg') }}" alt="Левая чаша" class="pan-img" loading="lazy">
           </button>
           <button class="pan-btn right-pan-btn" onclick="navigateTo(2)">
-            <img src="{{ url_for('static', filename='Img/right-pan.svg') }}" alt="Правая чаша" class="pan-img">
+            <img src="{{ url_for('static', filename='Img/right-pan.svg') }}" alt="Правая чаша" class="pan-img" loading="lazy">
           </button>
         </div>
       </section>
     </main>
   </div>
 
-  <!-- Уровень 2 - Чаша Семья 3 крис -->
+  <!-- Остальные уровни остаются без изменений -->
+  <!-- Уровень 1 - Чаша Семья -->
   <div class="nav-level" data-level="1">
     <div class="modal-content">
       <button class="close-modal" onclick="closeModal()">×</button>
@@ -85,19 +83,18 @@
       
       <div class="bowl-container">
         <div class="crystals-group">
-          <!-- Кристаллы внутри группы -->
           <button class="crystal-in-bowl crystal-1" onclick="navigateTo(3)">
-            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Дети">
+            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Дети" loading="lazy">
             <span class="crystal-text">Дети</span>
           </button>
           
           <button class="crystal-in-bowl crystal-2" onclick="navigateTo(4)">
-            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Партнер">
+            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Партнер" loading="lazy">
             <span class="crystal-text">Партнер</span>
           </button>
           
           <button class="crystal-in-bowl crystal-3" onclick="navigateTo(5)">
-            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Быт">
+            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Быт" loading="lazy">
             <span class="crystal-text">Быт</span>
           </button>
         </div>
@@ -105,7 +102,7 @@
     </div>
   </div>
 
-  <!-- Уровень 2 - Чаша Карьера 3 крис -->
+  <!-- Уровень 2 - Чаша Карьера -->
   <div class="nav-level" data-level="2">
     <div class="modal-content">
       <button class="close-modal" onclick="closeModal()">×</button>
@@ -116,19 +113,18 @@
       
       <div class="bowl-container">
         <div class="crystals-group">
-          <!-- Кристаллы внутри группы -->
           <button class="crystal-in-bowl crystal-1" onclick="navigateTo(6)">
-            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Основная работа">
+            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Основная работа" loading="lazy">
             <span class="crystal-text">Основная работа</span>
           </button>
           
           <button class="crystal-in-bowl crystal-2" onclick="navigateTo(7)">
-            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Развитие навыков">
+            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Развитие навыков" loading="lazy">
             <span class="crystal-text">Развитие навыков</span>
           </button>
           
           <button class="crystal-in-bowl crystal-3" onclick="navigateTo(8)">
-            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Командная работа">
+            <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Командная работа" loading="lazy">
             <span class="crystal-text">Командная работа</span>
           </button>
         </div>
@@ -143,7 +139,6 @@
     <button class="back-to-bowl" onclick="navigateTo(1)">←</button>
     
     <div class="crystal-details-layout">
-      <!-- Левая колонка с 2 гранями -->
       <div class="facets-column left-column">
         <div class="facet-input-group">
           <div class="facet-header-compact">
@@ -176,8 +171,8 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
@@ -214,22 +209,20 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
         </div>
       </div>
       
-      <!-- Центральный увеличенный алмаз -->
       <div class="crystal-center">
         <div class="crystal-preview-large">
-          <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Дети" class="extra-large-crystal">
+          <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Дети" class="extra-large-crystal" loading="lazy">
         </div>
       </div>
       
-      <!-- Правая колонка с 2 гранями -->
       <div class="facets-column right-column">
         <div class="facet-input-group">
           <div class="facet-header-compact">
@@ -262,8 +255,8 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
@@ -300,8 +293,8 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
@@ -318,7 +311,6 @@
       <button class="back-to-bowl" onclick="navigateTo(1)">←</button>
       
       <div class="crystal-details-layout">
-        <!-- Левая колонка с 2 гранями -->
         <div class="facets-column left-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
@@ -351,8 +343,8 @@
                 <span class="scale-number">30</span>
               </div>
               <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
               </div>
               <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
             </div>
@@ -389,22 +381,20 @@
                 <span class="scale-number">30</span>
               </div>
               <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
               </div>
               <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
             </div>
           </div>
         </div>
         
-        <!-- Центральный увеличенный алмаз -->
         <div class="crystal-center">
           <div class="crystal-preview-large">
-            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Партнер" class="extra-large-crystal">
+            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Партнер" class="extra-large-crystal" loading="lazy">
           </div>
         </div>
         
-        <!-- Правая колонка с 2 гранями -->
         <div class="facets-column right-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
@@ -437,8 +427,8 @@
                 <span class="scale-number">30</span>
               </div>
               <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
               </div>
               <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
             </div>
@@ -475,8 +465,8 @@
                 <span class="scale-number">30</span>
               </div>
               <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
               </div>
               <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
             </div>
@@ -493,7 +483,6 @@
       <button class="back-to-bowl" onclick="navigateTo(1)">←</button>
       
       <div class="crystal-details-layout">
-        <!-- Левая колонка с 2 гранями -->
         <div class="facets-column left-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
@@ -526,8 +515,8 @@
                 <span class="scale-number">30</span>
               </div>
               <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
               </div>
               <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
             </div>
@@ -564,22 +553,20 @@
                 <span class="scale-number">30</span>
               </div>
               <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
               </div>
               <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
             </div>
           </div>
         </div>
         
-        <!-- Центральный увеличенный алмаз -->
         <div class="crystal-center">
           <div class="crystal-preview-large">
-            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Быт" class="extra-large-crystal">
+            <img src="{{ url_for('static', filename='Img/diamond blue.svg') }}" alt="Быт" class="extra-large-crystal" loading="lazy">
           </div>
         </div>
         
-        <!-- Правая колонка с 2 гранями -->
         <div class="facets-column right-column">
           <div class="facet-input-group">
             <div class="facet-header-compact">
@@ -612,8 +599,8 @@
                 <span class="scale-number">30</span>
               </div>
               <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
               </div>
               <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
             </div>
@@ -650,8 +637,8 @@
                 <span class="scale-number">30</span>
               </div>
               <div class="slider-controls">
-                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+                <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+                <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
               </div>
               <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
             </div>
@@ -668,7 +655,6 @@
     <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
     
     <div class="crystal-details-layout">
-      <!-- Левая колонка с 2 гранями -->
       <div class="facets-column left-column">
         <div class="facet-input-group">
           <div class="facet-header-compact">
@@ -701,8 +687,8 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
@@ -739,22 +725,20 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
         </div>
       </div>
       
-      <!-- Центральный увеличенный алмаз -->
       <div class="crystal-center">
         <div class="crystal-preview-large">
-          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Основная работа" class="extra-large-crystal career-crystal">
+          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Основная работа" class="extra-large-crystal career-crystal" loading="lazy">
         </div>
       </div>
       
-      <!-- Правая колонка с 2 гранями -->
       <div class="facets-column right-column">
         <div class="facet-input-group">
           <div class="facet-header-compact">
@@ -787,8 +771,8 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
@@ -825,8 +809,8 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
@@ -843,7 +827,6 @@
     <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
     
     <div class="crystal-details-layout">
-      <!-- Левая колонка с 2 гранями -->
       <div class="facets-column left-column">
         <div class="facet-input-group">
           <div class="facet-header-compact">
@@ -876,8 +859,8 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
@@ -914,22 +897,20 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
         </div>
       </div>
       
-      <!-- Центральный увеличенный алмаз -->
       <div class="crystal-center">
         <div class="crystal-preview-large">
-          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Развитие навыков" class="extra-large-crystal career-crystal">
+          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Развитие навыков" class="extra-large-crystal career-crystal" loading="lazy">
         </div>
       </div>
       
-      <!-- Правая колонка с 2 гранями -->
       <div class="facets-column right-column">
         <div class="facet-input-group">
           <div class="facet-header-compact">
@@ -962,8 +943,8 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
@@ -1000,8 +981,8 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
@@ -1018,7 +999,6 @@
     <button class="back-to-bowl" onclick="navigateTo(2)">←</button>
     
     <div class="crystal-details-layout">
-      <!-- Левая колонка с 2 гранями -->
       <div class="facets-column left-column">
         <div class="facet-input-group">
           <div class="facet-header-compact">
@@ -1051,8 +1031,8 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
@@ -1089,22 +1069,20 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
         </div>
       </div>
       
-      <!-- Центральный увеличенный алмаз -->
       <div class="crystal-center">
         <div class="crystal-preview-large">
-          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Командная работа" class="extra-large-crystal career-crystal">
+          <img src="{{ url_for('static', filename='Img/diamond purple.svg') }}" alt="Командная работа" class="extra-large-crystal career-crystal" loading="lazy">
         </div>
       </div>
       
-      <!-- Правая колонка с 2 гранями -->
       <div class="facets-column right-column">
         <div class="facet-input-group">
           <div class="facet-header-compact">
@@ -1137,8 +1115,8 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
@@ -1175,8 +1153,8 @@
               <span class="scale-number">30</span>
             </div>
             <div class="slider-controls">
-              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -5)">-5</button>
-              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 5)">+5</button>
+              <button class="slider-btn minus-btn" onclick="changeAdvancedValue(this, -1)">-1</button>
+              <button class="slider-btn plus-btn" onclick="changeAdvancedValue(this, 1)">+1</button>
             </div>
             <input type="hidden" class="advanced-slider-input" value="0" min="-30" max="30">
           </div>
@@ -1278,7 +1256,6 @@
       </button>
     </div>
   </section>
-  
   <div id="breakMessagesContainer"></div>
   <script src="{{ url_for('static', filename='Js/script.js') }}"></script>
 </body>
