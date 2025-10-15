@@ -29,6 +29,42 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Классы для JS управления */
+body.portrait .crystal-details-layout {
+    flex-direction: column;
+}
+
+body.landscape .crystal-details-layout {
+    flex-direction: row;
+}
+
+/* Оптимизация для touch-устройств */
+@media (hover: none) and (pointer: coarse) {
+    .pan-btn:hover {
+        transform: none !important;
+    }
+    
+    .crystal-in-bowl:hover {
+        transform: none !important;
+    }
+    
+    /* Увеличиваем области касания */
+    .slider-btn, .icon-btn, .dropdown-item {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* Поддержка высокого DPI */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .pan-img, .crystal-in-bowl img, .extra-large-crystal {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+
+
 /* === УТИЛИТЫ === */
 .sr-only {
   position: absolute;

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Кристаллы Фемиды - этический компас для баланса жизненных ценностей">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Css/auth.css') }}">
+    <title>Кристаллы Фемиды</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Фавикон -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='Img/favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='Img/apple-touch-icon.png') }}">
+</head>
+<body>
+    <!-- Система уведомлений -->
+    <div class="notification-system" id="topNotification" aria-live="polite" aria-atomic="true">
+        <div class="notification" role="alert">
+            <div class="notification-text"></div>
+        </div>
+    </div>
+
+    <!-- Индикатор загрузки -->
+    <div class="loading" id="loadingIndicator">
+        <div class="spinner"></div>
+        <p class="loading-text">Перенаправление...</p>
+    </div>
+
+    <main class="container">
+        <div class="diamond-left">
+            <img src="{{ url_for('static', filename='Img/diamond-left.svg') }}" alt="Левый кристалл Фемиды" class="main-diamond" onerror="this.style.display='none'">
+        </div>
+        
+        <div class="content">
+            <h1 class="main-title">Кристаллы Фемиды</h1>
+            <h2 class="subtitle">Первый этический компас для баланса жизненных ценностей</h2>
+            <p class="description">
+                <span class="description-line">Увидьте последствия ваших решений до их принятия.</span>
+                <span class="description-line">Достигните гармонии между сферами жизни через осознанность.</span>
+            </p>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="openModal('reflection')">Начать рефлексию</button>
+                <button class="btn btn-secondary" onclick="openModal('return')">Вернуться в рефлексию</button>
+            </div>
+        </div>
+        
+        <div class="diamond-right">
+            <img src="{{ url_for('static', filename='Img/diamond-right.svg') }}" alt="Правый кристалл Фемиды" class="main-diamond" onerror="this.style.display='none'">
+        </div>
+    </main>
+
+    <!-- Модальное окно "Начать рефлексию" -->
+<div id="reflectionModal" class="modal" aria-hidden="true" aria-labelledby="reflectionModalTitle">
+    <div class="modal-content" role="dialog" aria-modal="true">
+        <h2 class="modal-title" id="reflectionModalTitle">Регистрация</h2>
+        <form id="reflectionForm" novalidate>
+            <div class="form-group">
+                <label for="reflectionName" class="visually-hidden">Имя</label>
+                <input type="text" id="reflectionName" class="form-input" placeholder="Имя" required data-field="name" autocomplete="name">
+                <div class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="reflectionEmail" class="visually-hidden">Почта</label>
+                <input type="email" id="reflectionEmail" class="form-input" placeholder="Почта" required data-field="email" autocomplete="email">
+                <div class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="reflectionPosition" class="visually-hidden">Должность</label>
+                <input type="text" id="reflectionPosition" class="form-input" placeholder="Должность" required data-field="position" autocomplete="organization-title">
+                <div class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="reflectionPassword" class="visually-hidden">Пароль</label>
+                <input type="password" id="reflectionPassword" class="form-input" placeholder="Пароль" required data-field="password" autocomplete="new-password">
+                <button type="button" class="password-toggle" data-password-input="reflectionPassword">
+                    <div class="eye-icon">
+                        <img src="{{ url_for('static', filename='Img/eye-open.svg') }}" class="eye-open" alt="Показать пароль" style="display: none;">
+                        <img src="{{ url_for('static', filename='Img/eye-closed.svg') }}" class="eye-closed" alt="Скрыть пароль">
+                    </div>
+                </button>
+                <div class="error-message"></div>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="modal-btn modal-btn-back" onclick="closeModal('reflection')">Назад</button>
+                <button type="submit" class="modal-btn modal-btn-continue">Продолжить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Модальное окно "Вернуться в рефлексию" -->
+<div id="returnModal" class="modal" aria-hidden="true" aria-labelledby="returnModalTitle">
+    <div class="modal-content" role="dialog" aria-modal="true">
+        <h2 class="modal-title" id="returnModalTitle">Вход</h2>
+        <form id="returnForm" novalidate>
+            <div class="form-group">
+                <label for="returnName" class="visually-hidden">Имя</label>
+                <input type="text" id="returnName" class="form-input" placeholder="Имя" required data-field="name" autocomplete="username">
+                <div class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="returnPassword" class="visually-hidden">Пароль</label>
+                <input type="password" id="returnPassword" class="form-input" placeholder="Пароль" required data-field="password" autocomplete="current-password">
+                <button type="button" class="password-toggle" data-password-input="returnPassword">
+                    <div class="eye-icon">
+                        <img src="{{ url_for('static', filename='Img/eye-open.svg') }}" class="eye-open" alt="Показать пароль" style="display: none;">
+                        <img src="{{ url_for('static', filename='Img/eye-closed.svg') }}" class="eye-closed" alt="Скрыть пароль">
+                    </div>
+                </button>
+                <div class="error-message"></div>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="modal-btn modal-btn-back" onclick="closeModal('return')">Назад</button>
+                <button type="submit" class="modal-btn modal-btn-continue">Продолжить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <script src="{{ url_for('static', filename='Js/auth.js') }}"></script>
+</body>
+</html>

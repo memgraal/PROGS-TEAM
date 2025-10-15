@@ -271,6 +271,30 @@ class MemoryManager {
     }
 }
 
+// Простой скрипт для проверки текущего размера экрана
+document.addEventListener('DOMContentLoaded', function() {
+    function updateScreenSizeInfo() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const breakpoint = getBreakpoint(width);
+        
+        console.log(`Экран: ${width}x${height}, Брейкпоинт: ${breakpoint}`);
+    }
+    
+    function getBreakpoint(width) {
+        if (width < 768) return 'mobile';
+        if (width < 1200) return 'tablet';
+        if (width < 1920) return 'desktop';
+        if (width < 2560) return 'hd';
+        if (width < 3440) return '2k';
+        return '4k+';
+    }
+    
+    // Проверяем при загрузке и изменении размера
+    updateScreenSizeInfo();
+    window.addEventListener('resize', updateScreenSizeInfo);
+});
+
 // Оптимизатор изображений
 class ImageOptimizer {
     constructor() {
@@ -329,6 +353,112 @@ class ImageOptimizer {
         imgElement.removeAttribute('data-src');
     }
 }
+
+// Простой адаптер для сложных случаев
+class ResponsiveAdapter {
+    constructor() {
+        this.setupViewportMeta();
+        this.setupDynamicScaling();
+        this.setupOrientationHandler();
+    }
+    
+    // Динамический viewport для мобильных устройств
+    setupViewportMeta() {
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) {
+            viewport.setAttribute('content', 
+                'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes');
+        }
+    }
+    
+    // Динамическое масштабирование для очень больших/маленьких экранов
+    setupDynamicScaling() {
+        const updateScale = () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const aspectRatio = width / height;
+            
+            // Определяем тип экрана
+            let scale = 1;
+            
+            if (width < 768) {
+                // Мобильные - уменьшаем масштаб
+                scale = Math.max(0.8, width / 768);
+            } else if (width > 3000) {
+                // Очень большие экраны - увеличиваем масштаб
+                scale = Math.min(1.3, width / 2560);
+            }
+            
+            // Применяем масштаб только к определенным элементам
+            this.applyOptimalScale(scale, aspectRatio);
+        };
+        
+        // Запускаем при загрузке и изменении размера
+        updateScale();
+        window.addEventListener('resize', this.debounce(updateScale, 250));
+        window.addEventListener('orientationchange', updateScale);
+    }
+    
+    applyOptimalScale(scale, aspectRatio) {
+        // Масштабируем только сложные элементы
+        const elementsToScale = document.querySelectorAll('.crystals-group, .extra-large-crystal, .scale');
+        
+        elementsToScale.forEach(element => {
+            if (scale !== 1) {
+                element.style.transform = `scale(${scale})`;
+                element.style.transformOrigin = 'center center';
+            } else {
+                element.style.transform = '';
+            }
+        });
+        
+        // Специальная обработка для ультра-широких экранов
+        if (aspectRatio > 2) {
+            document.documentElement.style.setProperty('--container-width', '90%');
+        } else {
+            document.documentElement.style.setProperty('--container-width', 'min(95%, 1800px)');
+        }
+    }
+    
+    // Обработчик смены ориентации
+    setupOrientationHandler() {
+        const handleOrientation = () => {
+            if (window.screen.orientation) {
+                const orientation = window.screen.orientation.type;
+                
+                if (orientation.includes('portrait')) {
+                    document.body.classList.add('portrait');
+                    document.body.classList.remove('landscape');
+                } else {
+                    document.body.classList.add('landscape');
+                    document.body.classList.remove('portrait');
+                }
+            }
+        };
+        
+        if (window.screen.orientation) {
+            window.screen.orientation.addEventListener('change', handleOrientation);
+        }
+        handleOrientation();
+    }
+    
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+}
+
+// Инициализация
+document.addEventListener('DOMContentLoaded', function() {
+    window.responsiveAdapter = new ResponsiveAdapter();
+});
 
 // Менеджер кристаллов
 class CrystalManager {
