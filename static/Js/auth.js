@@ -357,10 +357,24 @@ class App {
     }
 
     redirectToApp() {
-        // Сохраняем время последней сессии
-        localStorage.setItem('lastSession', Date.now().toString());
-        window.location.href = 'main-app.html';
+    localStorage.setItem('lastSession', Date.now().toString());
+    
+    // Показать индикатор загрузки
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    if (loadingIndicator) {
+        loadingIndicator.classList.add('show');
     }
+    
+    // Закрыть все модальные окна
+    this.closeAllModals();
+    
+    // Перенаправить на home.html
+    setTimeout(() => {
+        window.location.href = '/home';  // ← ИСПРАВЬ ЭТУ СТРОКУ
+        // ИЛИ если home - главная страница:
+        // window.location.href = '/';
+    }, 1500);
+}
 
     checkPreviousSession() {
         const lastSession = localStorage.getItem('lastSession');
@@ -423,3 +437,4 @@ window.addEventListener('beforeunload', () => {
         app.destroy();
     }
 });
+

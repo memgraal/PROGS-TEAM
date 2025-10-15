@@ -53,25 +53,26 @@
 <div id="reflectionModal" class="modal" aria-hidden="true" aria-labelledby="reflectionModalTitle">
     <div class="modal-content" role="dialog" aria-modal="true">
         <h2 class="modal-title" id="reflectionModalTitle">Регистрация</h2>
-        <form id="reflectionForm" novalidate>
+        <form id="reflectionForm" method="POST" action="{{ url_for('register') }}" novalidate>
+            {{ form.hidden_tag() if form }}
             <div class="form-group">
                 <label for="reflectionName" class="visually-hidden">Имя</label>
-                <input type="text" id="reflectionName" class="form-input" placeholder="Имя" required data-field="name" autocomplete="name">
+                <input type="text" id="reflectionName" name="username" class="form-input" placeholder="Имя" required data-field="name" autocomplete="name">
                 <div class="error-message"></div>
             </div>
             <div class="form-group">
                 <label for="reflectionEmail" class="visually-hidden">Почта</label>
-                <input type="email" id="reflectionEmail" class="form-input" placeholder="Почта" required data-field="email" autocomplete="email">
+                <input type="email" id="reflectionEmail" name="email" class="form-input" placeholder="Почта" required data-field="email" autocomplete="email">
                 <div class="error-message"></div>
             </div>
             <div class="form-group">
                 <label for="reflectionPosition" class="visually-hidden">Должность</label>
-                <input type="text" id="reflectionPosition" class="form-input" placeholder="Должность" required data-field="position" autocomplete="organization-title">
+                <input type="text" id="reflectionPosition" name="position" class="form-input" placeholder="Должность" required data-field="position" autocomplete="organization-title">
                 <div class="error-message"></div>
             </div>
             <div class="form-group">
                 <label for="reflectionPassword" class="visually-hidden">Пароль</label>
-                <input type="password" id="reflectionPassword" class="form-input" placeholder="Пароль" required data-field="password" autocomplete="new-password">
+                <input type="password" id="reflectionPassword" name="password" class="form-input" placeholder="Пароль" required data-field="password" autocomplete="new-password">
                 <button type="button" class="password-toggle" data-password-input="reflectionPassword">
                     <div class="eye-icon">
                         <img src="{{ url_for('static', filename='Img/eye-open.svg') }}" class="eye-open" alt="Показать пароль" style="display: none;">
@@ -81,9 +82,9 @@
                 <div class="error-message"></div>
             </div>
             <div class="modal-buttons">
-                <button type="button" class="modal-btn modal-btn-back" onclick="closeModal('reflection')">Назад</button>
-                <button type="submit" class="modal-btn modal-btn-continue">Продолжить</button>
-            </div>
+    <button type="button" class="modal-btn modal-btn-back" onclick="closeModal('reflection')">Назад</button>
+    <button type="submit" class="modal-btn modal-btn-continue">Продолжить</button>
+</div>
         </form>
     </div>
 </div>
@@ -92,15 +93,16 @@
 <div id="returnModal" class="modal" aria-hidden="true" aria-labelledby="returnModalTitle">
     <div class="modal-content" role="dialog" aria-modal="true">
         <h2 class="modal-title" id="returnModalTitle">Вход</h2>
-        <form id="returnForm" novalidate>
+        <form id="returnForm" method="POST" action="{{ url_for('login') }}" novalidate>
+            {{ form.hidden_tag() if form }}
             <div class="form-group">
                 <label for="returnName" class="visually-hidden">Имя</label>
-                <input type="text" id="returnName" class="form-input" placeholder="Имя" required data-field="name" autocomplete="username">
+                <input type="text" id="returnName" name="username" class="form-input" placeholder="Имя" required data-field="name" autocomplete="username">
                 <div class="error-message"></div>
             </div>
             <div class="form-group">
                 <label for="returnPassword" class="visually-hidden">Пароль</label>
-                <input type="password" id="returnPassword" class="form-input" placeholder="Пароль" required data-field="password" autocomplete="current-password">
+                <input type="password" id="returnPassword" name="password" class="form-input" placeholder="Пароль" required data-field="password" autocomplete="current-password">
                 <button type="button" class="password-toggle" data-password-input="returnPassword">
                     <div class="eye-icon">
                         <img src="{{ url_for('static', filename='Img/eye-open.svg') }}" class="eye-open" alt="Показать пароль" style="display: none;">
@@ -110,9 +112,9 @@
                 <div class="error-message"></div>
             </div>
             <div class="modal-buttons">
-                <button type="button" class="modal-btn modal-btn-back" onclick="closeModal('return')">Назад</button>
-                <button type="submit" class="modal-btn modal-btn-continue">Продолжить</button>
-            </div>
+    <button type="button" class="modal-btn modal-btn-back" onclick="closeModal('return')">Назад</button>
+    <button type="submit" class="modal-btn modal-btn-continue">Продолжить</button>
+</div>
         </form>
     </div>
 </div>
