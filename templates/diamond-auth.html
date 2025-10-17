@@ -53,7 +53,7 @@
 <div id="reflectionModal" class="modal" aria-hidden="true" aria-labelledby="reflectionModalTitle">
     <div class="modal-content" role="dialog" aria-modal="true">
         <h2 class="modal-title" id="reflectionModalTitle">Регистрация</h2>
-        <form id="reflectionForm" method="POST" action="{{ url_for('register') }}" novalidate>
+        <form id="reflectionForm" method="POST" action="{{ url_for('auth.register') }}" novalidate>
             {{ form.hidden_tag() if form }}
             <div class="form-group">
                 <label for="reflectionName" class="visually-hidden">Имя</label>
@@ -93,7 +93,7 @@
 <div id="returnModal" class="modal" aria-hidden="true" aria-labelledby="returnModalTitle">
     <div class="modal-content" role="dialog" aria-modal="true">
         <h2 class="modal-title" id="returnModalTitle">Вход</h2>
-        <form id="returnForm" method="POST" action="{{ url_for('login') }}" novalidate>
+        <form id="returnForm" method="POST" action="{{ url_for('auth.login') }}" novalidate>
             {{ form.hidden_tag() if form }}
             <div class="form-group">
                 <label for="returnName" class="visually-hidden">Имя</label>
