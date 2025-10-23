@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кристаллы Фемиды</title>
+    <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Crimson+Text&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="nav-left">
+                <div class="logo-container">
+                    <img src="diamond.svg" alt="Логотип Кристаллы Фемиды" class="logo-circle">
+                    <h1 class="platform-title">Кристаллы Фемиды</h1>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="icon-btn" aria-label="Уведомления">
+                    <img src="Notifications.svg" alt="Уведомления" class="icon-img">
+                </button>
+                <button class="icon-btn" aria-label="Вкладки" id="tabsBtn">
+                    <img src="Tabs.svg" alt="Вкладки" class="icon-img">
+                </button>
+                <button class="icon-btn" id="menuBtn" aria-label="Меню">
+                    <div class="menu-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+            <a href="profile.html" class="nav-item">Профиль</a>
+            <a href="settings.html" class="nav-item">Настройки</a>
+            <a href="notifications.html" class="nav-item">Уведомления</a>
+            <a href="help.html" class="nav-item">Помощь</a>
+            <a href="logout.html" class="nav-item">Выйти</a>
+        </nav>
+    </div>
+
+    <!-- Боковая панель для вкладок -->
+<div class="sidebar tabs-sidebar" id="tabsSidebar">
+    <nav class="sidebar-nav">
+        <a href="index.html" class="nav-item active" data-page="main">
+            <img src="home-icon.svg" alt="Главный экран" class="nav-icon">
+            <span>Главный экран</span>
+        </a>
+        <a href="planner.html" class="nav-item" data-page="planner">
+            <img src="planner-icon.svg" alt="Планировщик" class="nav-icon">
+            <span>Планировщик</span>
+        </a>
+        <a href="notes.html" class="nav-item" data-page="notes">
+            <img src="notes-icon.svg" alt="Заметки" class="nav-icon">
+            <span>Заметки</span>
+        </a>
+        <a href="reflection.html" class="nav-item" data-page="reflection">
+            <img src="reflection-icon.svg" alt="Рефлексия" class="nav-icon">
+            <span>Рефлексия</span>
+        </a>
+        <a href="goals.html" class="nav-item" data-page="goals">
+            <img src="goals-icon.svg" alt="Цели & Достижения" class="nav-icon">
+            <span>Цели & Достижения</span>
+        </a>
+        <a href="scales.html" class="nav-item" data-page="scales">
+            <img src="scales.svg" alt="Весы" class="nav-icon">
+            <span>Весы</span>
+        </a>
+        <a href="social.html" class="nav-item" data-page="social">
+            <img src="social-icon.svg" alt="Социальная сеть" class="nav-icon">
+            <span>Социальная сеть</span>
+        </a>
+    </nav>
+</div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <main class="content">
+        <div class="panel-header">
+            <div class="panel-title">
+                <h2>Главная панель</h2>
+                <p class="balance-subtitle">Ваш жизненный баланс</p>
+            </div>
+            <div class="account-widget">
+                <div class="user-avatar-container">
+                    <img src="Diamond Man.svg" alt="Аватар пользователя" class="user-avatar">
+                </div>
+                <div class="user-details">
+                    <span class="user-name">Имя Фамилия</span>
+                    <div class="friends-info">
+                        <img src="friends.svg" alt="Друзья" class="friends-icon">
+                        <span class="friends-count">10 друзей</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="left-column">
+                <section class="dashboard-card balance-spiderweb">
+                    <h3>Паутина баланса</h3>
+                    <p class="section-description">Сравнение текущего и желаемого баланса</p>
+                    
+                    <div class="spiderweb-container">
+                        <canvas id="spiderwebChart"></canvas>
+                    </div>
+                    
+                    <div class="chart-controls">
+                        <button class="chart-control-btn active" id="currentBalanceBtn" data-dataset="0">
+                            <div class="control-box solid-border"></div>
+                            <span>Текущий баланс</span>
+                        </button>
+                        <button class="chart-control-btn active" id="idealBalanceBtn" data-dataset="1">
+                            <div class="control-box dashed-border"></div>
+                            <span>Идеальный баланс</span>
+                        </button>
+                    </div>
+                </section>
+                <!-- Недельная динамика -->
+<section class="dashboard-card weekly-dynamics">
+    <div class="weekly-header">
+        <h3>Недельная динамика</h3>
+        <div class="period-controls-wrapper">
+            <button class="other-date-btn">Другая дата</button>
+            <div class="period-controls">
+                <button class="period-btn">←</button>
+                <span class="current-period">Эта неделя</span>
+                <button class="period-btn">→</button>
+            </div>
+        </div>
+    </div>
+    <div class="weekly-chart">
+        <canvas id="weeklyChart"></canvas>
+    </div>
+</section>
+            </div>
+
+            <div class="right-column">
+
+                <section class="dashboard-card your-scales">
+    <div class="scales-header">
+        <h3>Ваши весы</h3>
+    </div>
+    
+    <div class="scales-grid">
+        <button class="scale-card nt-card1" data-page="family-career">
+            <img src="scales.svg" alt="Семья/Карьера" class="scale-icon">
+            <span class="scale-title">Семья/Карьера</span>
+        </button>
+        <button class="scale-card nt-card2" data-page="health">
+            <img src="scales.svg" alt="Здоровье" class="scale-icon">
+            <span class="scale-title">Здоровье/</span>
+        </button>
+        <button class="scale-card nt-card3" data-page="development">
+            <img src="scales.svg" alt="Развитие" class="scale-icon">
+            <span class="scale-title">Развитие/</span>
+        </button>
+    </div>
+</section>
+                <section class="dashboard-card goals-achievements">
+                    <div class="goals-header">
+                        <img src="Goals.svg" alt="Иконка целей">
+                        <h3>Цели & Достижения</h3>
+                    </div>
+                    
+                    <div class="goals-list">
+                        <div class="goal-item">
+                            <div class="goal-main-line">
+                                <span class="goal-text">Восстановить баланс здоровья</span>
+                                <span class="goal-percent">45%</span>
+                            </div>
+                            <div class="goal-details">
+                                <span class="goal-category">Здоровье</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 45%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="goal-item">
+                            <div class="goal-main-line">
+                                <span class="goal-text">Больше времени с семьей</span>
+                                <span class="goal-percent">65%</span>
+                            </div>
+                            <div class="goal-details">
+                                <span class="goal-category">Семья</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="goal-item">
+                            <div class="goal-main-line">
+                                <span class="goal-text">Еженедельная медитация</span>
+                                <span class="goal-percent">30%</span>
+                            </div>
+                            <div class="goal-details">
+                                <span class="goal-category">Духовность</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 30%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="achievements-section">
+                        <div class="achievements-header">
+                            <img src="achievements.svg" alt="Иконка достижений">
+                            <h4>Достижения</h4>
+                        </div>
+                        
+                        <div class="achievements-grid">
+                            <div class="achievement-card nt-card1">
+                                <img src="first step.svg" alt="Первый шаг" class="achievement-icon">
+                                <span class="achievement-title">Первый шаг</span>
+                            </div>
+                            <div class="achievement-card nt-card2">
+                                <img src="Diamond achievement.svg" alt="18 кристаллов" class="achievement-icon">
+                                <span class="achievement-title">18 кристаллов</span>
+                            </div>
+                            <div class="achievement-card nt-card3">
+                                <img src="Series.svg" alt="Сервис 1 день" class="achievement-icon">
+                                <span class="achievement-title">Серия 1 день</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="all-goals-btn">Все цели</button>
+                </section>
+
+                <section class="dashboard-card today-plans">
+    <div class="plans-header">
+        <img src="Plans.svg" alt="Иконка планов" class="plans-icon">
+        <h3>Сегодня в планах</h3>
+    </div>
+    
+    <div class="plans-list">
+        <!-- Задачи будут загружаться динамически -->
+    </div>
+    
+    <button class="all-goals-btn" onclick="window.location.href='planner.html'">Открыть планировщик</button>
+</section>
+
+<section class="dashboard-card social-network">
+    <div class="card-header-center">
+        <h3>Социальная сеть</h3>
+    </div>
+    
+    <div class="social-list">
+        <div class="social-item">
+            <div class="social-avatar-container">
+                <div class="social-avatar gradient-avatar">
+                </div>
+            </div>
+            <div class="social-details">
+                <span class="social-name">Марк К.</span>
+                <span class="social-action">Достиг общего баланса</span>
+            </div>
+        </div>
+        
+        <div class="social-item">
+            <div class="social-avatar-container">
+                <div class="social-avatar gradient-avatar">
+                </div>
+            </div>
+            <div class="social-details">
+                <span class="social-name">Иван П.</span>
+                <span class="social-action">Новое достижение</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="social-profile-btn-container">
+        <button class="all-goals-btn">Мой профиль</button>
+    </div>
+</section>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="home.js"></script>
+</body>
+</html>

@@ -701,3 +701,45 @@ body.modal-open {
         transition: none;
     }
 }
+
+/* Стили для сообщений об ошибках внутри полей ввода */
+.form-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.input-error-message {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(255, 68, 68, 0.1);
+    color: #ff4444;
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 0 0 8px 8px;
+    border: 1px solid rgba(255, 68, 68, 0.3);
+    border-top: none;
+    margin-top: -1px;
+    z-index: 1;
+    display: none;
+}
+
+.form-input.error {
+    border-color: #ff4444;
+    background: rgba(255, 68, 68, 0.05);
+    border-bottom-color: transparent;
+    border-radius: 8px 8px 0 0;
+}
+
+.form-input.error:focus {
+    border-bottom-color: transparent;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+    .input-error-message {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+}
